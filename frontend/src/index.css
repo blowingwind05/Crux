@@ -1,0 +1,284 @@
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Inter:wght@300;400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Crux 知几 - Deep Reasoning RAG System Design */
+
+@layer base {
+  :root {
+    /* Core dark palette - cyberpunk inspired */
+    --background: 222 47% 6%;
+    --foreground: 210 40% 96%;
+
+    --card: 220 40% 10%;
+    --card-foreground: 210 40% 96%;
+
+    --popover: 220 40% 8%;
+    --popover-foreground: 210 40% 96%;
+
+    /* Cyan/Teal primary for tech feel */
+    --primary: 175 84% 46%;
+    --primary-foreground: 220 40% 6%;
+
+    /* Secondary - muted blue */
+    --secondary: 215 30% 18%;
+    --secondary-foreground: 210 40% 90%;
+
+    --muted: 220 30% 15%;
+    --muted-foreground: 215 20% 55%;
+
+    /* Accent - warm orange for highlights */
+    --accent: 32 95% 55%;
+    --accent-foreground: 220 40% 6%;
+
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 220 30% 18%;
+    --input: 220 30% 20%;
+    --ring: 175 84% 46%;
+
+    --radius: 0.75rem;
+
+    /* Extended palette for Crux stages */
+    --stage-understand: 175 84% 46%;
+    --stage-retrieve: 200 95% 50%;
+    --stage-judge: 280 85% 60%;
+    --stage-analyze: 32 95% 55%;
+    --stage-report: 145 80% 50%;
+
+    /* Glow effects */
+    --glow-primary: 175 84% 46%;
+    --glow-accent: 32 95% 55%;
+
+    /* Sidebar */
+    --sidebar-background: 220 40% 8%;
+    --sidebar-foreground: 210 40% 90%;
+    --sidebar-primary: 175 84% 46%;
+    --sidebar-primary-foreground: 220 40% 6%;
+    --sidebar-accent: 220 30% 15%;
+    --sidebar-accent-foreground: 210 40% 90%;
+    --sidebar-border: 220 30% 18%;
+    --sidebar-ring: 175 84% 46%;
+  }
+
+  .dark {
+    --background: 222 47% 6%;
+    --foreground: 210 40% 96%;
+    --card: 220 40% 10%;
+    --card-foreground: 210 40% 96%;
+    --popover: 220 40% 8%;
+    --popover-foreground: 210 40% 96%;
+    --primary: 175 84% 46%;
+    --primary-foreground: 220 40% 6%;
+    --secondary: 215 30% 18%;
+    --secondary-foreground: 210 40% 90%;
+    --muted: 220 30% 15%;
+    --muted-foreground: 215 20% 55%;
+    --accent: 32 95% 55%;
+    --accent-foreground: 220 40% 6%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 220 30% 18%;
+    --input: 220 30% 20%;
+    --ring: 175 84% 46%;
+    --sidebar-background: 220 40% 8%;
+    --sidebar-foreground: 210 40% 90%;
+    --sidebar-primary: 175 84% 46%;
+    --sidebar-primary-foreground: 220 40% 6%;
+    --sidebar-accent: 220 30% 15%;
+    --sidebar-accent-foreground: 210 40% 90%;
+    --sidebar-border: 220 30% 18%;
+    --sidebar-ring: 175 84% 46%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-family: 'Inter', sans-serif;
+  }
+
+  code, pre, .font-mono {
+    font-family: 'JetBrains Mono', monospace;
+  }
+}
+
+@layer components {
+  /* Glow effects */
+  .glow-primary {
+    box-shadow: 0 0 20px hsl(var(--glow-primary) / 0.3),
+                0 0 40px hsl(var(--glow-primary) / 0.15),
+                0 0 60px hsl(var(--glow-primary) / 0.05);
+  }
+
+  .glow-accent {
+    box-shadow: 0 0 20px hsl(var(--glow-accent) / 0.3),
+                0 0 40px hsl(var(--glow-accent) / 0.15);
+  }
+
+  .glow-text {
+    text-shadow: 0 0 10px hsl(var(--primary) / 0.5),
+                 0 0 20px hsl(var(--primary) / 0.3);
+  }
+
+  /* Glass morphism card */
+  .glass-card {
+    @apply bg-card/50 backdrop-blur-xl border border-border/50;
+  }
+
+  /* Stage colors */
+  .stage-understand { color: hsl(var(--stage-understand)); }
+  .stage-retrieve { color: hsl(var(--stage-retrieve)); }
+  .stage-judge { color: hsl(var(--stage-judge)); }
+  .stage-analyze { color: hsl(var(--stage-analyze)); }
+  .stage-report { color: hsl(var(--stage-report)); }
+
+  .stage-understand-bg { background-color: hsl(var(--stage-understand) / 0.15); border-color: hsl(var(--stage-understand) / 0.3); }
+  .stage-retrieve-bg { background-color: hsl(var(--stage-retrieve) / 0.15); border-color: hsl(var(--stage-retrieve) / 0.3); }
+  .stage-judge-bg { background-color: hsl(var(--stage-judge) / 0.15); border-color: hsl(var(--stage-judge) / 0.3); }
+  .stage-analyze-bg { background-color: hsl(var(--stage-analyze) / 0.15); border-color: hsl(var(--stage-analyze) / 0.3); }
+  .stage-report-bg { background-color: hsl(var(--stage-report) / 0.15); border-color: hsl(var(--stage-report) / 0.3); }
+
+  /* Animated border */
+  .animated-border {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .animated-border::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    padding: 1px;
+    border-radius: inherit;
+    background: linear-gradient(
+      90deg,
+      hsl(var(--primary)) 0%,
+      hsl(var(--accent)) 50%,
+      hsl(var(--primary)) 100%
+    );
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    animation: border-rotate 3s linear infinite;
+  }
+
+  @keyframes border-rotate {
+    from { background-position: 0% center; }
+    to { background-position: 200% center; }
+  }
+
+  /* Particle flow */
+  .particle-flow {
+    background: linear-gradient(90deg, 
+      transparent 0%, 
+      hsl(var(--primary) / 0.6) 50%, 
+      transparent 100%);
+    animation: flow 1.5s ease-in-out infinite;
+  }
+
+  @keyframes flow {
+    0% { transform: translateX(-100%); opacity: 0; }
+    50% { opacity: 1; }
+    100% { transform: translateX(100%); opacity: 0; }
+  }
+
+  /* Pulse glow */
+  .pulse-glow {
+    animation: pulse-glow 2s ease-in-out infinite;
+  }
+
+  @keyframes pulse-glow {
+    0%, 100% { 
+      box-shadow: 0 0 5px hsl(var(--primary) / 0.5),
+                  0 0 15px hsl(var(--primary) / 0.3);
+    }
+    50% { 
+      box-shadow: 0 0 15px hsl(var(--primary) / 0.8),
+                  0 0 30px hsl(var(--primary) / 0.5),
+                  0 0 45px hsl(var(--primary) / 0.3);
+    }
+  }
+
+  /* Typing cursor */
+  .typing-cursor::after {
+    content: '▌';
+    animation: blink 1s step-end infinite;
+    @apply text-primary;
+  }
+
+  @keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+  }
+
+  /* Code block styling */
+  .code-block {
+    @apply bg-muted/50 border border-border rounded-lg p-4 font-mono text-sm overflow-x-auto;
+  }
+
+  /* Scrollbar styling */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-muted/30 rounded;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-primary/30 rounded hover:bg-primary/50 transition-colors;
+  }
+}
+
+@layer utilities {
+  .text-gradient {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-primary to-accent;
+  }
+
+  .bg-grid {
+    background-image: 
+      linear-gradient(hsl(var(--border) / 0.3) 1px, transparent 1px),
+      linear-gradient(90deg, hsl(var(--border) / 0.3) 1px, transparent 1px);
+    background-size: 40px 40px;
+  }
+
+  .fade-in-up {
+    animation: fadeInUp 0.5s ease-out forwards;
+  }
+
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .slide-in-right {
+    animation: slideInRight 0.4s ease-out forwards;
+  }
+
+  @keyframes slideInRight {
+    from {
+      opacity: 0;
+      transform: translateX(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+}

@@ -1,26 +1,51 @@
-from graph import build_graph
+"""
+Crux AgenticRAG 框架入口
+
+使用方法:
+    python main.py
+"""
+
+import time
+from src.crux import AgentGraph, CruxConfig
+
 
 def main():
-    app = build_graph()
+    # 创建配置
+    config = CruxConfig(
+        data_source_type="json",
+        data_source_path="data/ir_papers.json",
+        schema_type="paper",
+        mock_llm=False,  # 使用 mock LLM 进行测试
+        debug=True,
+    )
     
-    # 测试查询：故意设计一个复杂的，看看能否触发 Mock DB 的 hit
-    user_query = "帮我找一下2023年以后关于比亚迪销量和特斯拉FSD里程的数据，最好有具体数字。"
+    # 构建图
+    graph = AgentGraph(config)
+    app = graph.build()
     
-    print(f"[START] 启动 Zhiji Agent... 查询: {user_query}")
+    # 测试查询 - 论文检索场景
+    user_query = "帮我找一下关于信息检索和 RAG 检索增强生成的最新研究，尤其是智能体相关的论文"
     
+    print("=" * 60)
+    print("[START] Crux AgenticRAG Demo")
+    print("=" * 60)
+    print(f"\n[QUERY] {user_query}\n")
+    
+    # 准备输入
     inputs = {
         "user_query": user_query,
-        "verified_evidence": [], # 初始化
-        "search_iteration": 0
+        "verified_evidence": [],
+        "search_iteration": 0,
+        "schema_type": "paper",
+        "start_time": time.time(),
     }
     
     # 运行图
-    final_state = app.invoke(inputs)
+    final_state = graph.invoke(inputs)
     
-    print("\n" + "="*30)
-    print("[SUCCESS] 最终执行结果")
-    print("="*30)
-    print(final_state["final_report"])
+    # 输出结果
+    print("\n" + final_state.get("final_report", "无报告生成"))
+
 
 if __name__ == "__main__":
     main()

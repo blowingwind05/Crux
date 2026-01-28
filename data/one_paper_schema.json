@@ -1,0 +1,325 @@
+{
+  "alphaxiv_overview": {
+    "state": "done",
+    "updatedAt": 1767086957997,
+    "overviews": {
+      "zh": {
+        "title": "面向智能体信息搜寻的嵌套式浏览器操作学习",
+        "abstract": "信息寻觅（IS）智能体在各种广泛而深入的搜索任务中取得了显著性能，然而，它们的工具使用在很大程度上仍局限于 API 级别的片段检索和基于 URL 的页面获取，这限制了它们获取通过真实浏览可获得的更丰富信息。尽管完整的浏览器交互可以解锁更深层次的能力，但其细粒度的控制和冗余的页面内容返回给 ReAct 风格的函数调用智能体带来了巨大的复杂性。为了弥合这一差距，我们提出了嵌套式浏览器使用学习（NestBrowse），它引入了一个最小且完整的浏览器动作框架，该框架通过一种嵌套结构将交互控制与页面探索解耦。这种设计简化了智能体的推理，同时能够有效地获取深网信息。在具有挑战性的深层 IS 基准测试上的实验结果表明，NestBrowse 在实践中提供了明显的优势。进一步的深入分析强调了其效率和灵活性。",
+        "summary": {
+          "summary": "由阿里巴巴集团通义实验室开发的 NestBrowse 引入了一个嵌套的浏览器使用框架，旨在增强信息搜索代理的能力。它通过从动态页面中提炼出与目标相关的内容，从而实现高效的网页交互，在深度信息搜索基准上表现出色，并降低了上下文开销。",
+          "originalProblem": [
+            "现有的信息搜索 (IS) 代理主要依赖于 API 级别的片段检索或静态 URL 获取，限制了它们对动态网页内容和页面内功能的访问。",
+            "将完整的网页内容注入大型语言模型 (LLM) 的上下文通常过于冗长，超出令牌限制，并且由于冗余而损害推理效率。",
+            "由于细粒度浏览器控制的复杂性和原始页面数据的庞大性，开发一个标准化且高效的真实浏览器交互模型仍然充满挑战。"
+          ],
+          "solution": [
+            "设计了一个最小且完整的浏览器工具包，包含四个核心操作（搜索、访问、点击、填写），以平衡全面的网页访问和降低代理的工具复杂性。",
+            "一个嵌套的浏览器使用框架将交互解耦为用于工具集成推理的“外循环”和用于目标驱动页面探索的“内循环”，确保只有相关信息传递给 LLM。",
+            "通过利用质量过滤的监督，一个多任务模仿学习公式共同训练代理执行高级推理和从网页中提取与目标相关的低级证据。"
+          ],
+          "keyInsights": [
+            "将浏览器操作空间简化为一套最小但功能完整的工具，对于代理在不造成认知负担的情况下有效与复杂网络环境交互至关重要。",
+            "将网页交互解耦为嵌套循环可以高效管理冗长的网页内容，通过仅提取和注入与目标相关的信息来防止上下文窗口溢出。",
+            "多任务学习方法使单一代理模型能够有效地内化高级战略推理和细粒度信息提取能力，这些能力对于复杂的浏览器使用是必需的。"
+          ],
+          "results": [
+            "NestBrowse-30B-A3B 在四个具有挑战性的深度 IS 基准（例如，BrowseComp 上 31.6，GAIA 上 75.7）上取得了强大表现，超越了许多开源代理并与专有系统竞争。",
+            "嵌套框架显著提高了上下文效率，通过仅将与目标相关的内容注入代理的推理上下文，防止了上下文过载，否则将提前终止 85% 的任务。",
+            "消融研究证实，工具包简化和与目标相关的内容提取都独立且累加地有助于性能提升，并且代理通过利用网页中嵌入的功能实用程序展示了“元工具使用”。"
+          ]
+        },
+        "overview": "## 理解 NestBrowse：一个用于高级网络AI代理的框架\n\n当前在网络上搜索信息的AI代理在处理动态内容和交互式网络功能时面临显著限制。尽管它们可以通过搜索查询和基本的页面访问检索静态信息，但在需要填写表单、点击按钮或导航复杂多步骤流程的任务上却力不从心。NestBrowse 通过引入一个复杂的框架来解决这些挑战，该框架使AI代理能够像人类用户一样与网络交互，同时保持效率并避免信息过载。\n\n![NestBrowse 与其他信息检索代理在 BrowseComp 基准测试上的性能比较，显示 NestBrowse-30B-A3B 取得了 31.6 的最高分](https:\/\/paper-assets.alphaxiv.org\/figures\/2512.23647v1\/img-0.jpeg)\n\n## 核心创新：嵌套浏览器交互\n\nNestBrowse 引入了一种“嵌套”方法，将浏览器交互分为两个不同但相互关联的循环。**外层循环**处理高层推理和工具选择，遵循标准的 ReAct 风格函数调用范式，即代理进行思考、选择工具并处理响应。**内层循环**管理详细的页面探索和信息提取，确保只有相关内容到达代理的推理上下文。\n\n这种分离解决了一个关键问题：网页包含大量文本，这些文本会迅速淹没AI代理的上下文窗口。传统方法要么截断内容（冒着丢失重要信息的风险），要么注入整个页面（导致效率低下并超出 token 限制）。NestBrowse 的内层循环充当智能过滤器，仅从每个页面片段中提取与目标相关的信息。\n\n![NestBrowse 框架的详细插图，展示了用于代理推理的外层循环和用于页面探索的内层循环](https:\/\/paper-assets.alphaxiv.org\/figures\/2512.23647v1\/img-1.jpeg)\n\n该框架通过一个精心设计的浏览器工具包运行，该工具包仅包含四个操作：\n- **search**：执行 Google 查询并返回前 10 个结果\n- **visit**：从 URL 获取并提取相关内容\n- **click**：与可点击元素交互并提取结果内容\n- **fill**：在表单字段或可编辑元素中键入文本\n\n这个最小而完整的工具包在功能覆盖性和简洁性之间取得了平衡，避免了更大动作空间带来的复杂性，同时仍然能够访问静态和动态网页内容。\n\n## 通过多任务模仿学习进行训练\n\n为了开发能够进行这种复杂浏览器交互的代理，NestBrowse 采用了多任务模仿学习方法。训练过程共同优化两个目标：\n\n$$\nL_{MT} = \\lambda_{out} L_{out} + \\lambda_{in} L_{in}\n$$\n\n其中 $L_{out}$ 训练外层循环的推理能力，而 $L_{in}$ 训练内层循环的信息提取技能。这种联合训练使单个模型能够执行高层战略推理和低层内容过滤。\n\n训练数据通过拒绝采样进行质量过滤，如果轨迹表现出格式违规、工具调用幻觉或不正确的最终答案，则会被丢弃。这确保了在训练过程中只强化高质量的行为模式。\n\n## 效率和上下文管理\n\nNestBrowse 最显著的优势之一是它能够有效地管理上下文长度。分析表明，如果没有嵌套框架，在约 20 轮交互后，处理的总信息量将迅速超过典型的上下文限制（128K token），导致大约 85% 的复杂任务执行失败。\n\n![上下文长度分析显示 NestBrowse 在处理大量信息的同时如何保持可管理的上下文大小](https:\/\/paper-assets.alphaxiv.org\/figures\/2512.23647v1\/img-2.jpeg)\n\n通过在将内容注入外循环之前，通过内循环对其进行过滤，NestBrowse 在整个执行过程中将推理上下文保持在可行的范围内。这使得其能够长时间持续运行，这对于传统方法来说是不可能实现的。\n\n## 经验验证和性能\n\nNestBrowse 在多个具有挑战性的基准测试中表现出强大的性能。该框架的有效性通过对 BrowseComp、GAIA、BrowseComp-zh 和 XBench-DeepSearch 等数据集的全面评估得到验证。值得注意的是，即使是较小的 NestBrowse-4B 模型也取得了具有竞争力的性能，这表明有效的工具设计和交互策略可能比原始模型规模更重要。\n\n![内循环页面探索能力分析显示在原始快照保留和目标相关提取方面均有改进](https:\/\/paper-assets.alphaxiv.org\/figures\/2512.23647v1\/img-3.jpeg)\n\n消融研究表明，工具包简化和目标相关内容提取都独立地促进了性能提升，它们的结合提供了附加的益处。内循环的有效性通过在原始快照保留和目标相关提取任务上改进的性能得到证明。\n\n## 超越信息检索：元工具使用\n\nNestBrowse 实现了作者所称的“元工具使用”——即利用网络嵌入工具和功能进行计算任务的能力。这种能力超越了简单的信息检索，扩展到主动利用在线计算器、数据可视化工具和其他基于网络的实用程序。\n\n![案例研究演示 NestBrowse 使用在线牛顿法计算器解决数学问题](https:\/\/paper-assets.alphaxiv.org\/figures\/2512.23647v1\/img-4.jpeg)\n\n一个引人注目的例子是代理通过导航到在线牛顿法计算器、填写所需函数和参数、点击计算按钮并使用结果进行后续推理来解决复杂的数学问题。这表明浏览器使用能力可以减轻代理自身的计算负担，同时扩展其解决问题的能力。\n\n## 影响和未来方向\n\nNestBrowse 代表了使 AI 代理成为更强大的网络用户方面的一项重大进步。通过提供一种平衡功能与效率的浏览器交互原则性方法，它为代理与现代网络的动态和交互式方面进行交互开辟了新的可能性。\n\n该框架的设计原则——最小化而完整的工具包、嵌套交互范式和目标驱动的内容过滤——为开发未来的代理系统提供了宝贵的见解。多任务学习方法展示了如何将复杂的行为能力有效地内化到单个模型中。\n\n当前的局限性包括只专注于文本内容，作者承认现实世界的浏览通常依赖于视觉线索和布局。将 NestBrowse 扩展到包含多模态信息代表了未来发展的一个有希望的方向，尽管这将在建模和系统设计中引入显著的额外复杂性。\n\nNestBrowse-4B 等小型模型的成功表明，对代理能力的深思熟虑的设计可能比简单地扩展模型参数更具影响力，为实现更易访问和资源高效的、能够进行复杂真实世界交互的代理 AI 系统提供了途径。",
+        "citations": [
+          {
+            "title": "ReAct: 语言模型中推理与行动的协同",
+            "fullCitation": "Yao, Shunyu, Jeffrey Zhao, Dian Yu, Nan Du, Izhak Shafran, Karthik Narasimhan, and Yuan Cao. React: Synergizing reasoning and acting in language models. In International Conference on Learning Representations (ICLR), 2023.",
+            "justification": "这篇论文具有奠基意义，因为它引入了 ReAct 框架。NestBrowse 智能体明确地建立在一种“ReAct 风格的函数调用范式”之上，这种范式涉及推理和行动的交错进行，因此这篇引文对于该智能体的核心架构至关重要。",
+            "alphaxivLink": null
+          },
+          {
+            "title": "Browsecomp: 简单而富有挑战性的浏览智能体基准",
+            "fullCitation": "Wei, Jason, Zhiqing Sun, Spencer Papay, Scott McKinney, Jeffrey Han, Isa Fulford, Hyung Won Chung, Alex Tachard Passos, William Fedus, and Amelia Glaese. Browsecomp: A simple yet challenging benchmark for browsing agents. arXiv preprint arXiv:2504.12516, 2025.",
+            "justification": "本引用介绍了 BrowseComp，这是一个用于评估 NestBrowse 代理性能的主要基准测试。论文的主要结果，包括引言图，都基于此基准呈现，突显了它在证明所提出方法的有效性方面的重要性。",
+            "alphaxivLink": null
+          },
+          {
+            "title": "Gaia：通用人工智能助手基准测试",
+            "fullCitation": "Mialon, Grégoire, Clémentine Fourrier, Thomas Wolf, Yann LeCun, and Thomas Scialom. Gaia: a benchmark for general ai assistants. In The Twelfth International Conference on Learning Representations, 2023.",
+            "justification": "GAIA 是论文实验评估中用于验证 NestBrowse 性能的另一个关键基准。将其纳入证明了该智能体在一套广泛认可的挑战性问题上的能力，为该方法的泛化性提供了关键证据。",
+            "alphaxivLink": null
+          },
+          {
+            "title": "Websailor-v2: 弥合通往专有智能体的鸿沟，通过合成数据和可扩展强化学习",
+            "fullCitation": "Li, Kuan, Zhongwang Zhang, Huifeng Yin, Rui Ye, Yida Zhao, Liwen Zhang, Litu Ou, Dingchu Zhang, Xixi Wu, Jialong Wu, Xinyu Wang, Zile Qiao, Zhen Zhang, Yong Jiang, Pengjun Xie, Fei Huang, and Jingren Zhou. Websailor-v2: Bridging the chasm to proprietary agents via synthetic data and scalable reinforcement learning, 2025b. URL https:\/\/arxiv.org\/abs\/2509.13305.",
+            "justification": "这篇论文至关重要，因为它引入了 SailorFog-QA-V2，作者将其确定为他们的“主要训练任务”。NestBrowse 智能体的复杂浏览和推理能力是通过模仿该数据集上的轨迹直接学习的，这使得这项工作奠定了模型开发的基础。",
+            "alphaxivLink": null
+          }
+        ]
+      },
+      "en": {
+        "title": "Nested Browser-Use Learning for Agentic Information Seeking",
+        "abstract": "Information-seeking (IS) agents have achieved strong performance across a range of wide and deep search tasks, yet their tool use remains largely restricted to API-level snippet retrieval and URL-based page fetching, limiting access to the richer information available through real browsing. While full browser interaction could unlock deeper capabilities, its fine-grained control and verbose page content returns introduce substantial complexity for ReAct-style function-calling agents. To bridge this gap, we propose Nested Browser-Use Learning (NestBrowse), which introduces a minimal and complete browser-action framework that decouples interaction control from page exploration through a nested structure. This design simplifies agentic reasoning while enabling effective deep-web information acquisition. Empirical results on challenging deep IS benchmarks demonstrate that NestBrowse offers clear benefits in practice. Further in-depth analyses underscore its efficiency and flexibility.",
+        "summary": {
+          "summary": "NestBrowse, developed by Tongyi Lab at Alibaba Group, introduces a nested browser-use framework to enhance information-seeking agents. It enables efficient web interaction by distilling goal-relevant content from dynamic pages, achieving strong performance on deep information-seeking benchmarks with reduced context overhead.",
+          "originalProblem": [
+            "Existing information-seeking (IS) agents primarily rely on API-level snippet retrieval or static URL fetching, limiting their access to dynamic web content and in-page functionalities.",
+            "Injecting full web page content into a Large Language Model's (LLM) context is often verbose, exceeds token limits, and impairs reasoning efficiency due to redundancy.",
+            "Developing a standardized and efficient model for real browser interaction remains challenging due to the complexity of fine-grained browser control and the volume of raw page data."
+          ],
+          "solution": [
+            "A minimally complete browser toolkit is designed with four core actions (search, visit, click, fill) to balance comprehensive web access with reduced tool complexity for the agent.",
+            "A nested browser-use framework decouples interaction into an 'outer loop' for tool-integrated reasoning and an 'inner loop' for goal-driven page exploration, ensuring only relevant information is passed to the LLM.",
+            "A multi-task imitation learning formulation, utilizing quality-filtered supervision, jointly trains the agent to perform both high-level reasoning and low-level goal-relevant evidence extraction from web pages."
+          ],
+          "keyInsights": [
+            "Simplifying the browser action space to a minimal, yet functionally complete, set of tools is crucial for agents to effectively interact with complex web environments without cognitive overload.",
+            "Decoupling web interaction into nested loops allows for efficient management of verbose web content, preventing context window overflow by only extracting and injecting goal-relevant information.",
+            "A multi-task learning approach enables a single agent model to effectively internalize both high-level strategic reasoning and fine-grained information extraction capabilities necessary for sophisticated browser use."
+          ],
+          "results": [
+            "NestBrowse-30B-A3B achieved strong performance on four challenging deep IS benchmarks (e.g., 31.6 on BrowseComp, 75.7 on GAIA), outperforming many open-source agents and competing with proprietary systems.",
+            "The nested framework significantly improves context efficiency, preventing context overload that would prematurely terminate 85% of tasks by injecting only goal-relevant content into the agent's reasoning context.",
+            "Ablation studies confirmed that both toolkit simplification and goal-relevant content extraction independently and additively contribute to performance gains, and the agent demonstrates 'meta tool-use' by leveraging web-embedded functional utilities."
+          ]
+        },
+        "overview": "## Understanding NestBrowse: A Framework for Advanced Web-Based AI Agents\n\nCurrent AI agents that search for information on the web face significant limitations when dealing with dynamic content and interactive web features. While they can retrieve static information through search queries and basic page visits, they struggle with tasks requiring form filling, button clicking, or navigating complex multi-step processes. NestBrowse addresses these challenges by introducing a sophisticated framework that enables AI agents to interact with the web like human users while maintaining efficiency and avoiding information overload.\n\n![Performance comparison of NestBrowse against other information-seeking agents on the BrowseComp benchmark, showing NestBrowse-30B-A3B achieving the highest score of 31.6](https:\/\/paper-assets.alphaxiv.org\/figures\/2512.23647v1\/img-0.jpeg)\n\n## The Core Innovation: Nested Browser Interaction\n\nNestBrowse introduces a \"nested\" approach that separates browser interaction into two distinct but interconnected loops. The **outer loop** handles high-level reasoning and tool selection, following a standard ReAct-style function-calling paradigm where the agent thinks, selects tools, and processes responses. The **inner loop** manages detailed page exploration and information extraction, ensuring that only relevant content reaches the agent's reasoning context.\n\nThis separation addresses a critical problem: web pages contain enormous amounts of text that can quickly overwhelm an AI agent's context window. Traditional approaches either truncate content (risking loss of important information) or inject entire pages (causing inefficiency and exceeding token limits). NestBrowse's inner loop acts as an intelligent filter, extracting only goal-relevant information from each page segment.\n\n![Detailed illustration of the NestBrowse framework showing the outer loop for agentic reasoning and inner loop for page exploration](https:\/\/paper-assets.alphaxiv.org\/figures\/2512.23647v1\/img-1.jpeg)\n\nThe framework operates through a carefully designed browser toolkit consisting of just four actions:\n- **search**: Performs Google queries returning top-10 results\n- **visit**: Fetches and extracts relevant content from URLs  \n- **click**: Interacts with clickable elements and extracts resulting content\n- **fill**: Types text into form fields or editable elements\n\nThis minimal yet complete toolkit balances functional coverage with simplicity, avoiding the complexity that would come with a larger action space while still enabling access to both static and dynamic web content.\n\n## Training Through Multi-Task Imitation Learning\n\nTo develop agents capable of this sophisticated browser interaction, NestBrowse employs a multi-task imitation learning approach. The training process jointly optimizes two objectives:\n\n$$\nL_{MT} = \\lambda_{out} L_{out} + \\lambda_{in} L_{in}\n$$\n\nwhere $L_{out}$ trains the outer-loop reasoning capabilities and $L_{in}$ trains the inner-loop information extraction skills. This joint training enables a single model to perform both high-level strategic reasoning and low-level content filtering.\n\nThe training data undergoes quality filtering through rejection sampling, where trajectories are discarded if they exhibit format violations, tool-call hallucinations, or incorrect final answers. This ensures that only high-quality behavioral patterns are reinforced during training.\n\n## Efficiency and Context Management\n\nOne of NestBrowse's most significant advantages is its ability to manage context length effectively. Analysis shows that without the nested framework, the total information processed would quickly exceed typical context limits (128K tokens) after approximately 20 turns, causing execution failure for about 85% of complex tasks.\n\n![Context length analysis showing how NestBrowse maintains manageable context sizes while processing substantially more total information](https:\/\/paper-assets.alphaxiv.org\/figures\/2512.23647v1\/img-2.jpeg)\n\nBy filtering content through the inner loop before injecting it into the outer loop, NestBrowse keeps the reasoning context within feasible limits throughout execution. This enables sustained operation over long task horizons that would be impossible with traditional approaches.\n\n## Empirical Validation and Performance\n\nNestBrowse demonstrates strong performance across multiple challenging benchmarks. The framework's effectiveness is validated through comprehensive evaluation on datasets including BrowseComp, GAIA, BrowseComp-zh, and XBench-DeepSearch. Notably, even the smaller NestBrowse-4B model achieves competitive performance, suggesting that effective tool design and interaction strategies can be more important than raw model scale.\n\n![Analysis of inner-loop page exploration capabilities showing improved performance in both raw snapshot retention and goal-relevant extraction](https:\/\/paper-assets.alphaxiv.org\/figures\/2512.23647v1\/img-3.jpeg)\n\nAblation studies reveal that both toolkit simplification and goal-relevant content extraction independently contribute to performance improvements, with their combination providing additive benefits. The inner loop's effectiveness is demonstrated through improved performance on both raw snapshot retention and goal-relevant extraction tasks.\n\n## Beyond Information Retrieval: Meta Tool-Use\n\nNestBrowse enables what the authors term \"meta tool-use\" - the ability to leverage web-embedded tools and functionalities for computational tasks. This capability extends beyond simple information retrieval to active utilization of online calculators, data visualizers, and other web-based utilities.\n\n![Case study demonstrating NestBrowse using an online Newton's method calculator to solve a mathematical problem](https:\/\/paper-assets.alphaxiv.org\/figures\/2512.23647v1\/img-4.jpeg)\n\nA compelling example involves the agent solving a complex mathematical problem by navigating to an online Newton's method calculator, filling in the required function and parameters, clicking the calculate button, and using the results for subsequent reasoning. This demonstrates how browser-use capabilities can reduce the computational burden on the agent itself while expanding its problem-solving capabilities.\n\n## Implications and Future Directions\n\nNestBrowse represents a significant advancement in making AI agents more capable web users. By providing a principled approach to browser interaction that balances functionality with efficiency, it opens new possibilities for agents to engage with the dynamic and interactive aspects of the modern web.\n\nThe framework's design principles - minimal yet complete toolkits, nested interaction paradigms, and goal-driven content filtering - offer valuable insights for developing future agentic systems. The multi-task learning approach demonstrates how complex behavioral capabilities can be effectively internalized into single models.\n\nCurrent limitations include the exclusive focus on textual content, with the authors acknowledging that real-world browsing often relies on visual cues and layouts. Extending NestBrowse to incorporate multimodal information represents a promising direction for future development, though it would introduce significant additional complexity in both modeling and system design.\n\nThe success of smaller models like NestBrowse-4B suggests that thoughtful design of agent capabilities can be more impactful than simply scaling model parameters, offering a path toward more accessible and resource-efficient agentic AI systems capable of sophisticated real-world interactions.",
+        "citations": [
+          {
+            "title": "ReAct: Synergizing reasoning and acting in language models",
+            "fullCitation": "Yao, Shunyu, Jeffrey Zhao, Dian Yu, Nan Du, Izhak Shafran, Karthik Narasimhan, and Yuan Cao. React: Synergizing reasoning and acting in language models. In International Conference on Learning Representations (ICLR), 2023.",
+            "justification": "This paper is foundational as it introduces the ReAct framework. The NestBrowse agent is explicitly built upon a \"ReAct-style function-calling paradigm,\" which involves interleaving reasoning and action, making this citation central to the agent's core architecture.",
+            "alphaxivLink": null
+          },
+          {
+            "title": "Browsecomp: A simple yet challenging benchmark for browsing agents",
+            "fullCitation": "Wei, Jason, Zhiqing Sun, Spencer Papay, Scott McKinney, Jeffrey Han, Isa Fulford, Hyung Won Chung, Alex Tachard Passos, William Fedus, and Amelia Glaese. Browsecomp: A simple yet challenging benchmark for browsing agents. arXiv preprint arXiv:2504.12516, 2025.",
+            "justification": "This citation introduces BrowseComp, a primary benchmark used to evaluate the NestBrowse agent's performance. The paper's main results, including the introductory figure, are presented on this benchmark, highlighting its importance in demonstrating the proposed method's effectiveness.",
+            "alphaxivLink": null
+          },
+          {
+            "title": "Gaia: a benchmark for general ai assistants",
+            "fullCitation": "Mialon, Grégoire, Clémentine Fourrier, Thomas Wolf, Yann LeCun, and Thomas Scialom. Gaia: a benchmark for general ai assistants. In The Twelfth International Conference on Learning Representations, 2023.",
+            "justification": "GAIA is another key benchmark used in the paper's experimental evaluation to validate the performance of NestBrowse. Its inclusion demonstrates the agent's capabilities on a widely recognized set of challenging problems, providing crucial evidence for the method's generalizability.",
+            "alphaxivLink": null
+          },
+          {
+            "title": "Websailor-v2: Bridging the chasm to proprietary agents via synthetic data and scalable reinforcement learning",
+            "fullCitation": "Li, Kuan, Zhongwang Zhang, Huifeng Yin, Rui Ye, Yida Zhao, Liwen Zhang, Litu Ou, Dingchu Zhang, Xixi Wu, Jialong Wu, Xinyu Wang, Zile Qiao, Zhen Zhang, Yong Jiang, Pengjun Xie, Fei Huang, and Jingren Zhou. Websailor-v2: Bridging the chasm to proprietary agents via synthetic data and scalable reinforcement learning, 2025b. URL https:\/\/arxiv.org\/abs\/2509.13305.",
+            "justification": "This paper is critical because it introduces SailorFog-QA-V2, which the authors identify as their \"primary training task.\" The complex browsing and reasoning capabilities of the NestBrowse agent are directly learned by imitating trajectories on this dataset, making this work fundamental to the model's development.",
+            "alphaxivLink": null
+          }
+        ]
+      }
+    }
+  },
+  "arxiv_id": "2512.23647",
+  "abstract": "Information-seeking (IS) agents have achieved strong performance across a range of wide and deep search tasks, yet their tool use remains largely restricted to API-level snippet retrieval and URL-based page fetching, limiting access to the richer information available through real browsing. While full browser interaction could unlock deeper capabilities, its fine-grained control and verbose page content returns introduce substantial complexity for ReAct-style function-calling agents. To bridge this gap, we propose Nested Browser-Use Learning (NestBrowse), which introduces a minimal and complete browser-action framework that decouples interaction control from page exploration through a nested structure. This design simplifies agentic reasoning while enabling effective deep-web information acquisition. Empirical results on challenging deep IS benchmarks demonstrate that NestBrowse offers clear benefits in practice. Further in-depth analyses underscore its efficiency and flexibility.",
+  "affiliation_detail": {
+    "affiliations": [
+      {
+        "author": "Baixuan Li",
+        "author_email": "baixuan@seu.edu.cn",
+        "org": "Tongyi Lab, Alibaba Group",
+        "org_email": "",
+        "is_industry": false
+      },
+      {
+        "author": "Jialong Wu",
+        "author_email": "",
+        "org": "Tongyi Lab, Alibaba Group",
+        "org_email": "",
+        "is_industry": false
+      },
+      {
+        "author": "Wenbiao Yin",
+        "author_email": "yinwenbiao.ywb@alibaba-inc.com",
+        "org": "Tongyi Lab, Alibaba Group",
+        "org_email": "",
+        "is_industry": false
+      },
+      {
+        "author": "Yong Jiang",
+        "author_email": "yongjiang.jy@alibaba-inc.com",
+        "org": "Tongyi Lab, Alibaba Group",
+        "org_email": "",
+        "is_industry": false
+      },
+      {
+        "author": "Kuan Li",
+        "author_email": "",
+        "org": "Tongyi Lab, Alibaba Group",
+        "org_email": "",
+        "is_industry": false
+      },
+      {
+        "author": "Zhongwang Zhang",
+        "author_email": "",
+        "org": "Tongyi Lab, Alibaba Group",
+        "org_email": "",
+        "is_industry": false
+      },
+      {
+        "author": "Huifeng Yin",
+        "author_email": "",
+        "org": "Tongyi Lab, Alibaba Group",
+        "org_email": "",
+        "is_industry": false
+      },
+      {
+        "author": "Zhengwei Tao",
+        "author_email": "",
+        "org": "Tongyi Lab, Alibaba Group",
+        "org_email": "",
+        "is_industry": false
+      },
+      {
+        "author": "Liwen Zhang",
+        "author_email": "",
+        "org": "Tongyi Lab, Alibaba Group",
+        "org_email": "",
+        "is_industry": false
+      },
+      {
+        "author": "Pengjun Xie",
+        "author_email": "",
+        "org": "Tongyi Lab, Alibaba Group",
+        "org_email": "",
+        "is_industry": false
+      },
+      {
+        "author": "Jingren Zhou",
+        "author_email": "",
+        "org": "Tongyi Lab, Alibaba Group",
+        "org_email": "",
+        "is_industry": false
+      }
+    ],
+    "timestamp": "2025-12-31T09:36:48.742351",
+    "text_length": 2974,
+    "pdf_minio_info": {
+      "bucket": "pdf-files",
+      "object_name": "2512.23647v1.pdf",
+      "uploaded_at": "2025-12-31T09:36:12.492291",
+      "size": 1800568
+    },
+    "markdown_minio_info": {
+      "bucket": "md-files",
+      "object_name": "2512.23647v1.md",
+      "uploaded_at": "2025-12-31T09:36:35.032759",
+      "size": 54213
+    }
+  },
+  "title": "Nested Browser-Use Learning for Agentic Information Seeking",
+  "metadata": {
+    "category": "CL",
+    "authors": [
+      "Baixuan Li",
+      "Jialong Wu",
+      "Wenbiao Yin",
+      "et al."
+    ],
+    "timestamp": 1767031154,
+    "date": "2025-12-29",
+    "pdf_url": "https:\/\/arxiv.org\/pdf\/2512.23647v1",
+    "arxiv_url": "http:\/\/arxiv.org\/abs\/2512.23647v1",
+    "doi": null,
+    "journal_ref": null,
+    "primary_category": "cs.CL",
+    "all_categories": [
+      "cs.CL",
+      "cs.AI",
+      "cs.IR",
+      "cs.MA"
+    ]
+  },
+  "alphaxiv_detail": {
+    "id": "019b6d3c-83ee-7017-b229-8c5e9d2c3e74",
+    "universal_paper_id": "2512.23647",
+    "title": "Nested Browser-Use Learning for Agentic Information Seeking",
+    "abstract": "Information-seeking (IS) agents have achieved strong performance across a range of wide and deep search tasks, yet their tool use remains largely restricted to API-level snippet retrieval and URL-based page fetching, limiting access to the richer information available through real browsing. While full browser interaction could unlock deeper capabilities, its fine-grained control and verbose page content returns introduce substantial complexity for ReAct-style function-calling agents. To bridge this gap, we propose Nested Browser-Use Learning (NestBrowse), which introduces a minimal and complete browser-action framework that decouples interaction control from page exploration through a nested structure. This design simplifies agentic reasoning while enabling effective deep-web information acquisition. Empirical results on challenging deep IS benchmarks demonstrate that NestBrowse offers clear benefits in practice. Further in-depth analyses underscore its efficiency and flexibility.",
+    "authors": [
+      "Baixuan Li",
+      "Jialong Wu",
+      "Wenbiao Yin",
+      "Kuan Li",
+      "Zhongwang Zhang",
+      "Huifeng Yin",
+      "Zhengwei Tao",
+      "Liwen Zhang",
+      "Pengjun Xie",
+      "Jingren Zhou",
+      "Yong Jiang"
+    ],
+    "publication_date": "Mon Dec 29",
+    "license": "http:\/\/arxiv.org\/licenses\/nonexclusive-distrib\/1.0\/",
+    "topics": [
+      "agentic-frameworks",
+      "agents",
+      "Computer Science",
+      "cs.AI",
+      "cs.CL",
+      "cs.IR",
+      "cs.MA",
+      "information-extraction",
+      "reasoning",
+      "tool-use",
+      "transformers"
+    ],
+    "primary_category": "agentic-frameworks",
+    "arxiv_url": "https:\/\/arxiv.org\/abs\/2512.23647",
+    "pdf_url": "https:\/\/fetcher.alphaxiv.org\/v2\/pdf\/2512.23647v1.pdf",
+    "image_url": "image\/2512.23647v1.png",
+    "metrics": {
+      "upvotes": 6,
+      "downvotes": 0,
+      "total_votes": 0,
+      "visits_24h": 49,
+      "visits_7d": 49,
+      "visits_30d": 49,
+      "visits_all": 49
+    },
+    "github": {
+      "url": "https:\/\/github.com\/Alibaba-NLP\/DeepResearch",
+      "language": "",
+      "stars": 0
+    },
+    "citation": {
+      "bibtex": ""
+    },
+    "comments": [
+    ]
+  },
+  "full_text": "Nested Browser-Use Learning for Agentic Information Seeking Information-seeking (IS) agents have achieved strong performance across a range of wide and deep search tasks, yet their tool use remains largely restricted to API-level snippet retrieval and URL-based page fetching, limiting access to the richer information available through real browsing. While full browser interaction could unlock deeper capabilities, its fine-grained control and verbose page content returns introduce substantial complexity for ReAct-style function-calling agents. To bridge this gap, we propose Nested Browser-Use Learning (NestBrowse), which introduces a minimal and complete browser-action framework that decouples interaction control from page exploration through a nested structure. This design simplifies agentic reasoning while enabling effective deep-web information acquisition. Empirical results on challenging deep IS benchmarks demonstrate that NestBrowse offers clear benefits in practice. Further in-depth analyses underscore its efficiency and flexibility.",
+  "id": 463231752468915366,
+  "hits": {
+    "views": "275",
+    "citations": 1,
+    "comments": 2,
+    "trending": 3
+  },
+  "score_detail": {
+    "scores": {
+      "novelty": 80,
+      "methodology": 75,
+      "relevance": 85,
+      "ethics": 90,
+      "technical_quality": 70,
+      "impact": 80
+    },
+    "overall_score": 78,
+    "reasoning": "论文标题和摘要表明其聚焦于信息检索中浏览器交互的创新方法。研究问题具有实际意义，特别是在当前信息寻求代理依赖API和URL抓取的背景下，提出更贴近真实浏览的解决方案具有新颖性。NestBrowse框架的设计思路明确，通过解耦交互控制与页面探索，简化了代理的推理过程，体现了方法上的创新。摘要中提到了实证结果和深入分析，说明实验设计具有一定的严谨性，但缺乏细节，因此对方法学评分保持中等偏上。结论与研究目标一致，结果具备一定的说服力，解决了现有方法在深度信息获取方面的局限性，因此在相关性方面得分较高。学术伦理方面未见明显问题，引用和实验设计未提及相关伦理风险，因此给予较高分数。技术质量方面，由于未提供代码、算法或实现细节，仅能基于描述判断其框架设计的可行性，因此评分适中。整体来看，该论文在信息检索领域有较好的贡献，具备进一步研究的价值。",
+    "timestamp": "2025-12-31T09:35:55.927691"
+  },
+  "category_detail": {
+    "category_name": "Conversational AI & Agents",
+    "category_description": "Dialogue systems, conversational search, intelligent assistants, and task-oriented interactions",
+    "sub_categories": [
+      "Conversational Search",
+      "Intelligent Assistants"
+    ],
+    "confidence": 95,
+    "reasoning": "The paper introduces a framework for information-seeking agents (NestBrowse) that focuses on improving their interaction with a real browser for deeper information acquisition. This aligns with the Conversational AI & Agents category, particularly the subcategories 'Conversational Search', 'Intelligent Assistants', and 'Agentic Systems', as it addresses the behavior and design of autonomous agents engaged in search tasks, emphasizing structured and efficient interaction.",
+    "timestamp": "2025-12-31T09:35:59.785127"
+  }
+}
