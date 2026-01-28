@@ -1,21 +1,7 @@
 import { useState, useCallback, useRef } from 'react';
 import type { PipelineState, PipelineStage, StageOutput } from '@/types/crux';
-import { 
-  initialStages, 
-  generateMockIntent, 
-  generateMockCandidates,
-  generateMockEvidence,
-  generateMockGapAnalysis,
-  generateMockReport
-} from '@/data/mockPipeline';
+import { initialStages } from '@/data/mockPipeline';
 
-const STAGE_DELAYS = {
-  understand: 1500,
-  retrieve: 2000,
-  judge: 1800,
-  analyze: 1200,
-  report: 1500,
-};
 
 export function useCruxPipeline() {
   const [state, setState] = useState<PipelineState>({
@@ -57,9 +43,9 @@ export function useCruxPipeline() {
 
   const runPipeline = useCallback(async (query: string) => {
     if (!query.trim()) return;
-    
+
     abortRef.current = false;
-    
+
     // Reset and start
     setState({
       query,
@@ -70,116 +56,95 @@ export function useCruxPipeline() {
       isCompleted: false,
     });
 
-    let iteration = 1;
-    let intentOutput: ReturnType<typeof generateMockIntent> | null = null;
-    let candidatesOutput: ReturnType<typeof generateMockCandidates> | null = null;
-    let evidenceOutput: ReturnType<typeof generateMockEvidence> | null = null;
-    let gapOutput: ReturnType<typeof generateMockGapAnalysis> | null = null;
+    try {
+      // 调用后端流式API
+      const response = await fetch('/api/query/stream', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          query,
+          data_source_type: 'json',
+          data_source_path: 'data/ir_papers.json',
+          schema_type: 'paper',
+          mock_llm: false,
+          debug: false,
+        }),
+      });
 
-    const processStage = async (stageIndex: number): Promise<boolean> => {
-      if (abortRef.current) return false;
-
-      const stageId = initialStages[stageIndex].id;
-      
-      // Set processing
-      setState(prev => ({
-        ...prev,
-        currentStageIndex: stageIndex,
-        stages: prev.stages.map((s, i) => 
-          i === stageIndex 
-            ? { ...s, status: 'processing', startTime: Date.now() } 
-            : s
-        ),
-      }));
-
-      // Simulate processing time
-      await new Promise(r => setTimeout(r, STAGE_DELAYS[stageId]));
-      if (abortRef.current) return false;
-
-      // Generate output based on stage
-      let output: StageOutput[typeof stageId];
-      
-      switch (stageId) {
-        case 'understand':
-          intentOutput = generateMockIntent(query);
-          output = intentOutput;
-          break;
-        case 'retrieve':
-          candidatesOutput = generateMockCandidates(intentOutput!);
-          output = {
-            candidates: candidatesOutput,
-            total_retrieved: candidatesOutput.length,
-            retrieval_methods: ['BM25', 'Vector', 'Field Filter'],
-          };
-          break;
-        case 'judge':
-          evidenceOutput = generateMockEvidence(candidatesOutput!);
-          output = {
-            verified_evidence: evidenceOutput,
-            rejected_count: candidatesOutput!.length - evidenceOutput.length,
-            acceptance_rate: evidenceOutput.length / candidatesOutput!.length,
-          };
-          break;
-        case 'analyze':
-          gapOutput = generateMockGapAnalysis(iteration);
-          output = gapOutput;
-          break;
-        case 'report':
-          output = generateMockReport(evidenceOutput!, query);
-          break;
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
       }
 
-      // Update with completed status
-      setState(prev => ({
-        ...prev,
-        stages: prev.stages.map((s, i) => 
-          i === stageIndex 
-            ? { ...s, status: 'completed', endTime: Date.now(), output } 
-            : s
-        ),
-      }));
+      const reader = response.body?.getReader();
+      const decoder = new TextDecoder();
 
-      return true;
-    };
-
-    // Run stages sequentially
-    for (let i = 0; i < 4; i++) { // Run first 4 stages
-      const success = await processStage(i);
-      if (!success) return;
-    }
-
-    // Check gap analysis result
-    if (gapOutput?.status === 'insufficient' && iteration < 3) {
-      // Loop back to retrieve
-      iteration++;
-      setState(prev => ({
-        ...prev,
-        iteration,
-        stages: prev.stages.map((s, i) => 
-          i >= 1 && i <= 3 
-            ? { ...s, status: 'pending', output: undefined, startTime: undefined, endTime: undefined } 
-            : s
-        ),
-      }));
-
-      // Re-run stages 1-3
-      for (let i = 1; i <= 3; i++) {
-        const success = await processStage(i);
-        if (!success) return;
+      if (!reader) {
+        throw new Error('Failed to get response reader');
       }
+
+      let buffer = '';
+
+      while (!abortRef.current) {
+        const { done, value } = await reader.read();
+
+        if (done) break;
+
+        buffer += decoder.decode(value, { stream: true });
+        const lines = buffer.split('\n');
+        buffer = lines.pop() || ''; // Keep incomplete line in buffer
+
+        for (const line of lines) {
+          if (line.startsWith('data: ')) {
+            try {
+              const data = JSON.parse(line.slice(6));
+
+              if (data.type === 'stage_complete') {
+                const stageIndex = initialStages.findIndex(s => s.id === data.stage);
+                if (stageIndex !== -1) {
+                  setState(prev => ({
+                    ...prev,
+                    currentStageIndex: stageIndex,
+                    stages: prev.stages.map((s, i) =>
+                      i === stageIndex
+                        ? {
+                            ...s,
+                            status: 'completed' as const,
+                            endTime: Date.now(),
+                            output: data.output
+                          }
+                        : s
+                    ),
+                  }));
+                }
+              } else if (data.type === 'complete') {
+                setState(prev => ({
+                  ...prev,
+                  isRunning: false,
+                  isCompleted: true,
+                  currentStageIndex: initialStages.length - 1,
+                }));
+              } else if (data.type === 'error') {
+                throw new Error(data.message);
+              }
+            } catch (parseError) {
+              console.warn('Failed to parse SSE data:', line, parseError);
+            }
+          }
+        }
+      }
+
+      reader.releaseLock();
+
+    } catch (error) {
+      console.error('Pipeline execution error:', error);
+      setState(prev => ({
+        ...prev,
+        isRunning: false,
+        error: error instanceof Error ? error.message : 'Unknown error occurred',
+      }));
     }
-
-    // Final report stage
-    await processStage(4);
-
-    // Mark completed
-    setState(prev => ({
-      ...prev,
-      isRunning: false,
-      isCompleted: true,
-      currentStageIndex: 4,
-    }));
-
   }, []);
 
   return {

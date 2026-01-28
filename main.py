@@ -15,7 +15,7 @@ def main():
         data_source_type="json",
         data_source_path="data/ir_papers.json",
         schema_type="paper",
-        mock_llm=True,  # 使用 mock LLM 进行测试
+        mock_llm=False,  # 使用 mock LLM 进行测试
         debug=True,
     )
     

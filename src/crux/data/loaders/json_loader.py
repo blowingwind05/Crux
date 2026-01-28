@@ -43,7 +43,7 @@ class JsonDataLoader(BaseDataLoader):
         """
         if self._data is not None:
             return self._data
-        
+        self.file_path='G:/Projects/Crux/data/ir_papers.json'
         path = Path(self.file_path)
         if not path.exists():
             print(f"[JsonLoader] 警告: 文件不存在 {path}, 使用空数据")

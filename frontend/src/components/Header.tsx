@@ -1,8 +1,13 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Brain, Zap, GitBranch, Shield } from 'lucide-react';
+import { Brain, Zap, GitBranch, Shield, Settings } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 
-export function Header() {
+interface HeaderProps {
+  onSettingsClick?: () => void;
+}
+
+export function Header({ onSettingsClick }: HeaderProps) {
   return (
     <header className="relative z-10 pt-8 pb-12">
       <motion.div
@@ -14,7 +19,7 @@ export function Header() {
         <div className="flex items-center justify-center gap-3 mb-4">
           <motion.div
             className="w-12 h-12 rounded-xl bg-primary/20 border border-primary/30 flex items-center justify-center glow-primary"
-            animate={{ 
+            animate={{
               boxShadow: [
                 '0 0 20px hsl(175 84% 46% / 0.3)',
                 '0 0 40px hsl(175 84% 46% / 0.5)',
@@ -31,7 +36,7 @@ export function Header() {
               <span className="text-foreground ml-2">知几</span>
             </h1>
             <p className="text-xs text-muted-foreground font-mono">
-              AgenticRAG Deep Reasoning System
+              基于意图深度感知的AgenticRAG框架
             </p>
           </div>
         </div>
@@ -43,7 +48,9 @@ export function Header() {
           transition={{ delay: 0.2 }}
           className="text-muted-foreground max-w-xl mx-auto"
         >
-          从浅层搜索到深度推理 —— 基于意图感知的智能研究助手
+          从"浅层搜索"到"深度推理"
+          <br />
+          模拟人类专家的研究过程，生成高质量深度分析报告
         </motion.p>
 
         {/* Features */}
@@ -55,7 +62,7 @@ export function Header() {
         >
           <div className="flex items-center gap-1.5">
             <Zap className="w-3.5 h-3.5 text-stage-understand" />
-            <span>Schema感知</span>
+            <span>意图理解</span>
           </div>
           <div className="flex items-center gap-1.5">
             <GitBranch className="w-3.5 h-3.5 text-stage-retrieve" />
@@ -65,6 +72,21 @@ export function Header() {
             <Shield className="w-3.5 h-3.5 text-stage-judge" />
             <span>深度研判</span>
           </div>
+          <div className="flex items-center gap-1.5">
+            <Brain className="w-3.5 h-3.5 text-stage-analyze" />
+            <span>缺口识别</span>
+          </div>
+          {onSettingsClick && (
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={onSettingsClick}
+              className="ml-4 h-6 px-2 text-xs"
+            >
+              <Settings className="w-3 h-3 mr-1" />
+              设置
+            </Button>
+          )}
         </motion.div>
       </motion.div>
     </header>

@@ -12,10 +12,10 @@ interface QueryInputProps {
 }
 
 const exampleQueries = [
-  'AgenticRAG 如何实现深度推理能力？',
-  '对比 ReAct 和 Chain-of-Thought 的技术差异',
-  '为什么传统 RAG 无法处理复杂多跳问题？',
-  'LLM Agent 的浏览器操作框架设计原理',
+  '找出近年来检索增强生成(RAG)领域最有影响力的论文',
+  '对比不同的大模型推理优化技术，哪些论文值得深入阅读？',
+  '搜索关于多模态大模型的最新研究进展',
+  '推荐几篇关于知识图谱与LLM结合的综述论文',
 ];
 
 export function QueryInput({ onSubmit, onReset, isRunning, isCompleted }: QueryInputProps) {
@@ -43,8 +43,8 @@ export function QueryInput({ onSubmit, onReset, isRunning, isCompleted }: QueryI
         <motion.div
           className={cn(
             "relative rounded-xl border-2 transition-all duration-300",
-            isFocused 
-              ? "border-primary glow-primary" 
+            isFocused
+              ? "border-primary glow-primary"
               : "border-border hover:border-primary/50"
           )}
           animate={{
@@ -71,7 +71,7 @@ export function QueryInput({ onSubmit, onReset, isRunning, isCompleted }: QueryI
                 "disabled:opacity-50 disabled:cursor-not-allowed"
               )}
             />
-            
+
             {isCompleted ? (
               <Button
                 type="button"

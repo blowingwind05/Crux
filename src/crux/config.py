@@ -18,9 +18,9 @@ class LLMConfig:
     
     def __post_init__(self):
         if self.api_key is None:
-            self.api_key = os.getenv("OPENAI_API_KEY")
+            self.api_key = os.getenv("OPENAI_API_KEY","EMPTY")
         if self.base_url is None:
-            self.base_url = os.getenv("OPENAI_BASE_URL")
+            self.base_url = os.getenv("OPENAI_BASE_URL","https://aicloud.oneainexus.cn:30013/inference/aicloud-yanqiang/qwen3-32b-server/v1")
 
 
 @dataclass
@@ -48,7 +48,7 @@ class CruxConfig:
     
     # 调试选项
     debug: bool = False
-    mock_llm: bool = True  # 是否使用 mock LLM 响应
+    mock_llm: bool = False  # 是否使用 mock LLM 响应
     
     @classmethod
     def from_dict(cls, config_dict: Dict[str, Any]) -> "CruxConfig":

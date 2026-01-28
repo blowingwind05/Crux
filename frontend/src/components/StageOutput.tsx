@@ -3,11 +3,11 @@ import { motion } from 'framer-motion';
 import type { StageId, StageOutput as StageOutputType, IntentObject, CandidateDoc, Evidence, GapAnalysis, FinalReport } from '@/types/crux';
 import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';
-import { 
-  Target, 
-  Filter, 
-  FileSearch, 
-  Lightbulb, 
+import {
+  Target,
+  Filter,
+  FileSearch,
+  Lightbulb,
   AlertTriangle,
   CheckCircle,
   Quote,
@@ -57,34 +57,38 @@ function IntentOutput({ data }: { data: IntentObject }) {
       </div>
 
       {/* Keywords */}
-      <div>
-        <div className="flex items-center gap-2 mb-2">
-          <Filter className="w-4 h-4 text-muted-foreground" />
-          <span className="text-sm text-muted-foreground">BM25 关键词:</span>
+      {data.keywords_bm25 && data.keywords_bm25.length > 0 && (
+        <div>
+          <div className="flex items-center gap-2 mb-2">
+            <Filter className="w-4 h-4 text-muted-foreground" />
+            <span className="text-sm text-muted-foreground">BM25 关键词:</span>
+          </div>
+          <div className="flex flex-wrap gap-2">
+            {data.keywords_bm25.map((kw, i) => (
+              <Badge key={i} variant="secondary" className="font-mono text-xs">
+                {kw}
+              </Badge>
+            ))}
+          </div>
         </div>
-        <div className="flex flex-wrap gap-2">
-          {data.keywords_bm25.map((kw, i) => (
-            <Badge key={i} variant="secondary" className="font-mono text-xs">
-              {kw}
-            </Badge>
-          ))}
-        </div>
-      </div>
+      )}
 
       {/* Vector Queries */}
-      <div>
-        <div className="flex items-center gap-2 mb-2">
-          <FileSearch className="w-4 h-4 text-muted-foreground" />
-          <span className="text-sm text-muted-foreground">向量检索语句:</span>
+      {data.queries_vector && data.queries_vector.length > 0 && (
+        <div>
+          <div className="flex items-center gap-2 mb-2">
+            <FileSearch className="w-4 h-4 text-muted-foreground" />
+            <span className="text-sm text-muted-foreground">向量检索语句:</span>
+          </div>
+          <div className="code-block space-y-1">
+            {data.queries_vector.map((q, i) => (
+              <div key={i} className="text-xs">
+                <span className="text-primary">[{i + 1}]</span> {q}
+              </div>
+            ))}
+          </div>
         </div>
-        <div className="code-block space-y-1">
-          {data.queries_vector.map((q, i) => (
-            <div key={i} className="text-xs">
-              <span className="text-primary">[{i + 1}]</span> {q}
-            </div>
-          ))}
-        </div>
-      </div>
+      )}
 
       {/* Facets */}
       {data.information_facets && data.information_facets.length > 0 && (
@@ -95,8 +99,8 @@ function IntentOutput({ data }: { data: IntentObject }) {
           </div>
           <div className="space-y-2">
             {data.information_facets.map((facet) => (
-              <div 
-                key={facet.facet_id} 
+              <div
+                key={facet.facet_id}
                 className="flex items-start gap-2 text-sm p-2 rounded bg-muted/30"
               >
                 <Badge variant="outline" className="font-mono text-xs shrink-0">
@@ -146,8 +150,8 @@ function RetrieveOutput({ data }: { data: { candidates: CandidateDoc[]; total_re
                   <span className="font-mono text-xs text-muted-foreground">
                     #{doc.doc_id}
                   </span>
-                  <Badge 
-                    variant="outline" 
+                  <Badge
+                    variant="outline"
                     className={cn(
                       "text-xs",
                       doc.source === 'vector' && "text-stage-retrieve border-stage-retrieve/30",
@@ -232,14 +236,14 @@ function JudgeOutput({ data }: { data: { verified_evidence: Evidence[]; rejected
 
 function AnalyzeOutput({ data }: { data: GapAnalysis }) {
   const isSufficient = data.status === 'sufficient';
-  
+
   return (
     <div className="space-y-4">
       {/* Status */}
       <div className={cn(
         "flex items-center gap-3 p-3 rounded-lg border",
-        isSufficient 
-          ? "border-stage-report/30 bg-stage-report/10" 
+        isSufficient
+          ? "border-stage-report/30 bg-stage-report/10"
           : "border-accent/30 bg-accent/10"
       )}>
         {isSufficient ? (
@@ -261,7 +265,7 @@ function AnalyzeOutput({ data }: { data: GapAnalysis }) {
       </div>
 
       {/* Missing facets */}
-      {!isSufficient && data.missing_facets.length > 0 && (
+      {!isSufficient && data.missing_facets && data.missing_facets.length > 0 && (
         <div>
           <div className="text-sm text-muted-foreground mb-2">缺失信息面:</div>
           <div className="space-y-1">
