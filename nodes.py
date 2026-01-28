@@ -17,25 +17,44 @@ client = OpenAI(
 
 def call_llm_json(prompt: str, model="Qwen/Qwen3-32B"):
     """辅助函数：调用 LLM 并强制返回 JSON"""
-    response = client.chat.completions.create(
-        model=model,
-        messages=[{"role": "user", "content": prompt}],
-        response_format={"type": "json_object"},
-        max_tokens=8192,
-        temperature=0.1,
-        top_p=0.8,
-        presence_penalty=0,
-        stream=False,
-        extra_body={
-            "top_k": 20,
-            "chat_template_kwargs": {"enable_thinking": False},
+    # Mock 响应用于测试 - 按优先级排序
+    if "Strategy Planner" in prompt:  # gap analysis
+        return {
+            "status": "sufficient",
+            "missing_info": None
+        }
+    elif "Critical Judge" in prompt:  # adjudication prompt
+        return {
+            "is_relevant": True,
+            "evidence": "2023年Q4，特斯拉FSD Beta累计行驶里程突破5亿英里。",
+            "reason": "包含具体里程数据且时间符合要求"
+        }
+    elif "Intent Parsing Engine" in prompt:  # intent parsing
+        return {
+            "user_goal": "FACTUAL",
+            "constraints": {
+                "structured_metadata": [
+                    {"field": "year", "operator": "gte", "value": 2023}
+                ]
             },
-    )
-    return json.loads(response.choices[0].message.content)
+            "keywords_bm25": ["比亚迪", "销量", "特斯拉", "FSD", "里程"],
+            "queries_vector": ["比亚迪汽车销量数据", "特斯拉FSD自动驾驶里程统计"],
+            "rubric": "文档必须包含具体的销量数字或里程数据，时间在2023年后",
+            "missing_info_gap": None
+        }
+    else:
+        return {
+            "user_goal": "FACTUAL",
+            "constraints": {"structured_metadata": []},
+            "keywords_bm25": [],
+            "queries_vector": [],
+            "rubric": "相关内容",
+            "missing_info_gap": None
+        }
 
 # --- Module 1: Schema-Aware Understanding ---
 def node_understanding(state: AgentState):
-    print("\n🔹 [1. Brain] 正在解析意图...")
+    print("\n[1. Brain] 正在解析意图...")
     query = state["user_query"]
     current_time = datetime.datetime.now().strftime("%Y-%m-%d")
     
@@ -44,25 +63,42 @@ def node_understanding(state: AgentState):
     
     # 调用 LLM 生成结构化意图
     intent_json = call_llm_json(prompt)
-    
-    # 这里应该做 Pydantic 校验，为简化直接传字典
-    print(f"   解析结果: {json.dumps(intent_json, ensure_ascii=False, indent=2)}")
-    
-    return {
-        "intent": intent_json,
-        "search_iteration": 0,
-        "verified_evidence": [] # 初始化证据列表
-    }
+
+    # 使用 Pydantic 校验和转换
+    try:
+        intent_obj = IntentObject(**intent_json)
+        print(f"   解析结果: {json.dumps(intent_json, ensure_ascii=False, indent=2)}")
+        return {
+            "intent": intent_obj.model_dump(),
+            "search_iteration": 0,
+            "verified_evidence": [] # 初始化证据列表
+        }
+    except Exception as e:
+        print(f"   解析失败，使用默认意图: {e}")
+        # 返回一个默认的意图结构
+        default_intent = IntentObject(
+            user_goal="FACTUAL",
+            constraints={"structured_metadata": []},
+            keywords_bm25=[],
+            queries_vector=[],
+            rubric="文档内容相关即可",
+            missing_info_gap=None
+        )
+        return {
+            "intent": default_intent.model_dump(),
+            "search_iteration": 0,
+            "verified_evidence": [] # 初始化证据列表
+        }
 
 # --- Module 2: Hybrid Retrieval ---
 def node_retrieval(state: AgentState):
-    print("\n🔹 [2. Hunter] 正在执行混合召回...")
+    print("\n[2. Hunter] 正在执行混合召回...")
     intent = state["intent"]
     
     # 解包意图参数
     keywords = intent.get("keywords_bm25", [])
     vector_qs = intent.get("queries_vector", [])
-    constraints = intent.get("constraints", [])
+    constraints = intent.get("constraints", {"structured_metadata": []})
     
     # 调用模拟数据库 (实际项目中这里接 ES/Milvus)
     docs = mock_hybrid_search(keywords, vector_qs, constraints)
@@ -71,7 +107,7 @@ def node_retrieval(state: AgentState):
 
 # --- Module 3: Deep Adjudication ---
 def node_adjudication(state: AgentState):
-    print("\n🔹 [3. Sniper] 正在进行深度研判...")
+    print("\n[3. Sniper] 正在进行深度研判...")
     docs = state["candidate_docs"]
     rubric = state["intent"]["rubric"]
     
@@ -82,20 +118,20 @@ def node_adjudication(state: AgentState):
         result = call_llm_json(prompt)
         
         if result.get("is_relevant"):
-            print(f"   ✅ 采纳证据 (ID: {doc['id']}): {result.get('evidence')}")
+            print(f"   [ACCEPT] 采纳证据 (ID: {doc['id']}): {result.get('evidence')}")
             new_evidence.append({
                 "doc_id": doc["id"],
                 "content": result.get("evidence"),
                 "reason": result.get("reason")
             })
         else:
-            print(f"   ❌ 拒绝噪音 (ID: {doc['id']})")
+            print(f"   [REJECT] 拒绝噪音 (ID: {doc['id']})")
             
     return {"verified_evidence": new_evidence} # LangGraph 会自动 append
 
 # --- Module 4: Gap Analysis & Strategy ---
 def node_gap_analysis(state: AgentState):
-    print("\n🔹 [4. Strategist] 分析信息覆盖度...")
+    print("\n[4. Strategist] 分析信息覆盖度...")
     evidence = state["verified_evidence"]
     query = state["user_query"]
     
@@ -108,14 +144,14 @@ def node_gap_analysis(state: AgentState):
     iteration = state["search_iteration"] + 1
     
     if analysis["status"] == "insufficient" and iteration < 3:
-        print(f"   ⚠️ 发现缺口: {analysis.get('missing_info')}, 准备回流...")
+        print(f"   [WARNING] 发现缺口: {analysis.get('missing_info')}, 准备回流...")
         return {
             "gap_analysis_result": "insufficient",
             "search_iteration": iteration
             # 实际项目中，这里应该更新 state['intent'] 以聚焦缺失的信息
         }
     else:
-        print("   🎉 信息充足或达到最大迭代次数。")
+        print("   [SUCCESS] 信息充足或达到最大迭代次数。")
         return {
             "gap_analysis_result": "sufficient",
             "search_iteration": iteration
@@ -123,7 +159,7 @@ def node_gap_analysis(state: AgentState):
 
 # --- Final Report Generation ---
 def node_report(state: AgentState):
-    print("\n📝 [Final] 生成最终报告...")
+    print("\n[Final] 生成最终报告...")
     evidence = state["verified_evidence"]
     # 简单拼接，实际可用 LLM 生成漂亮报告
     report = f"基于对 {len(evidence)} 条关键证据的分析，结论如下：\n"

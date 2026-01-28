@@ -13,7 +13,7 @@ class StructuredConstraint(BaseModel):
 class IntentObject(BaseModel):
     """DeepIntentObject 的精简版定义"""
     user_goal: str = Field(description="用户目标: INVESTIGATIVE | FACTUAL etc.")
-    constraints: List[StructuredConstraint] = Field(description="硬性元数据过滤条件")
+    constraints: dict = Field(description="硬性元数据过滤条件，包含 structured_metadata 列表")
     keywords_bm25: List[str] = Field(description="用于稀疏检索的关键词")
     queries_vector: List[str] = Field(description="用于向量检索的描述性语句")
     rubric: str = Field(description="用于后续研判的相关性准则")

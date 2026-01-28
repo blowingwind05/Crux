@@ -9,7 +9,7 @@ MOCK_KNOWLEDGE_BASE = [
     {"id": 5, "content": "关于 LLM 上下文丢失问题的研究报告...", "source": "paper", "year": 2023},
 ]
 
-def mock_hybrid_search(keywords: list, vector_queries: list, constraints: list) -> list:
+def mock_hybrid_search(keywords: list, vector_queries: list, constraints: dict) -> list:
     """
     模拟混合检索：
     1. 模拟 SQL 过滤 (Constraints)
@@ -20,7 +20,7 @@ def mock_hybrid_search(keywords: list, vector_queries: list, constraints: list) 
     
     # 1. 简单的字段过滤模拟
     filtered_docs = MOCK_KNOWLEDGE_BASE
-    for c in constraints:
+    for c in constraints['structured_metadata']:
         if c['field'] == 'year' and c['operator'] == 'gte':
             filtered_docs = [d for d in filtered_docs if d['year'] >= int(c['value'])]
             
