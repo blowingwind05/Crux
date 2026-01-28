@@ -9,47 +9,60 @@ An agentic RAG framework powered by deep intent understanding.
 src/crux/
 ├── __init__.py          # 主包入口
 ├── config.py            # 框架配置
-├── core/
-│   ├── state.py         # 状态定义
-│   └── graph.py         # 图构建器
-├── nodes/               # 节点模块（可独立开发）
-│   ├── base.py          # 节点基类
-│   ├── understanding.py # 意图理解
-│   ├── retrieval.py     # 混合检索
-│   ├── adjudication.py  # 深度研判
-│   ├── gap_analysis.py  # 缺口分析
-│   └── report.py        # 报告生成
-├── llm/
-│   └── client.py        # LLM 客户端
+├── state.py             # 全局状态定义 (AgentState)
+├── graph.py             # 图编排逻辑 (AgentGraph)
+│
+├── utils/               # 通用工具箱
+│   ├── base.py          # 节点基类 (BaseNode)
+│   └── llm_client.py    # LLM 调用封装
+│
+├── modules/             # 核心业务模块（可独立优化）
+│   ├── understanding/   # [模块1] 意图理解
+│   │   ├── node.py      # 节点实现
+│   │   ├── models.py    # IntentObject 等 Pydantic 模型
+│   │   └── prompts.py   # 意图解析 Prompt
+│   │
+│   ├── retrieval/       # [模块2] 混合召回
+│   │   ├── node.py      # 节点实现
+│   │   └── tools.py     # 检索工具类
+│   │
+│   ├── adjudication/    # [模块3] 深度研判
+│   │   ├── node.py      # 节点实现
+│   │   ├── judge.py     # 研判逻辑核心
+│   │   └── prompts.py   # 研判 Prompt
+│   │
+│   └── strategy/        # [模块4] 缺口分析与报告
+│       ├── node.py      # GapAnalysisNode + ReportNode
+│       └── prompts.py   # 缺口分析 Prompt
+│
 ├── data/loaders/        # 数据加载器
 │   ├── base.py          # 抽象基类
 │   ├── json_loader.py   # JSON 加载 (已实现)
 │   ├── csv_loader.py    # CSV 加载 (接口预留)
 │   └── vector_db.py     # 向量DB (接口预留)
+│
 ├── schemas/             # 数据结构配置
 │   ├── base.py          # Schema 基类
 │   └── paper_schema.py  # 论文 Schema
-├── context/
-│   └── builder.py       # 上下文构建器
-└── prompts/
-    └── templates.py     # Prompt 模板
+│
+└── context/
+    └── builder.py       # 上下文构建器
 ```
 
 ---
 
 ## 核心设计
 
-### 1. 节点独立化
+### 1. 模块独立化
 
-每个节点独立文件，继承 `BaseNode` 基类：
+每个模块独立目录，包含 node.py、prompts.py、models.py：
 
-| 文件 | 负责人 | 功能 |
-|------|--------|------|
-| [understanding.py](file:///g:/Projects/Crux/src/crux/nodes/understanding.py) | 待分配 | 解析用户意图 |
-| [retrieval.py](file:///g:/Projects/Crux/src/crux/nodes/retrieval.py) | 待分配 | 混合检索召回 |
-| [adjudication.py](file:///g:/Projects/Crux/src/crux/nodes/adjudication.py) | 待分配 | 证据深度研判 |
-| [gap_analysis.py](file:///g:/Projects/Crux/src/crux/nodes/gap_analysis.py) | 待分配 | 信息缺口分析 |
-| [report.py](file:///g:/Projects/Crux/src/crux/nodes/report.py) | 待分配 | 报告生成 |
+| 模块 | 路径 | 功能 |
+|------|------|------|
+| understanding | [modules/understanding/](file:///g:/Projects/Crux/src/crux/modules/understanding/) | 解析用户意图，生成 IntentObject |
+| retrieval | [modules/retrieval/](file:///g:/Projects/Crux/src/crux/modules/retrieval/) | 混合检索召回 (BM25 + Vector) |
+| adjudication | [modules/adjudication/](file:///g:/Projects/Crux/src/crux/modules/adjudication/) | 证据深度研判 |
+| strategy | [modules/strategy/](file:///g:/Projects/Crux/src/crux/modules/strategy/) | 缺口分析 + 报告生成 |
 
 ### 2. 数据层抽象
 
