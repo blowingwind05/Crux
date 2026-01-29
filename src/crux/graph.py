@@ -61,6 +61,7 @@ class AgentGraph:
         workflow.add_edge("judge", "analyze")
         
         # 5. 定义条件分支 (闭环逻辑)
+        # TODO: ADD MAX_ITERATIONS
         def check_gap(state: AgentState) -> str:
             if state.get("gap_analysis_result") == "insufficient":
                 return "retrieve"  # 回流到检索
