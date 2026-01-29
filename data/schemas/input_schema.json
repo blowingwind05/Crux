@@ -1,0 +1,19 @@
+{
+  "id": "52593d94-4624-40a6-9c46-ebd0e875113c",
+  "name": "__init__",
+  "type": "General",
+  "framework": "LangChain",
+  "timestampStartMs": 1769665841333,
+  "timestampEndMs": 1769665841333,
+  "finished": true,
+  "payload": {
+    "outputs": {
+      "user_query": "帮我找一下关于信息检索和 RAG 检索增强生成的最新研究，尤其是智能体相关的论文",
+      "verified_evidence": [],
+      "search_iteration": 0.0,
+      "schema_type": "paper",
+      "start_time": 1.7696658413217862E9
+    }
+  },
+  "children": []
+}
