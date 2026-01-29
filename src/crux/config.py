@@ -62,5 +62,5 @@ class CruxConfig:
             data_source_path=config_dict.get("data_source_path"),
             schema_type=config_dict.get("schema_type", "paper"),
             debug=config_dict.get("debug", False),
-            mock_llm=config_dict.get("mock_llm", True),
+            mock_llm=config_dict.get("mock_llm", False),
         )
