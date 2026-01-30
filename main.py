@@ -21,8 +21,7 @@ def main():
     
     # 构建图
     graph = AgentGraph(config)
-    app = graph.build()
-    
+    graph.save_graph_image(graph.build(), "graph.png")
     # 测试查询 - 论文检索场景
     user_query = "帮我找一下关于信息检索和 RAG 检索增强生成的最新研究，尤其是智能体相关的论文"
     
