@@ -93,12 +93,4 @@ class AgentGraph:
         return self._compiled.stream(inputs)
 
 
-def build_graph(config: Optional[CruxConfig] = None) -> AgentGraph:
-    """
-    便捷函数：构建并返回 Agent 图
-    
-    兼容原有 API。
-    """
-    graph = AgentGraph(config)
-    graph.build()
-    return graph
+
