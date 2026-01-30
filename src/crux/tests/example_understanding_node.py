@@ -40,14 +40,14 @@ def run_understanding_example():
     config = CruxConfig(
         data_source_type="json",
         data_source_path="data/ir_papers.json",
-        schema_type="paper",
+        schema_path="config/paper_schema.yaml",
         mock_llm=False,  # 设为 True 可使用 mock 响应进行测试
         debug=True,
     )
     
     print(f"\n[CONFIG] 配置信息:")
     print(f"  - data_source_type: {config.data_source_type}")
-    print(f"  - schema_type: {config.schema_type}")
+    print(f"  - schema_path: {config.schema_path}")
     print(f"  - mock_llm: {config.mock_llm}")
     print(f"  - debug: {config.debug}")
     
@@ -63,14 +63,13 @@ def run_understanding_example():
     # ========================================
     # 3. 准备输入状态 (模拟 AgentState)
     # ========================================
-    # 注意：UnderstandingNode 只需要 user_query 和可选的 schema_type
+    # 注意：UnderstandingNode 只需要 user_query
     test_query = "帮我找一下关于信息检索和 RAG 检索增强生成的最新研究，尤其是智能体相关的论文"
     
     input_state: Dict[str, Any] = {
         "user_query": test_query,
         "verified_evidence": [],
         "search_iteration": 0,
-        "schema_type": "paper",
         "start_time": time.time(),
     }
     

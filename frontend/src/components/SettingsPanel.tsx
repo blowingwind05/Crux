@@ -14,7 +14,7 @@ import { useToast } from '@/hooks/use-toast';
 
 interface ConfigData {
   data_source_type: string;
-  schema_type: string;
+  schema_path: string;  // YAML schema 配置文件路径
   mock_llm: boolean;
   debug: boolean;
   llm: {
@@ -202,20 +202,13 @@ export function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
                       </div>
 
                       <div className="space-y-2">
-                        <Label>Schema 类型</Label>
-                        <Select
-                          value={config.schema_type}
-                          onValueChange={(value) => updateConfig({ schema_type: value })}
-                        >
-                          <SelectTrigger>
-                            <SelectValue />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectItem value="paper">论文数据</SelectItem>
-                            <SelectItem value="news">新闻数据</SelectItem>
-                            <SelectItem value="log">日志数据</SelectItem>
-                          </SelectContent>
-                        </Select>
+                        <Label>Schema 配置文件</Label>
+                        <Input
+                          placeholder="config/paper_schema.yaml"
+                          value={config.schema_path || ''}
+                          onChange={(e) => updateConfig({ schema_path: e.target.value })}
+                        />
+                        <p className="text-xs text-muted-foreground">YAML 格式的 Schema 配置文件路径</p>
                       </div>
                     </div>
                   </CardContent>

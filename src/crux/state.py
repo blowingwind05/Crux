@@ -103,5 +103,5 @@ class AgentState(TypedDict):
     final_report: str
 
     # 7. 元信息（可选）
-    schema_type: str  # 当前使用的 schema 类型
+    schema_path: str  # YAML schema 配置文件路径
     start_time: float  # 开始时间戳

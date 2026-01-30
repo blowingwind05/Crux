@@ -1,0 +1,52 @@
+# 论文数据 Schema 配置
+# 用于 Crux AgenticRAG 框架的数据结构定义
+
+name: paper
+description: "学术论文数据结构，包含标题、摘要、作者等基本信息"
+
+# 字段定义
+fields:
+  - name: arxiv_id
+    type: string
+    description: "论文的 arXiv ID（如 '2512.23647'）"
+    searchable: false
+    
+  - name: title
+    type: string
+    description: "论文标题"
+    searchable: true
+    
+  - name: abstract
+    type: string
+    description: "论文摘要"
+    searchable: true
+    
+  - name: arxiv_url
+    type: string
+    description: "论文 arXiv 链接"
+    searchable: false
+    
+  - name: authors
+    type: array
+    description: "作者列表"
+    searchable: false
+    
+  - name: date
+    type: date
+    description: "发布日期（如 '2025-12-29'）"
+    searchable: false
+    filterable: true
+    operators:
+      - eq
+      - gt
+      - lt
+      - gte
+      - lte
+      - range
+
+# 示例查询（用于提示 LLM）
+example_queries:
+  - "找一下关于 RAG 和检索增强生成的最新论文"
+  - "帮我找2024年发布的信息检索方向高分论文"
+  - "有什么关于 Agent 智能体的研究吗？"
+  - "搜索关于大语言模型推理能力的论文"

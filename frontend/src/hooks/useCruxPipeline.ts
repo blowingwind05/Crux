@@ -30,12 +30,12 @@ export function useCruxPipeline() {
   }, []);
 
   const updateStage = useCallback((
-    stageIndex: number, 
+    stageIndex: number,
     updates: Partial<PipelineStage>
   ) => {
     setState(prev => ({
       ...prev,
-      stages: prev.stages.map((s, i) => 
+      stages: prev.stages.map((s, i) =>
         i === stageIndex ? { ...s, ...updates } : s
       ),
     }));
@@ -67,7 +67,7 @@ export function useCruxPipeline() {
           query,
           data_source_type: 'json',
           data_source_path: 'data/ir_papers.json',
-          schema_type: 'paper',
+          schema_path: 'config/paper_schema.yaml',
           mock_llm: false,
           debug: false,
         }),
@@ -109,11 +109,11 @@ export function useCruxPipeline() {
                     stages: prev.stages.map((s, i) =>
                       i === stageIndex
                         ? {
-                            ...s,
-                            status: 'completed' as const,
-                            endTime: Date.now(),
-                            output: data.output
-                          }
+                          ...s,
+                          status: 'completed' as const,
+                          endTime: Date.now(),
+                          output: data.output
+                        }
                         : s
                     ),
                   }));

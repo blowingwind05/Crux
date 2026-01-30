@@ -27,7 +27,7 @@ class QueryRequest(BaseModel):
     query: str
     data_source_type: str = "json"
     data_source_path: Optional[str] = None
-    schema_type: str = "paper"
+    schema_path: Optional[str] = None  # YAML schema 配置文件路径
     mock_llm: bool = True
     debug: bool = False
 
@@ -74,13 +74,13 @@ app.add_middleware(
 
 def get_or_create_agent(request: QueryRequest) -> AgentGraph:
     """获取或创建Agent实例"""
-    key = f"{request.data_source_type}_{request.data_source_path}_{request.schema_type}"
+    key = f"{request.data_source_type}_{request.data_source_path}_{request.schema_path}"
 
     if key not in agent_instances:
         config = CruxConfig(
             data_source_type=request.data_source_type,
             data_source_path=request.data_source_path or "G:/Projects/Crux/data/ir_papers.json",
-            schema_type=request.schema_type,
+            schema_path=request.schema_path or "G:/Projects/Crux/config/paper_schema.yaml",
             mock_llm=request.mock_llm,
             debug=request.debug,
         )
@@ -103,7 +103,6 @@ async def process_pipeline_stream(request: QueryRequest) -> AsyncGenerator[str, 
             "user_query": request.query,
             "verified_evidence": [],
             "search_iteration": 0,
-            "schema_type": request.schema_type,
             "start_time": asyncio.get_event_loop().time(),
         }
 
@@ -211,7 +210,6 @@ async def query_crux(request: QueryRequest):
             "user_query": request.query,
             "verified_evidence": [],
             "search_iteration": 0,
-            "schema_type": request.schema_type,
             "start_time": asyncio.get_event_loop().time(),
         }
 
@@ -241,7 +239,7 @@ async def get_default_config():
     config = CruxConfig()
     return {
         "data_source_type": config.data_source_type,
-        "schema_type": config.schema_type,
+        "schema_path": config.schema_path or "config/paper_schema.yaml",
         "mock_llm": config.mock_llm,
         "debug": config.debug,
         "llm": {

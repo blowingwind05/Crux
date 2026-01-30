@@ -1,7 +1,7 @@
 """
 AdjudicationNode 独立运行示例
 
-用于单独测试深度研判模块，不依赖完整的 AgentGraph。
+用于单独测试深度研判模块，不依赖完整�?AgentGraph�?
 
 使用方法:
     python -m src.crux.tests.example_adjudication_node
@@ -17,12 +17,12 @@ from src.crux.modules.adjudication import AdjudicationNode
 
 def run_adjudication_example():
     """
-    单独运行 AdjudicationNode 的示例
+    单独运行 AdjudicationNode 的示�?
     
     这个示例展示了如何：
     1. 创建配置
-    2. 初始化 AdjudicationNode
-    3. 构造包含 candidate_docs 和 intent 的输入状态
+    2. 初始�?AdjudicationNode
+    3. 构造包�?candidate_docs �?intent 的输入状�?
     4. 调用节点处理函数
     5. 查看研判结果
     """
@@ -35,7 +35,7 @@ def run_adjudication_example():
     # 1. 创建配置
     # ========================================
     config = CruxConfig(
-        schema_type="paper",
+        schema_path="config/paper_schema.yaml",
         mock_llm=False,  # 设为 True 使用 mock 响应
         debug=True,
     )
@@ -45,7 +45,7 @@ def run_adjudication_example():
     print(f"  - debug: {config.debug}")
     
     # ========================================
-    # 2. 初始化 AdjudicationNode
+    # 2. 初始�?AdjudicationNode
     # ========================================
     adjudication_node = AdjudicationNode(config)
     
@@ -54,9 +54,9 @@ def run_adjudication_example():
     print(f"  - description: {adjudication_node.description}")
     
     # ========================================
-    # 3. 准备输入状态 (模拟 RetrievalNode 的输出)
+    # 3. 准备输入状�?(模拟 RetrievalNode 的输�?
     # ========================================
-    # 模拟召回的候选文档
+    # 模拟召回的候选文�?
     mock_candidate_docs = [
         {
             "id": "paper_001",
@@ -84,8 +84,8 @@ def run_adjudication_example():
     # 模拟意图对象
     mock_intent = {
         "user_goal": "INVESTIGATIVE",
-        "rubric": "论文必须涉及RAG（检索增强生成）技术，与机器翻译无关的论文应该被排除",
-        "keywords_bm25": ["RAG", "检索增强生成"],
+        "rubric": "论文必须涉及RAG（检索增强生成）技术，与机器翻译无关的论文应该被排�?,
+        "keywords_bm25": ["RAG", "检索增强生�?],
         "queries_vector": []
     }
     
@@ -118,7 +118,7 @@ def run_adjudication_example():
         verified_evidence = output_state.get("verified_evidence", [])
         print(f"\n[OUTPUT] 验证通过的证据数: {len(verified_evidence)}")
         
-        print("\n[EVIDENCE] 采纳的证据:")
+        print("\n[EVIDENCE] 采纳的证�?")
         for i, evidence in enumerate(verified_evidence, 1):
             print(f"\n  [{i}] Doc ID: {evidence.get('doc_id')}")
             print(f"      Title: {evidence.get('metadata', {}).get('title', 'N/A')}")

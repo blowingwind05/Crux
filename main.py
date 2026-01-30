@@ -14,7 +14,7 @@ def main():
     config = CruxConfig(
         data_source_type="json",
         data_source_path="data/ir_papers.json",
-        schema_type="paper",
+        schema_path="config/paper_schema.yaml",
         mock_llm=False,
         debug=True,
     )
@@ -35,7 +35,6 @@ def main():
         "user_query": user_query,
         "verified_evidence": [],
         "search_iteration": 0,
-        "schema_type": "paper",
         "start_time": time.time(),
     }
     
@@ -48,3 +47,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+

@@ -48,13 +48,11 @@ class UnderstandingNode(BaseNode):
 
         query = state["user_query"]
         current_time = datetime.datetime.now().strftime("%Y-%m-%d")
-        schema_type = state.get("schema_type", self.config.schema_type)
 
-        # 使用 ContextBuilder 构建 prompt
+        # 使用 ContextBuilder 构建 prompt (schema 从 config 加载)
         prompt = self.context_builder.build_intent_prompt(
             query=query,
-            current_date=current_time,
-            schema_type=schema_type
+            current_date=current_time
         )
 
         # 调用 LLM 生成结构化意图

@@ -1,7 +1,7 @@
 """
 RetrievalNode 独立运行示例
 
-用于单独测试混合检索模块，不依赖完整的 AgentGraph。
+用于单独测试混合检索模块，不依赖完整的 AgentGraph�?
 
 使用方法:
     python -m src.crux.tests.example_retrieval_node
@@ -17,14 +17,14 @@ from src.crux.modules.retrieval import RetrievalNode
 
 def run_retrieval_example():
     """
-    单独运行 RetrievalNode 的示例
+    单独运行 RetrievalNode 的示�?
     
     这个示例展示了如何：
     1. 创建配置
-    2. 初始化 RetrievalNode
-    3. 构造包含 intent 的输入状态
+    2. 初始�?RetrievalNode
+    3. 构造包�?intent 的输入状�?
     4. 调用节点处理函数
-    5. 查看召回的文档
+    5. 查看召回的文�?
     """
     
     print("=" * 60)
@@ -37,7 +37,7 @@ def run_retrieval_example():
     config = CruxConfig(
         data_source_type="json",
         data_source_path="data/ir_papers.json",
-        schema_type="paper",
+        schema_path="config/paper_schema.yaml",
         debug=True,
     )
     
@@ -47,7 +47,7 @@ def run_retrieval_example():
     print(f"  - top_k: {config.search.top_k}")
     
     # ========================================
-    # 2. 初始化 RetrievalNode
+    # 2. 初始�?RetrievalNode
     # ========================================
     retrieval_node = RetrievalNode(config)
     
@@ -56,24 +56,24 @@ def run_retrieval_example():
     print(f"  - description: {retrieval_node.description}")
     
     # ========================================
-    # 3. 准备输入状态 (模拟 UnderstandingNode 的输出)
+    # 3. 准备输入状�?(模拟 UnderstandingNode 的输�?
     # ========================================
-    # RetrievalNode 需要 intent 对象
+    # RetrievalNode 需�?intent 对象
     mock_intent = {
         "user_goal": "INVESTIGATIVE",
         "constraints": {
             "structured_metadata": [
-                # 可以添加过滤条件，例如:
+                # 可以添加过滤条件，例�?
                 # {"field": "year", "operator": "gte", "value": 2023}
             ],
             "unstructured_content_patterns": []
         },
-        "keywords_bm25": ["RAG", "检索增强生成", "信息检索", "LLM"],
+        "keywords_bm25": ["RAG", "检索增强生�?, "信息检�?, "LLM"],
         "queries_vector": [
-            "RAG检索增强生成的最新研究进展",
+            "RAG检索增强生成的最新研究进�?,
             "大语言模型与信息检索的结合"
         ],
-        "rubric": "论文需要涉及RAG或检索增强相关技术"
+        "rubric": "论文需要涉及RAG或检索增强相关技�?
     }
     
     input_state: Dict[str, Any] = {
@@ -90,23 +90,23 @@ def run_retrieval_example():
     # ========================================
     # 4. 调用 RetrievalNode.process()
     # ========================================
-    print("\n[PROCESSING] 正在执行混合检索...")
+    print("\n[PROCESSING] 正在执行混合检�?..")
     start_time = time.time()
     
     try:
         output_state = retrieval_node.process(input_state)
         elapsed = time.time() - start_time
         
-        print(f"\n[SUCCESS] 检索完成 (耗时: {elapsed:.2f}s)")
+        print(f"\n[SUCCESS] 检索完�?(耗时: {elapsed:.2f}s)")
         
         # ========================================
         # 5. 查看召回结果
         # ========================================
         candidate_docs = output_state.get("candidate_docs", [])
-        print(f"\n[OUTPUT] 召回文档数: {len(candidate_docs)}")
+        print(f"\n[OUTPUT] 召回文档�? {len(candidate_docs)}")
         
-        # 显示前3个文档
-        print("\n[DOCS] 召回的文档 (前3个):")
+        # 显示�?个文�?
+        print("\n[DOCS] 召回的文�?(�?�?:")
         for i, doc in enumerate(candidate_docs[:3], 1):
             print(f"\n  [{i}] ID: {doc.get('id', doc.get('arxiv_id', 'N/A'))}")
             print(f"      Title: {doc.get('title', 'N/A')[:60]}...")

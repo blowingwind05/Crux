@@ -8,8 +8,8 @@ Crux AgenticRAG Framework
 - modules: 核心业务模块 (understanding, retrieval, adjudication, strategy)
 - utils: 通用工具 (LLM 客户端, BaseNode)
 - data: 数据加载器
-- schemas: 数据结构定义
 - context: 上下文构建器
+- config: 框架配置（支持 YAML schema）
 """
 
 from src.crux.graph import AgentGraph
