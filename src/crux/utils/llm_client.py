@@ -4,12 +4,19 @@ LLM 客户端
 封装 LLM 调用逻辑，支持多种模型和配置。
 """
 
-import os
 import json
 from typing import Optional, Dict, Any
+from tqdm import tqdm
+from concurrent.futures import ThreadPoolExecutor, as_completed
 
 from src.crux.config import CruxConfig
 
+import logging
+logging.basicConfig(
+    format="%(asctime)s - %(levelname)s - %(message)s",
+    datefmt="%Y-%m-%d %H:%M:%S",
+    level=logging.INFO
+)
 
 class LLMClient:
     """
@@ -66,9 +73,50 @@ class LLMClient:
             content = response.choices[0].message.content
             return json.loads(content)
         except Exception as e:
-            print(f"[LLM] 调用失败: {e}")
+            logging.info(f"[LLM] 调用失败: {e}")
             return self._mock_response(prompt)
-    
+
+    def _single_call(self, prompt: str, model: Optional[str] = None) -> tuple[Dict[str, Any], str]:
+        """真实 LLM 调用"""
+        try:
+            response = self.client.chat.completions.create(
+                model=model or self.config.llm.model,
+                messages=[{"role": "user", "content": prompt}],
+                temperature=self.config.llm.temperature,
+                max_tokens=self.config.llm.max_tokens,
+                response_format={"type": "json_object"}
+            )
+            
+            content = response.choices[0].message.content
+            return (json.loads(content), 'S')
+        except Exception as e:
+            logging.info(f"[LLM] 调用失败: {e}")
+            return (self._mock_response(prompt), 'F')
+
+    def _batch_call(self, prompts: list[str], model: Optional[str] = None, max_retry: int = 5, max_workers: int = 16) -> list[tuple[Dict[str, Any], str]]:
+        """真实 LLM 批量调用"""
+        results = [None] * len(prompts)
+        idxs_to_retry = list(range(len(prompts)))
+        current_prompts = prompts
+        retry_count = 0
+
+        while idxs_to_retry and retry_count < max_retry:
+            with ThreadPoolExecutor(max_workers=max_workers) as executor:
+                futures = {
+                    executor.submit(self._single_call, current_prompts[i], model): i
+                    for i in range(len(current_prompts))
+                }
+                for future in tqdm(as_completed(futures), total=len(futures), desc=f'Processing (retry {retry_count})'):
+                    sub_idx = futures[future]
+                    idx = idxs_to_retry[sub_idx]
+                    results[idx] = future.result()
+
+            idxs_to_retry = [i for i, x in enumerate(results) if x[1] == 'F']
+            current_prompts = [prompts[i] for i in idxs_to_retry]
+            retry_count += 1
+
+        return results
+
     def _mock_response(self, prompt: str) -> Dict[str, Any]:
         """
         Mock 响应 - 用于测试
