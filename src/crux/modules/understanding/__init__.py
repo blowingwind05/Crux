@@ -8,6 +8,6 @@ Understanding Module - 意图理解模块
 """
 
 from src.crux.modules.understanding.node import UnderstandingNode
-from src.crux.modules.understanding.models import IntentObject
+from src.crux.state import IntentObject
 
 __all__ = ["UnderstandingNode", "IntentObject"]

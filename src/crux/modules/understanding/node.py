@@ -9,15 +9,14 @@
 - 识别认知策略、约束条件、信息面
 """
 
-import json
 import datetime
+import json
 from typing import Dict, Any
 
+from src.crux.context.builder import ContextBuilder
+from src.crux.state import IntentObject
 from src.crux.utils.base import BaseNode
 from src.crux.utils.llm_client import LLMClient
-from src.crux.modules.understanding.models import IntentObject
-from src.crux.modules.understanding.prompts import get_intent_parsing_prompt
-from src.crux.context.builder import ContextBuilder
 
 
 class UnderstandingNode(BaseNode):
@@ -26,15 +25,15 @@ class UnderstandingNode(BaseNode):
     
     将用户自然语言查询转化为机器可执行的结构化 IntentObject。
     """
-    
+
     name = "understand"
     description = "解析用户意图，生成结构化查询对象"
-    
+
     def __init__(self, config=None):
         super().__init__(config)
         self.llm_client = LLMClient(config)
         self.context_builder = ContextBuilder(config)
-    
+
     def process(self, state: Dict[str, Any]) -> Dict[str, Any]:
         """
         处理用户查询，生成意图对象
@@ -46,21 +45,21 @@ class UnderstandingNode(BaseNode):
             包含 intent, search_iteration, verified_evidence 的更新
         """
         self.log("正在解析意图...")
-        
+
         query = state["user_query"]
         current_time = datetime.datetime.now().strftime("%Y-%m-%d")
         schema_type = state.get("schema_type", self.config.schema_type)
-        
+
         # 使用 ContextBuilder 构建 prompt
         prompt = self.context_builder.build_intent_prompt(
             query=query,
             current_date=current_time,
             schema_type=schema_type
         )
-        
+
         # 调用 LLM 生成结构化意图
         intent_json = self.llm_client.call_json(prompt)
-        
+
         # 使用 Pydantic 校验和转换
         try:
             intent_obj = IntentObject(**intent_json)
