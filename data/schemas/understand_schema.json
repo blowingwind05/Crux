@@ -1,10 +1,10 @@
 {
-  "id": "065b6737-c5b1-4fc6-bcfb-78ed2320c0a4",
+  "id": "c00923a0-98b9-4e43-8f98-67aca78a96c8",
   "name": "understand",
   "type": "General",
   "framework": "LangGraph",
-  "timestampStartMs": 1769665841334,
-  "timestampEndMs": 1769665866627,
+  "timestampStartMs": 1769765378763,
+  "timestampEndMs": 1769765416485,
   "finished": true,
   "payload": {
     "inputs": {
@@ -12,7 +12,7 @@
       "verified_evidence": [],
       "search_iteration": 0.0,
       "schema_type": "paper",
-      "start_time": 1.7696658413217862E9
+      "start_time": 1.7697653787512937E9
     },
     "outputs": {
       "intent": {
@@ -20,9 +20,17 @@
         "constraints": {
           "structured_metadata": [
             {
+              "field": "metadata.primary_category",
+              "operator": "in",
+              "value": [
+                "cs.IR",
+                "cs.CL"
+              ]
+            },
+            {
               "field": "metadata.date",
               "operator": "gte",
-              "value": "2025-10-29"
+              "value": "2025-01-01"
             }
           ]
         },
@@ -32,24 +40,32 @@
           "检索增强生成",
           "智能体",
           "agent",
-          "retrieval",
-          "rag"
+          "信息检索增强生成",
+          "检索系统"
         ],
         "queries_vector": [
-          "信息检索技术与RAG的最新研究",
-          "智能体在检索增强生成中的应用",
-          "RAG在信息检索领域的创新方法"
+          "最新关于信息检索和RAG检索增强生成的研究",
+          "智能体相关的论文",
+          "信息检索与生成增强技术的结合"
         ],
-        "rubric": "论文需同时涉及信息检索/RAG技术与智能体相关研究，优先考虑近期提出的创新方法或实验验证结果"
+        "rubric": "文档需包含信息检索和RAG技术的结合点，体现智能体相关研究，且为2025年后发表的论文"
       },
       "intent_object": {
         "user_goal": "INVESTIGATIVE",
         "constraints": {
           "structured_metadata": [
             {
+              "field": "metadata.primary_category",
+              "operator": "in",
+              "value": [
+                "cs.IR",
+                "cs.CL"
+              ]
+            },
+            {
               "field": "metadata.date",
               "operator": "gte",
-              "value": "2025-10-29"
+              "value": "2025-01-01"
             }
           ]
         },
@@ -59,15 +75,15 @@
           "检索增强生成",
           "智能体",
           "agent",
-          "retrieval",
-          "rag"
+          "信息检索增强生成",
+          "检索系统"
         ],
         "queries_vector": [
-          "信息检索技术与RAG的最新研究",
-          "智能体在检索增强生成中的应用",
-          "RAG在信息检索领域的创新方法"
+          "最新关于信息检索和RAG检索增强生成的研究",
+          "智能体相关的论文",
+          "信息检索与生成增强技术的结合"
         ],
-        "rubric": "论文需同时涉及信息检索/RAG技术与智能体相关研究，优先考虑近期提出的创新方法或实验验证结果"
+        "rubric": "文档需包含信息检索和RAG技术的结合点，体现智能体相关研究，且为2025年后发表的论文"
       },
       "search_iteration": 0.0,
       "verified_evidence": []
