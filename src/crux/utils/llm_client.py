@@ -57,24 +57,7 @@ class LLMClient:
         if self.config.mock_llm:
             return self._mock_response(prompt)
         
-        return self._real_call(prompt, model)
-    
-    def _real_call(self, prompt: str, model: Optional[str] = None) -> Dict[str, Any]:
-        """真实 LLM 调用"""
-        try:
-            response = self.client.chat.completions.create(
-                model=model or self.config.llm.model,
-                messages=[{"role": "user", "content": prompt}],
-                temperature=self.config.llm.temperature,
-                max_tokens=self.config.llm.max_tokens,
-                response_format={"type": "json_object"}
-            )
-            
-            content = response.choices[0].message.content
-            return json.loads(content)
-        except Exception as e:
-            logging.info(f"[LLM] 调用失败: {e}")
-            return self._mock_response(prompt)
+        return self._single_call(prompt, model)
 
     def _single_call(self, prompt: str, model: Optional[str] = None) -> tuple[Dict[str, Any], str]:
         """真实 LLM 调用"""
