@@ -85,9 +85,7 @@ class AgentGraph:
         return self._compiled
 
     def save_graph_image(self, graph = None, img_path= "graph.png") -> None:
-        """
-        显示工作流
-        """
+        # 显示工作流
         png_data = graph.get_graph().draw_mermaid_png()
         with open(img_path, "wb") as f:
             f.write(png_data)
