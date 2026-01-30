@@ -20,7 +20,6 @@ import os
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from src.crux import AgentGraph, CruxConfig
-from src.crux.core.state import AgentState
 
 
 class QueryRequest(BaseModel):
