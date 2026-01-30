@@ -10,7 +10,7 @@ from typing import Optional, Dict, Any
 from src.crux.config import CruxConfig
 from src.crux.schemas.base import BaseSchema
 from src.crux.schemas.paper_schema import PaperSchema
-from src.crux.prompts.templates import INTENT_PARSING_TEMPLATE
+from src.crux.modules.understanding.prompts import INTENT_PARSING_TEMPLATE
 
 
 class ContextBuilder:
