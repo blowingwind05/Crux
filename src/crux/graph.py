@@ -24,11 +24,15 @@ class AgentGraph:
         self._compiled = None
     
     def register_node(self, name: str, node_func: Callable):
-        """注册节点"""
+        """
+        注册节点
+        """
         self._nodes[name] = node_func
     
     def build(self):
-        """构建并返回编译后的图"""
+        """
+        构建并返回编译后的图
+        """
         from src.crux.modules import (
             UnderstandingNode,
             RetrievalNode,
@@ -79,15 +83,27 @@ class AgentGraph:
         
         self._compiled = workflow.compile()
         return self._compiled
-    
+
+    def save_graph_image(self, graph = None, img_path= "graph.png") -> None:
+        """
+        显示工作流
+        """
+        png_data = graph.get_graph().draw_mermaid_png()
+        with open(img_path, "wb") as f:
+            f.write(png_data)
+
     def invoke(self, inputs: Dict[str, Any]) -> Dict[str, Any]:
-        """运行图"""
+        """
+        运行图
+        """
         if self._compiled is None:
             self.build()
         return self._compiled.invoke(inputs)
     
     def stream(self, inputs: Dict[str, Any]):
-        """流式运行图"""
+        """
+        流式运行图
+        """
         if self._compiled is None:
             self.build()
         return self._compiled.stream(inputs)
