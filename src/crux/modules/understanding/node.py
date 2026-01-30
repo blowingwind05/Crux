@@ -71,14 +71,7 @@ class UnderstandingNode(BaseNode):
         except Exception as e:
             self.log(f"解析失败，使用默认意图: {e}", level="WARN")
             # 返回一个默认的意图结构
-            default_intent = IntentObject(
-                user_goal="FACTUAL",
-                constraints={"structured_metadata": []},
-                keywords_bm25=[],
-                queries_vector=[],
-                rubric="文档内容相关即可",
-                missing_info_gap=None
-            )
+            default_intent = IntentObject()
             return {
                 "intent": default_intent.model_dump(),
                 "intent_object": default_intent.model_dump(),

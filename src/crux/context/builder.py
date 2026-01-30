@@ -8,7 +8,7 @@ import os
 from typing import Optional, Dict, Any
 
 from src.crux.config import CruxConfig
-from src.crux.modules.understanding.prompts import INTENT_PARSING_TEMPLATE
+from src.crux.modules.understanding.prompts import INTENT_PARSING_PROMPT
 
 
 class ContextBuilder:
@@ -48,30 +48,15 @@ class ContextBuilder:
         Args:
             query: 用户查询
             current_date: 当前日期
-            extra_context: 额外上下文
+            extra_context: 额外上下文（保留参数但不再使用）
             
         Returns:
             完整的 prompt
         """
-        # 获取 schema 描述
-        schema_description = self.get_schema_description()
-        
-        # 获取环境变量
-        env_context = self._build_env_context()
-        
         # 构建 prompt
-        prompt = INTENT_PARSING_TEMPLATE
+        prompt = INTENT_PARSING_PROMPT
         prompt = prompt.replace("{{current_date}}", current_date)
         prompt = prompt.replace("{{user_query}}", query)
-        prompt = prompt.replace("{{schema_description}}", schema_description)
-        prompt = prompt.replace("{{env_context}}", env_context)
-        
-        # 添加额外上下文
-        if extra_context:
-            extra_text = "\n".join([f"- {k}: {v}" for k, v in extra_context.items()])
-            prompt = prompt.replace("{{extra_context}}", extra_text)
-        else:
-            prompt = prompt.replace("{{extra_context}}", "")
         
         return prompt
     

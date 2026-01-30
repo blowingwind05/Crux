@@ -79,8 +79,8 @@ def get_or_create_agent(request: QueryRequest) -> AgentGraph:
     if key not in agent_instances:
         config = CruxConfig(
             data_source_type=request.data_source_type,
-            data_source_path=request.data_source_path or "G:/Projects/Crux/data/ir_papers.json",
-            schema_path=request.schema_path or "G:/Projects/Crux/config/paper_schema.yaml",
+            data_source_path=request.data_source_path or "data/ir_papers.json",
+            schema_path=request.schema_path or "data/paper_schema.yaml",
             mock_llm=request.mock_llm,
             debug=request.debug,
         )

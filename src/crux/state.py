@@ -49,9 +49,35 @@ class InformationFacet(BaseModel):
     dependency: Optional[str] = Field(default=None, description="依赖的前置 facet_id")
 
 
+class SparseKeyword(BaseModel):
+    """稀疏检索关键词"""
+    term: str = Field(description="关键词")
+    weight: float = Field(default=1.0, description="权重")
+
+
+class RetrievalExecution(BaseModel):
+    """检索执行策略"""
+    sparse_keywords: List[SparseKeyword] = Field(default_factory=list, description="稀疏检索关键词及权重")
+    dense_queries: List[str] = Field(default_factory=list, description="向量检索的语义查询")
+    hypothetical_document: Optional[str] = Field(default=None, description="HyDE 假设文档")
+
+
+class JudgementRubric(BaseModel):
+    """研判标准"""
+    relevance_threshold: str = Field(default="MEDIUM", description="相关性阈值: HIGH | MEDIUM")
+    criteria_positive: str = Field(default="", description="正向判断标准")
+    criteria_negative: str = Field(default="", description="排除标准")
+    evidence_extraction_template: Optional[dict] = Field(default=None, description="证据提取模板")
+
+
 class IntentObject(BaseModel):
-    """深度意图对象 - LLM 输出的结构化意图"""
-    user_goal: str = Field(description="用户目标: INVESTIGATIVE | FACTUAL | DEBUGGING | COMPARATIVE")
+    """深度意图对象 - LLM 输出的结构化意图（匹配 INTENT_PARSING_PROMPT 输出格式）"""
+    
+    # 认知策略
+    cognitive_strategy: CognitiveStrategy = Field(
+        default_factory=lambda: CognitiveStrategy(user_goal="FACTUAL"),
+        description="认知策略"
+    )
 
     # 约束条件
     constraints: dict = Field(
@@ -59,19 +85,20 @@ class IntentObject(BaseModel):
         description="硬性约束条件"
     )
 
-    # 检索相关
-    keywords_bm25: List[str] = Field(default_factory=list, description="用于稀疏检索的关键词")
-    queries_vector: List[str] = Field(default_factory=list, description="用于向量检索的描述性语句")
+    # 信息面列表
+    information_facets: List[InformationFacet] = Field(default_factory=list, description="信息面列表")
 
-    # 研判相关
-    rubric: str = Field(default="文档内容相关即可", description="用于后续研判的相关性准则")
+    # 检索执行策略
+    retrieval_execution: RetrievalExecution = Field(
+        default_factory=RetrievalExecution,
+        description="检索执行策略"
+    )
 
-    # 缺口分析
-    missing_info_gap: Optional[str] = Field(default=None, description="当前的信息缺口描述")
-
-    # 扩展字段
-    cognitive_strategy: Optional[dict] = Field(default=None, description="认知策略")
-    information_facets: Optional[List[dict]] = Field(default=None, description="信息面列表")
+    # 研判标准
+    judgement_rubric: JudgementRubric = Field(
+        default_factory=JudgementRubric,
+        description="研判标准"
+    )
 
 
 """
