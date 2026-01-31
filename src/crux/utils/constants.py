@@ -1,0 +1,2 @@
+SUCCESS = 'S'
+FAILURE = 'F'
