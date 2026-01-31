@@ -1,9 +1,10 @@
 """
 AdjudicationNode 独立运行示例
 
-用于单独测试深度研判模块，不依赖完整�?AgentGraph�?
+用于单独测试深度研判模块，不依赖完整�?AgentGraph�?
 
 使用方法:
+    vllm serve Qwen3-8B --reasoning-parser deepseek_r1
     python -m src.crux.tests.example_adjudication_node
 """
 
@@ -17,12 +18,12 @@ from src.crux.modules.adjudication import AdjudicationNode
 
 def run_adjudication_example():
     """
-    单独运行 AdjudicationNode 的示�?
+    单独运行 AdjudicationNode 的示�?
     
     这个示例展示了如何：
     1. 创建配置
-    2. 初始�?AdjudicationNode
-    3. 构造包�?candidate_docs �?intent 的输入状�?
+    2. 初始�?AdjudicationNode
+    3. 构造包�?candidate_docs �?intent 的输入状�?
     4. 调用节点处理函数
     5. 查看研判结果
     """
@@ -34,18 +35,40 @@ def run_adjudication_example():
     # ========================================
     # 1. 创建配置
     # ========================================
-    config = CruxConfig(
-        schema_path="config/paper_schema.yaml",
-        mock_llm=False,  # 设为 True 使用 mock 响应
-        debug=True,
-    )
+    config_dict = {
+        "llm": {
+            "api_key": "Empty",
+            "base_url": "http://localhost:8000/v1",
+            "model": "Qwen3-8B",
+            "temperature": 0.7,
+            "max_tokens": 32768
+        },
+        "judge": {
+            "use_parallel": True,
+            "max_retry": 5,
+            "max_workers": 4,
+            "batch_size": 4
+        },
+        "search": {
+            "max_iterations": 3,
+            "top_k": 2,
+            "use_bm25": True,
+            "use_vector": True,
+            "use_metadata_filter": True
+        },
+        "schema_path": "config/paper_schema.yaml",
+        "mock_llm": False,
+        "debug": True,
+    }
+
+    config = CruxConfig.from_dict(config_dict)
     
     print(f"\n[CONFIG] 配置信息:")
     print(f"  - mock_llm: {config.mock_llm}")
     print(f"  - debug: {config.debug}")
     
     # ========================================
-    # 2. 初始�?AdjudicationNode
+    # 2. 初始�?AdjudicationNode
     # ========================================
     adjudication_node = AdjudicationNode(config)
     
@@ -54,9 +77,9 @@ def run_adjudication_example():
     print(f"  - description: {adjudication_node.description}")
     
     # ========================================
-    # 3. 准备输入状�?(模拟 RetrievalNode 的输�?
+    # 3. 准备输入状�?(模拟 RetrievalNode 的输�?
     # ========================================
-    # 模拟召回的候选文�?
+    # 模拟召回的候选文�?
     mock_candidate_docs = [
         {
             "id": "paper_001",
@@ -84,8 +107,8 @@ def run_adjudication_example():
     # 模拟意图对象
     mock_intent = {
         "user_goal": "INVESTIGATIVE",
-        "rubric": "论文必须涉及RAG（检索增强生成）技术，与机器翻译无关的论文应该被排�?,
-        "keywords_bm25": ["RAG", "检索增强生�?],
+        "rubric": "论文必须涉及RAG（检索增强生成）技术，与机器翻译无关的论文应该被排除?",
+        "keywords_bm25": ["RAG", "Retrieval-Augmented Generation"],
         "queries_vector": []
     }
     
@@ -118,11 +141,11 @@ def run_adjudication_example():
         verified_evidence = output_state.get("verified_evidence", [])
         print(f"\n[OUTPUT] 验证通过的证据数: {len(verified_evidence)}")
         
-        print("\n[EVIDENCE] 采纳的证�?")
+        print("\n[EVIDENCE] 采纳的证�?")
         for i, evidence in enumerate(verified_evidence, 1):
             print(f"\n  [{i}] Doc ID: {evidence.get('doc_id')}")
             print(f"      Title: {evidence.get('metadata', {}).get('title', 'N/A')}")
-            print(f"      Content: {evidence.get('content', 'N/A')[:100]}...")
+            print(f"      Content: {evidence.get('content', 'N/A')}...")
             print(f"      Reason: {evidence.get('reason', 'N/A')}")
             
     except Exception as e:

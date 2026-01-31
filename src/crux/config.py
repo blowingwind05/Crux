@@ -23,6 +23,14 @@ class LLMConfig:
         if self.base_url is None:
             self.base_url = os.getenv("OPENAI_BASE_URL","https://aicloud.oneainexus.cn:30013/inference/aicloud-yanqiang/qwen3-32b-server/v1")
 
+@dataclass
+class JudgeConfig:
+    """研判配置"""
+    use_parallel: bool = True
+    max_retry: int = 5
+    max_workers: int = 4
+    batch_size: int = 4
+
 
 @dataclass
 class SearchConfig:
@@ -73,6 +81,7 @@ class SchemaConfig:
 class CruxConfig:
     """Crux 框架主配置"""
     llm: LLMConfig = field(default_factory=LLMConfig)
+    judge: JudgeConfig = field(default_factory=JudgeConfig)
     search: SearchConfig = field(default_factory=SearchConfig)
     
     # 数据源配置
@@ -103,9 +112,11 @@ class CruxConfig:
     def from_dict(cls, config_dict: Dict[str, Any]) -> "CruxConfig":
         """从字典创建配置"""
         llm_config = LLMConfig(**config_dict.get("llm", {}))
+        judge_config = JudgeConfig(**config_dict.get("judge", {}))
         search_config = SearchConfig(**config_dict.get("search", {}))
         return cls(
             llm=llm_config,
+            judge=judge_config,
             search=search_config,
             data_source_type=config_dict.get("data_source_type", "json"),
             data_source_path=config_dict.get("data_source_path"),
