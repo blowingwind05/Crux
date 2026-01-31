@@ -35,7 +35,7 @@ const logColors = {
 };
 
 export function WorkflowPanel({ state }: WorkflowPanelProps) {
-    const { stages, isRunning, isCompleted, stats, allLogs, iteration } = state;
+    const { stages, isRunning, isCompleted, stats, allLogs, iteration, iterations } = state;
     const logsEndRef = React.useRef<HTMLDivElement>(null);
     const [autoScroll, setAutoScroll] = React.useState(true);
 
@@ -48,6 +48,23 @@ export function WorkflowPanel({ state }: WorkflowPanelProps) {
 
     const completedCount = stages.filter(s => s.status === 'completed').length;
     const totalStages = stages.length;
+
+    // 计算累积统计 - 从所有迭代中累加
+    const cumulativeStats = React.useMemo(() => {
+        let totalCandidates = 0;
+        let totalVerified = 0;
+
+        iterations.forEach(iter => {
+            totalCandidates += iter.candidates.length;
+            totalVerified += iter.evidence.length;
+        });
+
+        return {
+            totalCandidates,
+            totalVerified,
+            iterationCount: iterations.length || 1,
+        };
+    }, [iterations]);
 
     return (
         <div className="h-full flex flex-col bg-card/50 backdrop-blur-sm border-r border-border">
@@ -64,21 +81,21 @@ export function WorkflowPanel({ state }: WorkflowPanelProps) {
                     )}
                 </div>
 
-                {/* Stats Grid */}
+                {/* Stats Grid - 使用累积统计 */}
                 <div className="grid grid-cols-3 gap-2">
                     <StatCard
                         label="已验证"
-                        value={stats?.verifiedCount ?? 0}
+                        value={cumulativeStats.totalVerified}
                         color="text-green-400"
                     />
                     <StatCard
                         label="候选"
-                        value={stats?.totalCandidates ?? 0}
+                        value={cumulativeStats.totalCandidates}
                         color="text-blue-400"
                     />
                     <StatCard
                         label="迭代"
-                        value={(iteration ?? 0) + 1}
+                        value={cumulativeStats.iterationCount}
                         color="text-purple-400"
                     />
                 </div>
@@ -194,24 +211,27 @@ export function WorkflowPanel({ state }: WorkflowPanelProps) {
     );
 }
 
-function LogLine({ log }: { log: StageLog }) {
-    const Icon = logIcons[log.level] || Info;
-    const colorClass = logColors[log.level] || 'text-gray-400';
+const LogLine = React.forwardRef<HTMLDivElement, { log: StageLog }>(
+    function LogLine({ log }, ref) {
+        const Icon = logIcons[log.level] || Info;
+        const colorClass = logColors[log.level] || 'text-gray-400';
 
-    return (
-        <motion.div
-            initial={{ opacity: 0, x: -10 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0 }}
-            className="flex items-start gap-2 py-0.5"
-        >
-            <Icon className={cn("w-3 h-3 mt-0.5 shrink-0", colorClass)} />
-            <span className="text-muted-foreground break-all leading-relaxed">
-                {log.message}
-            </span>
-        </motion.div>
-    );
-}
+        return (
+            <motion.div
+                ref={ref}
+                initial={{ opacity: 0, x: -10 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0 }}
+                className="flex items-start gap-2 py-0.5"
+            >
+                <Icon className={cn("w-3 h-3 mt-0.5 shrink-0", colorClass)} />
+                <span className="text-muted-foreground break-all leading-relaxed">
+                    {log.message}
+                </span>
+            </motion.div>
+        );
+    }
+);
 
 interface StatCardProps {
     label: string;

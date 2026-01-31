@@ -14,7 +14,7 @@ const Index = () => {
     <div className="min-h-screen relative">
       <BackgroundGrid />
 
-      <div className="container max-w-5xl mx-auto px-4 pb-16">
+      <div className="container max-w-[1400px] mx-auto px-4 pb-16">
         <Header onSettingsClick={() => setShowSettings(true)} />
 
         <main>

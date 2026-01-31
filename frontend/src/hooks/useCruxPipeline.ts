@@ -7,6 +7,8 @@ import type {
   IterationResult,
   CandidateDoc,
   Evidence,
+  RejectedDoc,
+  StageId,
 } from '@/types/crux';
 import { initialStages } from '@/data/mockPipeline';
 
@@ -15,6 +17,7 @@ const createInitialState = (): PipelineState => ({
   query: '',
   stages: initialStages.map(s => ({ ...s, status: 'pending', output: undefined, logs: [] })),
   currentStageIndex: -1,
+  currentStage: null,
   iteration: 0,
   isRunning: false,
   isCompleted: false,
@@ -126,6 +129,7 @@ export function useCruxPipeline() {
                   setState(prev => ({
                     ...prev,
                     currentStageIndex: stageIndex,
+                    currentStage: data.stage as StageId,
                     stages: prev.stages.map((s, i) =>
                       i === stageIndex
                         ? { ...s, status: 'processing' as const, startTime: Date.now() }
@@ -172,6 +176,14 @@ export function useCruxPipeline() {
                     // 更新迭代结果
                     let newIterations = [...prev.iterations];
 
+                    // Debug log
+                    console.log('[SSE] stage_complete', {
+                      stage: data.stage,
+                      iteration: eventIteration,
+                      output: data.output,
+                      currentIterationsLength: newIterations.length
+                    });
+
                     if (data.stage === 'retrieve' && data.output?.candidates) {
                       // 确保迭代数组足够长
                       while (newIterations.length <= eventIteration) {
@@ -179,26 +191,38 @@ export function useCruxPipeline() {
                           iteration: newIterations.length,
                           candidates: [],
                           evidence: [],
+                          rejectedDocs: [],
                         });
                       }
                       newIterations[eventIteration] = {
                         ...newIterations[eventIteration],
                         candidates: data.output.candidates as CandidateDoc[],
                       };
+                      console.log('[SSE] retrieve - updated iterations', newIterations);
                     }
 
-                    if (data.stage === 'judge' && data.output?.verified_evidence) {
+                    // Judge stage - 支持空 evidence 的情况
+                    if (data.stage === 'judge') {
                       while (newIterations.length <= eventIteration) {
                         newIterations.push({
                           iteration: newIterations.length,
                           candidates: [],
                           evidence: [],
+                          rejectedDocs: [],
                         });
                       }
+                      const evidence = data.output?.verified_evidence || [];
+                      const rejectedDocs = data.output?.rejected_docs || [];
                       newIterations[eventIteration] = {
                         ...newIterations[eventIteration],
-                        evidence: data.output.verified_evidence as Evidence[],
+                        evidence: evidence as Evidence[],
+                        rejectedDocs: rejectedDocs as RejectedDoc[],
                       };
+                      console.log('[SSE] judge - updated iterations', {
+                        evidence: evidence.length,
+                        rejected: rejectedDocs.length,
+                        newIterations
+                      });
                     }
 
                     if (data.stage === 'analyze' && data.output?.status) {
@@ -207,11 +231,14 @@ export function useCruxPipeline() {
                           iteration: newIterations.length,
                           candidates: [],
                           evidence: [],
+                          rejectedDocs: [],
                         });
                       }
                       newIterations[eventIteration] = {
                         ...newIterations[eventIteration],
                         gapStatus: data.output.status,
+                        gapReason: data.output.missing_info || '',
+                        coverageScore: data.output.coverage_score,
                       };
                     }
 

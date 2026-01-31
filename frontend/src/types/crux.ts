@@ -103,6 +103,14 @@ export interface FinalReport {
   total_iterations?: number;
 }
 
+// 被拒绝的文档
+export interface RejectedDoc {
+  doc_id: string;
+  title: string;
+  reason: string;
+  abstract?: string;
+}
+
 // Stage output types
 export interface StageOutput {
   understand?: IntentObject;
@@ -113,11 +121,14 @@ export interface StageOutput {
   };
   judge?: {
     verified_evidence: Evidence[];
+    rejected_docs?: RejectedDoc[];
     new_evidence_count?: number;
     total_evidence?: number;
     iteration?: number;
   };
-  analyze?: GapAnalysis;
+  analyze?: GapAnalysis & {
+    missing_info?: string;
+  };
   report?: FinalReport;
 }
 
@@ -126,7 +137,10 @@ export interface IterationResult {
   iteration: number;
   candidates: CandidateDoc[];
   evidence: Evidence[];
+  rejectedDocs: RejectedDoc[];
   gapStatus?: 'sufficient' | 'insufficient';
+  gapReason?: string;
+  coverageScore?: number;
 }
 
 export interface PipelineStage {
@@ -145,6 +159,7 @@ export interface PipelineState {
   query: string;
   stages: PipelineStage[];
   currentStageIndex: number;
+  currentStage: StageId | null;
   iteration: number;
   isRunning: boolean;
   isCompleted: boolean;

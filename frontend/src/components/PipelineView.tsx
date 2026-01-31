@@ -24,8 +24,8 @@ export function PipelineView({ state }: PipelineViewProps) {
     >
       {/* 左右分栏布局 */}
       <div className="flex h-[calc(100vh-280px)] min-h-[500px] rounded-xl overflow-hidden border border-border bg-card/30 backdrop-blur-sm">
-        {/* 左侧 Working Flow Panel - 1/4 宽度 */}
-        <div className="w-1/4 min-w-[280px] max-w-[360px]">
+        {/* 左侧 Working Flow Panel - 固定宽度 */}
+        <div className="w-[340px] shrink-0">
           <WorkflowPanel state={state} />
         </div>
 
