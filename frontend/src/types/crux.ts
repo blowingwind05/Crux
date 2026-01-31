@@ -4,6 +4,25 @@ export type StageStatus = 'pending' | 'processing' | 'completed' | 'error';
 
 export type StageId = 'understand' | 'retrieve' | 'judge' | 'analyze' | 'report';
 
+export type LogLevel = 'INFO' | 'WARN' | 'ERROR' | 'DEBUG';
+
+export interface StageLog {
+  level: LogLevel;
+  message: string;
+  timestamp: number;
+  details?: Record<string, unknown>;
+  iteration?: number;
+}
+
+export interface ExecutionStats {
+  totalCandidates: number;
+  verifiedCount: number;
+  rejectedCount: number;
+  tokensUsed: number;
+  processingTimeMs: number;
+  iterationCount: number;
+}
+
 export interface CognitiveStrategy {
   user_goal: 'INVESTIGATIVE' | 'FACTUAL' | 'DEBUGGING' | 'COMPARATIVE';
   reasoning_topology: 'CAUSAL_CHAIN' | 'TEMPORAL_SEQUENCE' | 'FLAT_LIST';
@@ -50,6 +69,9 @@ export interface CandidateDoc {
   abstract: string;
   score: number;
   source: 'bm25' | 'vector' | 'hybrid';
+  authors?: string[];
+  year?: string;
+  url?: string;
   metadata?: Record<string, unknown>;
 }
 
@@ -60,6 +82,7 @@ export interface Evidence {
   source?: string;
   relevance_score: number;
   facet_id?: string;
+  metadata?: Record<string, unknown>;
 }
 
 export interface GapAnalysis {
@@ -68,6 +91,7 @@ export interface GapAnalysis {
   missing_facets: string[];
   suggested_queries?: string[];
   iteration: number;
+  should_loop_back?: boolean;
 }
 
 export interface FinalReport {
@@ -76,6 +100,7 @@ export interface FinalReport {
   evidence_chain: Evidence[];
   confidence_score: number;
   citations: string[];
+  total_iterations?: number;
 }
 
 // Stage output types
@@ -84,15 +109,24 @@ export interface StageOutput {
   retrieve?: {
     candidates: CandidateDoc[];
     total_retrieved: number;
-    retrieval_methods: string[];
+    iteration?: number;
   };
   judge?: {
     verified_evidence: Evidence[];
-    rejected_count: number;
-    acceptance_rate: number;
+    new_evidence_count?: number;
+    total_evidence?: number;
+    iteration?: number;
   };
   analyze?: GapAnalysis;
   report?: FinalReport;
+}
+
+// 每轮迭代的结果
+export interface IterationResult {
+  iteration: number;
+  candidates: CandidateDoc[];
+  evidence: Evidence[];
+  gapStatus?: 'sufficient' | 'insufficient';
 }
 
 export interface PipelineStage {
@@ -104,6 +138,7 @@ export interface PipelineStage {
   startTime?: number;
   endTime?: number;
   output?: StageOutput[StageId];
+  logs?: StageLog[];
 }
 
 export interface PipelineState {
@@ -114,4 +149,9 @@ export interface PipelineState {
   isRunning: boolean;
   isCompleted: boolean;
   error?: string;
+  stats?: ExecutionStats;
+  // 按轮次存储的日志
+  allLogs: StageLog[];
+  // 按轮次存储的结果
+  iterations: IterationResult[];
 }

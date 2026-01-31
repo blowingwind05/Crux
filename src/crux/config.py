@@ -28,7 +28,7 @@ class LLMConfig:
 class SearchConfig:
     """检索配置"""
     max_iterations: int = 3
-    top_k: int = 50
+    top_k: int = 2
     use_bm25: bool = True
     use_vector: bool = True
     use_metadata_filter: bool = True

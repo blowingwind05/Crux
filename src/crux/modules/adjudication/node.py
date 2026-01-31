@@ -9,6 +9,7 @@
 - 过滤语义相似但事实无关的噪音
 """
 
+import time
 from typing import Dict, Any, List
 
 from src.crux.utils.base import BaseNode
@@ -26,6 +27,7 @@ class AdjudicationNode(BaseNode):
     """
     
     name = "judge"
+    name_cn = "深度研判"
     description = "深度研判候选文档，提取证据"
     
     def __init__(self, config=None):
@@ -42,34 +44,93 @@ class AdjudicationNode(BaseNode):
         Returns:
             包含 verified_evidence 的更新
         """
-        self.log("正在进行深度研判...")
+        self.reset_logger()
         
         docs = state["candidate_docs"]
-        rubric = state["intent"].get("rubric", "文档内容相关即可")
+        intent = state["intent"]
+        rubric = self._get_rubric(intent)
+        
+        self.log("开始深度研判流程...")
+        self.log(f"待研判文档: {len(docs)} 篇")
+        self.log(f"研判准则: {rubric[:100]}..." if len(rubric) > 100 else f"研判准则: {rubric}")
         
         new_evidence = []
+        rejected_count = 0
         
-        for doc in docs:
+        for idx, doc in enumerate(docs):
+            doc_id = doc.get("id", doc.get("arxiv_id", f"doc_{idx}"))
+            title = doc.get("title", "无标题")[:50]
+            
+            self.log(f"评估文档 [{idx+1}/{len(docs)}]: {title}...", details={
+                "doc_id": doc_id,
+                "title": doc.get("title", ""),
+            })
+            
+            # 评估文档
+            start_time = time.time()
             result = self.evaluate_document(doc, rubric)
+            eval_time = (time.time() - start_time) * 1000
             
             if result.get("is_relevant"):
-                doc_id = doc.get("id", doc.get("arxiv_id", "unknown"))
-                self.log(f"[ACCEPT] 采纳证据 (ID: {doc_id}): {result.get('evidence', '')[:50]}...")
+                evidence_preview = result.get("evidence", "")[:80]
+                self.log(f"[ACCEPT] 采纳证据: {evidence_preview}...", details={
+                    "doc_id": doc_id,
+                    "reason": result.get("reason", ""),
+                    "eval_time_ms": eval_time,
+                })
+                
                 new_evidence.append({
                     "doc_id": doc_id,
                     "content": result.get("evidence"),
                     "reason": result.get("reason"),
                     "source": doc.get("source", "unknown"),
+                    "relevance_score": result.get("relevance_score", 0.8),
+                    "facet_id": result.get("facet_id"),
                     "metadata": {
                         "title": doc.get("title", ""),
                         "year": doc.get("year") or doc.get("metadata", {}).get("date", ""),
+                        "authors": doc.get("authors", []),
+                        "url": doc.get("arxiv_url", ""),
                     }
                 })
             else:
-                doc_id = doc.get("id", doc.get("arxiv_id", "unknown"))
-                self.log(f"[REJECT] 拒绝噪音 (ID: {doc_id})")
+                rejected_count += 1
+                reject_reason = result.get("reason", "不符合研判准则")
+                self.log(f"[REJECT] 拒绝文档: {reject_reason}", level="DEBUG", details={
+                    "doc_id": doc_id,
+                    "reason": reject_reason,
+                })
         
-        return {"verified_evidence": new_evidence}
+        # 统计结果
+        total = len(docs)
+        accepted = len(new_evidence)
+        acceptance_rate = accepted / total if total > 0 else 0
+        
+        self.log(f"研判完成: 采纳 {accepted} 篇, 拒绝 {rejected_count} 篇")
+        self.log(f"通过率: {acceptance_rate:.1%}", details={
+            "accepted": accepted,
+            "rejected": rejected_count,
+            "total": total,
+            "acceptance_rate": acceptance_rate,
+        })
+        
+        # 如果通过率较低，给出提示
+        if acceptance_rate < 0.3 and total > 0:
+            self.log("通过率较低，可能需要调整检索策略", level="WARN")
+        
+        return self.build_result({"verified_evidence": new_evidence})
+    
+    def _get_rubric(self, intent: Dict[str, Any]) -> str:
+        """获取研判准则"""
+        judgement = intent.get("judgement_rubric", {})
+        if isinstance(judgement, dict):
+            positive = judgement.get("criteria_positive", "")
+            negative = judgement.get("criteria_negative", "")
+            rubric = positive
+            if negative:
+                rubric += f" (排除: {negative})"
+            return rubric or "文档内容相关即可"
+        return str(judgement) if judgement else "文档内容相关即可"
     
     def evaluate_document(self, doc: Dict[str, Any], rubric: str) -> Dict[str, Any]:
         """
