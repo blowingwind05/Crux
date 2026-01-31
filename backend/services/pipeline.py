@@ -61,7 +61,7 @@ class PipelineService:
         """
         start_time = time.time()
         stats = ExecutionStats()
-        current_iteration = 0
+        current_iteration = -1  # Start at -1 so first iteration (0) triggers iteration_start
         
         # 创建回调收集器
         callback = StreamCallback()
@@ -136,10 +136,10 @@ class PipelineService:
                         raise data
                     elif msg_type == "event":
                         for node_name, state in data.items():
-                            # 检测迭代变化
-                            state_iteration = state.get("search_iteration", 0)
-                            if node_name == "retrieve" and state_iteration > current_iteration:
-                                current_iteration = state_iteration
+                            # 检测新迭代 - 每次进入 retrieve 节点就是新一轮迭代
+                            # 注意：不能使用 state.search_iteration，因为它在 analyze 完成后才更新
+                            if node_name == "retrieve":
+                                current_iteration += 1
                                 callback.set_iteration(current_iteration)
                                 yield StreamEvent(
                                     type="iteration_start",
@@ -260,6 +260,10 @@ class PipelineService:
             evidence = state.get("verified_evidence", [])
             stats.verified_count = len(evidence)
             
+            # 获取所有候选文档和被拒绝的文档
+            all_candidates = state.get("candidate_docs", [])
+            verified_doc_ids = {ev.get("doc_id") for ev in evidence}
+            
             formatted_evidence = []
             for ev in evidence:
                 formatted_evidence.append({
@@ -272,12 +276,34 @@ class PipelineService:
                     "metadata": ev.get("metadata", {}),
                 })
             
-            total_candidates = stats.total_candidates or 1
-            rejected = total_candidates - len([e for e in evidence if e.get("_new", True)])
-            stats.rejected_count = rejected
+            # 构建被拒绝的文档列表
+            rejected_docs = state.get("rejected_docs", [])
+            formatted_rejected = []
+            for doc in rejected_docs:
+                formatted_rejected.append({
+                    "doc_id": doc.get("doc_id", doc.get("id", "unknown")),
+                    "title": doc.get("title", ""),
+                    "reason": doc.get("reason", "不符合研判准则"),
+                    "abstract": doc.get("abstract", "")[:200] if doc.get("abstract") else "",
+                })
+            
+            # 如果没有显式的 rejected_docs，从 candidates 推断
+            if not formatted_rejected:
+                for doc in all_candidates:
+                    doc_id = doc.get("id", doc.get("arxiv_id", "unknown"))
+                    if doc_id not in verified_doc_ids:
+                        formatted_rejected.append({
+                            "doc_id": doc_id,
+                            "title": doc.get("title", ""),
+                            "reason": "未通过深度研判",
+                            "abstract": doc.get("abstract", "")[:200] if doc.get("abstract") else "",
+                        })
+            
+            stats.rejected_count = len(formatted_rejected)
             
             return {
                 "verified_evidence": formatted_evidence,
+                "rejected_docs": formatted_rejected,
                 "new_evidence_count": len(formatted_evidence),
                 "total_evidence": len(evidence),
                 "iteration": state.get("search_iteration", 0),
@@ -288,11 +314,18 @@ class PipelineService:
             iteration = state.get("search_iteration", 0)
             stats.iteration_count = iteration
             
+            # 获取缺口分析的详细信息
+            gap_details = state.get("gap_analysis_details", {})
+            coverage_score = gap_details.get("coverage_score", 0.8 if gap_result == "sufficient" else 0.5)
+            missing_info = gap_details.get("missing_info", "")
+            
             return {
                 "status": gap_result,
                 "should_loop_back": gap_result == "insufficient",
                 "iteration": iteration,
                 "max_iterations": 3,
+                "coverage_score": coverage_score,
+                "missing_info": missing_info,
             }
         
         elif stage == "report":

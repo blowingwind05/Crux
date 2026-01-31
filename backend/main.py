@@ -5,8 +5,10 @@ Crux AgenticRAG Backend API
 支持流式返回中间处理结果。
 """
 
+from contextlib import asynccontextmanager
 from pathlib import Path
 import sys
+sys.path.append('/Users/mac/Projects/Crux/')
 from datetime import datetime
 import os
 import uvicorn
@@ -19,10 +21,24 @@ from backend.services import pipeline_service
 
 settings = get_settings()
 
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    """应用生命周期管理"""
+    # Startup
+    logger.info(f"🚀 Starting {settings.app_name} v{settings.app_version}")
+    yield
+    # Shutdown
+    if hasattr(pipeline_service, "clear_cache"):
+        pipeline_service.clear_cache()
+    logger.info(f"🛑 Shutting down {settings.app_name}")
+
+
 app = FastAPI(
     title=settings.app_name,
     description="基于意图深度感知的 AgenticRAG 框架 API 服务",
     version=settings.app_version,
+    lifespan=lifespan,
 )
 
 logger.info("FastAPI应用初始化完成")
@@ -62,20 +78,6 @@ async def health_check():
         "timestamp": datetime.now().isoformat(),
         "version": settings.app_version
     }
-
-
-@app.on_event("startup")
-async def startup_event():
-    """应用启动事件"""
-    logger.info(f"🚀 Starting {settings.app_name} v{settings.app_version}")
-
-
-@app.on_event("shutdown")
-async def shutdown_event():
-    """应用关闭事件"""
-    if hasattr(pipeline_service, "clear_cache"):
-        pipeline_service.clear_cache()
-    logger.info(f"🛑 Shutting down {settings.app_name}")
 
 
 if __name__ == "__main__":
