@@ -9,7 +9,7 @@ from typing import Optional, Dict, Any
 from tqdm import tqdm
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
-from src.crux.utils.constant import SUCCESS, FAILURE
+from src.crux.utils.constants import SUCCESS, FAILURE
 from src.crux.config import CruxConfig
 
 import logging
