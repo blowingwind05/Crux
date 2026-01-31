@@ -121,6 +121,7 @@ class AgentState(TypedDict):
 
     # 4. 研判证据 (模块三) - 使用 add 操作符支持追加
     verified_evidence: Annotated[List[dict], operator.add]
+    rejected_docs: List[dict]  # 被拒绝的文档列表
 
     # 5. 状态控制 (模块四)
     gap_analysis_result: Literal["sufficient", "insufficient"]

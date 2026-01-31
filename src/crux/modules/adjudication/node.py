@@ -60,6 +60,7 @@ class AdjudicationNode(BaseNode):
         query = state.get("user_query", "")
 
         new_evidence = []
+        rejected_docs = []  # 收集被拒绝的文档
         rejected_count = 0
 
         self.log("开始深度研判流程...")
@@ -138,6 +139,14 @@ class AdjudicationNode(BaseNode):
                     "doc_id": doc_id,
                     "reason": reject_reason,
                 })
+                
+                # 收集被拒绝的文档信息
+                rejected_docs.append({
+                    "doc_id": doc_id,
+                    "title": doc.get("title", ""),
+                    "reason": reject_reason,
+                    "abstract": doc.get("abstract", "")[:200] if doc.get("abstract") else "",
+                })
 
         # ==================== 步骤 4: 统计结果 ====================
         total = len(docs)
@@ -156,7 +165,10 @@ class AdjudicationNode(BaseNode):
         if acceptance_rate < 0.3 and total > 0:
             self.log("通过率较低，可能需要调整检索策略", level="WARN")
 
-        return self.build_result({"verified_evidence": new_evidence})
+        return self.build_result({
+            "verified_evidence": new_evidence,
+            "rejected_docs": rejected_docs,  # 包含被拒绝的文档
+        })
 
     def _get_rubric(self, intent: Dict[str, Any]) -> str:
         """
