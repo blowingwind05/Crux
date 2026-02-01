@@ -1,7 +1,23 @@
 # Crux
 An agentic RAG framework powered by deep intent understanding.
 
-![webapp.png](resources/webapp.png)
+![stage1.png](resources/stage1.png)
+
+## 运行命令
+
+- 后端
+```bash
+python backend/main.py
+```
+
+- 前端
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+
 
 ## 目录结构
 
@@ -105,28 +121,3 @@ Import successful
 - 等 50 篇 RAG 相关论文
 
 ---
-
-## 使用方式
-
-```python
-from src.crux import AgentGraph, CruxConfig
-
-config = CruxConfig(
-    data_source_type="json",
-    data_source_path="data/ir_papers.json",
-    schema_type="paper",
-)
-
-graph = AgentGraph(config)
-result = graph.invoke({"user_query": "找关于RAG的论文"})
-print(result["final_report"])
-```
-
----
-
-## 后续工作
-
-1. 各节点负责人可独立优化对应文件
-2. 实现真实 LLM 调用（设置 `mock_llm=False`）
-3. 补充 CSV 和向量数据库加载器实现
-4. 添加更多 Schema 类型（新闻、日志等）
