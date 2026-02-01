@@ -14,7 +14,7 @@ Crux AgenticRAG Framework
 
 from src.crux.graph import AgentGraph
 from src.crux.state import AgentState
-from src.crux.config import CruxConfig
+from src.crux.config import CruxConfig, load_config, get_config, set_config
 from src.crux.state  import IntentObject
 
 # 导出所有模块节点 (延迟导入以避免循环依赖)
@@ -40,6 +40,9 @@ __all__ = [
     "AgentState", 
     "IntentObject", 
     "CruxConfig",
+    "load_config",
+    "get_config",
+    "set_config",
     "get_all_nodes",
 ]
 

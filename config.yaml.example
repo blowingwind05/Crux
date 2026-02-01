@@ -1,0 +1,118 @@
+# Crux AgenticRAG 配置文件示例
+# 复制此文件为 config.yaml 并根据需要修改
+# 
+# 支持环境变量引用：${ENV_VAR} 或 ${ENV_VAR:default_value}
+
+# ============================================================
+# LLM 配置
+# ============================================================
+llm:
+  # API 密钥（推荐使用环境变量）
+  api_key: ${OPENAI_API_KEY:EMPTY}
+  # API 基础地址
+  base_url: ${OPENAI_BASE_URL:https://aicloud.oneainexus.cn:30013/inference/aicloud-yanqiang/qwen3-32b-server/v1}
+  # 模型名称
+  model: "Qwen/Qwen3-32B"
+  # 生成温度
+  temperature: 0.7
+  # 最大 token 数
+  max_tokens: 4096
+
+# ============================================================
+# 检索配置
+# ============================================================
+search:
+  # 最大迭代次数
+  max_iterations: 3
+  # 每次检索返回的文档数
+  top_k: 2
+  # 是否使用 BM25 稀疏检索
+  use_bm25: true
+  # 是否使用向量检索
+  use_vector: true
+  # 是否使用元数据过滤
+  use_metadata_filter: true
+
+# ============================================================
+# 研判配置
+# ============================================================
+judge:
+  # 是否并行研判
+  use_parallel: true
+  # 最大重试次数
+  max_retry: 5
+  # 并行工作线程数
+  max_workers: 4
+  # 批处理大小
+  batch_size: 4
+
+# ============================================================
+# 数据源配置
+# ============================================================
+data_source:
+  # 数据源类型: json, csv, milvus, qdrant, es
+  type: "json"
+  # 数据文件路径（相对于项目根目录或绝对路径）
+  path: "data/ir_papers.json"
+
+# ============================================================
+# Schema 配置（定义数据结构）
+# ============================================================
+schema:
+  name: paper
+  description: "学术论文数据结构，包含标题、摘要、作者等基本信息"
+  
+  # 字段定义
+  fields:
+    - name: arxiv_id
+      type: string
+      description: "论文的 arXiv ID（如 '2512.23647'）"
+      searchable: false
+      
+    - name: title
+      type: string
+      description: "论文标题"
+      searchable: true
+      
+    - name: abstract
+      type: string
+      description: "论文摘要"
+      searchable: true
+      
+    - name: arxiv_url
+      type: string
+      description: "论文 arXiv 链接"
+      searchable: false
+      
+    - name: authors
+      type: array
+      description: "作者列表"
+      searchable: false
+      
+    - name: date
+      type: date
+      description: "发布日期（如 '2025-12-29'）"
+      searchable: false
+      filterable: true
+      operators:
+        - eq
+        - gt
+        - lt
+        - gte
+        - lte
+        - range
+
+  # 示例查询（用于提示 LLM）
+  example_queries:
+    - "找一下关于 RAG 和检索增强生成的最新论文"
+    - "帮我找2024年发布的信息检索方向高分论文"
+    - "有什么关于 Agent 智能体的研究吗？"
+    - "搜索关于大语言模型推理能力的论文"
+
+# ============================================================
+# 调试选项
+# ============================================================
+# 是否启用调试模式
+debug: false
+# 是否使用 Mock LLM 响应（用于测试）
+mock_llm: false

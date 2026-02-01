@@ -10,7 +10,7 @@ from typing import Dict, Any, AsyncGenerator, List
 from datetime import datetime
 from concurrent.futures import ThreadPoolExecutor
 
-from src.crux import AgentGraph, CruxConfig
+from src.crux import AgentGraph, CruxConfig, load_config
 from src.crux.utils.callback import StreamCallback, set_global_callback
 from backend.models import (
     QueryRequest,
@@ -36,13 +36,21 @@ class PipelineService:
         key = self._get_cache_key(request)
         
         if key not in self._agent_cache:
-            config = CruxConfig(
-                data_source_type=request.data_source_type,
-                data_source_path=request.data_source_path or "/Users/mac/Projects/Crux/data/ir_papers.json",
-                schema_path=request.schema_path or "/Users/mac/Projects/Crux/data/paper_schema.yaml",
-                mock_llm=request.mock_llm,
-                debug=request.debug,
-            )
+            # 首先尝试从配置文件加载基础配置
+            config = load_config()
+            
+            # 根据请求参数覆盖配置
+            if request.data_source_type:
+                config.data_source_type = request.data_source_type
+            if request.data_source_path:
+                config.data_source_path = request.data_source_path
+            if request.schema_path:
+                config.schema_path = request.schema_path
+            if request.mock_llm is not None:
+                config.mock_llm = request.mock_llm
+            if request.debug is not None:
+                config.debug = request.debug
+            
             agent = AgentGraph(config)
             agent.build()
             self._agent_cache[key] = agent

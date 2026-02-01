@@ -67,8 +67,9 @@ export function useCruxPipeline() {
         body: JSON.stringify({
           query,
           data_source_type: 'json',
-          data_source_path: '/Users/mac/Projects/Crux/data/ir_papers.json',
-          schema_path: '/Users/mac/Projects/Crux/data/paper_schema.yaml',
+          // 留空让后端从 config.yaml 文件读取默认值
+          data_source_path: '',
+          schema_path: '',
           mock_llm: false,
           debug: false,
         }),

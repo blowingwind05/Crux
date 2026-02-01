@@ -187,12 +187,13 @@ class PipelineResponse(BaseModel):
 class ConfigResponse(BaseModel):
     """配置响应"""
     data_source_type: str
-    data_source_path: str
-    schema_path: str
+    data_source_path: Optional[str] = None
+    schema_path: Optional[str] = None
     mock_llm: bool
     debug: bool
     llm: Dict[str, Any] = Field(default_factory=dict)
     search: Dict[str, Any] = Field(default_factory=dict)
+    judge: Dict[str, Any] = Field(default_factory=dict)
 
 
 class HealthResponse(BaseModel):
