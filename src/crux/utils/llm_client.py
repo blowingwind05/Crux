@@ -1,32 +1,44 @@
 """
 LLM 客户端
 
-封装 OpenAI 兼容 API 的调用逻辑，支持 JSON 格式输出和 Mock 模式。
+封装 LLM 调用逻辑，支持多种模型和配置。
+支持批量并行调用和自动重试。
 """
 
 import json
-from typing import Optional, Dict, Any
+import logging
+from typing import Optional, Dict, Any, List
 from tqdm import tqdm
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
-from src.crux.utils.constants import SUCCESS, FAILURE
 from src.crux.config import CruxConfig
 
-import logging
 logging.basicConfig(
     format="%(asctime)s - %(levelname)s - %(message)s",
     datefmt="%Y-%m-%d %H:%M:%S",
     level=logging.INFO
 )
 
-class LLMClient:
-    """LLM 客户端，支持 OpenAI 兼容 API 和 Mock 测试模式"""
+# 内部状态标记，用于 batch_call_json 重试逻辑
+_SUCCESS = 'S'
+_FAILURE = 'F'
 
+
+class LLMClient:
+    """
+    LLM 客户端
+    
+    支持:
+    - OpenAI 兼容 API
+    - Mock 响应（用于测试）
+    - JSON 格式输出
+    - 批量并行调用与自动重试
+    """
+    
     def __init__(self, config: Optional[CruxConfig] = None):
-        """初始化客户端，支持传入自定义配置"""
         self.config = config or CruxConfig()
         self._client = None
-
+    
     @property
     def client(self):
         """延迟初始化 OpenAI 客户端"""
@@ -37,22 +49,44 @@ class LLMClient:
                 base_url=self.config.llm.base_url
             )
         return self._client
-
-    def call_json(self, prompt: str, model: Optional[str] = None) -> tuple[Dict[str, Any], str]:
+    
+    def call_json(self, prompt: str, model: Optional[str] = None) -> Dict[str, Any]:
         """
         调用 LLM 并返回 JSON 结果
-
+        
         Args:
             prompt: 提示词
-            model: 可选的模型名称，默认使用配置中的模型
-
+            model: 可选的模型名称
+            
         Returns:
-            (解析后的 JSON 对象, 状态码)
-            - 状态码 SUCCESS: 调用成功
-            - 状态码 FAILURE: 调用失败（返回 mock 数据作为 fallback）
+            解析后的 JSON 对象
         """
         if self.config.mock_llm:
-            return (self._mock_response(prompt), SUCCESS)
+            return self._mock_response(prompt)
+        
+        try:
+            response = self.client.chat.completions.create(
+                model=model or self.config.llm.model,
+                messages=[{"role": "user", "content": prompt}],
+                temperature=self.config.llm.temperature,
+                max_tokens=self.config.llm.max_tokens,
+                response_format={"type": "json_object"}
+            )
+            
+            content = response.choices[0].message.content
+            return json.loads(content)
+        except Exception as e:
+            logging.info(f"[LLM] 调用失败: {e}")
+            return self._mock_response(prompt)
+
+    def _call_json_with_status(self, prompt: str, model: Optional[str] = None) -> tuple:
+        """
+        内部方法：调用 LLM 并返回 (结果, 状态) 元组
+        
+        用于 batch_call_json 的重试逻辑
+        """
+        if self.config.mock_llm:
+            return (self._mock_response(prompt), _SUCCESS)
 
         try:
             response = self.client.chat.completions.create(
@@ -63,20 +97,22 @@ class LLMClient:
                 response_format={"type": "json_object"}
             )
             content = response.choices[0].message.content
-            return (json.loads(content), SUCCESS)
+            return (json.loads(content), _SUCCESS)
         except Exception as e:
             logging.info(f"[LLM] 调用失败: {e}")
-            return (self._mock_response(prompt), FAILURE)
+            return (self._mock_response(prompt), _FAILURE)
 
     def batch_call_json(
         self,
-        prompts: list[str],
+        prompts: List[str],
         model: Optional[str] = None,
         max_retry: int = 5,
         max_workers: int = 4
-    ) -> list[tuple[Dict[str, Any], str]]:
+    ) -> List[Dict[str, Any]]:
         """
         批量调用 LLM 并返回 JSON 结果
+
+        支持并行调用和自动重试失败的请求。
 
         Args:
             prompts: 提示词列表
@@ -86,12 +122,13 @@ class LLMClient:
 
         Returns:
             结果列表，顺序与输入 prompts 一致。
-            每个元素为 (解析后的 JSON 对象, 状态码) 元组。
+            每个元素为解析后的 JSON 对象。
         """
         if self.config.mock_llm:
-            return [(self._mock_response(prompt), SUCCESS) for prompt in prompts]
+            return [self._mock_response(prompt) for prompt in prompts]
 
-        results = [None] * len(prompts)
+        # 内部使用带状态的结果进行重试跟踪
+        results_with_status = [None] * len(prompts)
         idxs_to_retry = list(range(len(prompts)))
         current_prompts = prompts
         retry_count = 0
@@ -99,7 +136,7 @@ class LLMClient:
         while idxs_to_retry and retry_count < max_retry:
             with ThreadPoolExecutor(max_workers=max_workers) as executor:
                 futures = {
-                    executor.submit(self.call_json, current_prompts[i], model): i
+                    executor.submit(self._call_json_with_status, current_prompts[i], model): i
                     for i in range(len(current_prompts))
                 }
                 for future in tqdm(
@@ -109,28 +146,21 @@ class LLMClient:
                 ):
                     sub_idx = futures[future]
                     idx = idxs_to_retry[sub_idx]
-                    results[idx] = future.result()
+                    results_with_status[idx] = future.result()
 
             # 收集失败的请求索引，准备重试
-            idxs_to_retry = [i for i, x in enumerate(results) if x and x[1] == FAILURE]
+            idxs_to_retry = [i for i, x in enumerate(results_with_status) if x and x[1] == _FAILURE]
             current_prompts = [prompts[i] for i in idxs_to_retry]
             retry_count += 1
 
-        return results
-
+        # 提取结果（去除状态标记）
+        return [r[0] for r in results_with_status]
+    
     def _mock_response(self, prompt: str) -> Dict[str, Any]:
         """
-        Mock 响应，用于测试环境
-
-        根据 prompt 中的关键字返回对应的 mock 数据。
-
-        匹配规则:
-        - "Strategy Planner" 或 "信息覆盖" -> Gap analysis 响应
-        - "Critical Judge" 或 "研判" -> Adjudication 响应
-          - 如果 prompt 中包含 k=... 或 {k} 参数 -> Multi adjudication 响应 (judgements 数组)
-          - 否则 -> Single adjudication 响应
-        - "Intent Parsing" 或 "意图解析" -> Intent parsing 响应
-        - 其他 -> 默认响应
+        Mock 响应 - 用于测试
+        
+        根据 prompt 内容返回不同的 mock 数据
         """
         # Gap analysis
         if "Strategy Planner" in prompt or "信息覆盖" in prompt:
@@ -138,16 +168,15 @@ class LLMClient:
                 "status": "sufficient",
                 "missing_info": None
             }
-
-        # Adjudication - Multi 模式 (通过 Doc[i] 判断)
+        
+        # Adjudication
         if "Critical Judge" in prompt or "研判" in prompt:
-            # Single adjudication 响应
             return {
                 "relevance": "Perfectly Relevant",
                 "evidence": ["这是一篇关于信息检索的重要论文。", "提出了新颖的检索增强方法。"],
                 "reason": "内容与查询直接相关"
             }
-
+        
         # Intent parsing
         if "Intent Parsing" in prompt or "意图解析" in prompt:
             return {
@@ -162,7 +191,7 @@ class LLMClient:
                 "rubric": "文档必须与信息检索或 RAG 技术相关",
                 "missing_info_gap": None
             }
-
+        
         # Default
         return {
             "user_goal": "FACTUAL",

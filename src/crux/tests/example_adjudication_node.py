@@ -38,8 +38,8 @@ def run_adjudication_example():
     config_dict = {
         "llm": {
             "api_key": "Empty",
-            "base_url": "http://localhost:8000/v1",
-            "model": "Qwen3-8B",
+            "base_url": "https://aicloud.oneainexus.cn:30013/inference/aicloud-yanqiang/qwen3-32b-server/v1",
+            "model": "Qwen/Qwen3-32B",
             "temperature": 0.7,
             "max_tokens": 32768
         },

@@ -87,18 +87,13 @@ class AdjudicationNode(BaseNode):
                 max_workers=self.max_workers,
                 max_retry=self.max_retry
             )
-            # 解析结果 (batch_call_json 返回 [(result, status), ...])
-            parsed_results = []
-            for result, status in results:
-                parsed_results.append(result)
-            results = parsed_results
+            # batch_call_json 直接返回 List[Dict[str, Any]]
         else:
             # 使用 call_json 串行调用
-            parsed_results = []
+            results = []
             for prompt in prompts:
-                result, status = self.llm_client.call_json(prompt)
-                parsed_results.append(result)
-            results = parsed_results
+                result = self.llm_client.call_json(prompt)
+                results.append(result)
 
         # ==================== 步骤 3: 处理结果并过滤 ====================
         for idx, doc in enumerate(docs):
