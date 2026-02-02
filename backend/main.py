@@ -9,6 +9,7 @@ from contextlib import asynccontextmanager
 from pathlib import Path
 import sys
 sys.path.append('/Users/mac/Projects/Crux/')
+sys.path.append('G:/Projects/Crux')
 from datetime import datetime
 import os
 import uvicorn

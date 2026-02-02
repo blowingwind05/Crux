@@ -25,7 +25,7 @@ search:
   # 最大迭代次数
   max_iterations: 3
   # 每次检索返回的文档数
-  top_k: 2
+  top_k: 10
   # 是否使用 BM25 稀疏检索
   use_bm25: true
   # 是否使用向量检索

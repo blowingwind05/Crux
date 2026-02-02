@@ -10,12 +10,12 @@ from src.crux import AgentGraph, load_config
 
 
 def main():
-    # 从配置文件加载配置（优先读取 .config.yaml）
+    # 从配置文件加载配置（优先读取 config.yaml）
     # 如果没有配置文件，则使用默认值
     config = load_config()
     
     # 或者手动指定配置文件路径:
-    # config = load_config("path/to/.config.yaml")
+    # config = load_config("path/to/config.yaml")
     
     # 打印加载的配置信息
     print(f"[CONFIG] 数据源: {config.data_source_type}")
