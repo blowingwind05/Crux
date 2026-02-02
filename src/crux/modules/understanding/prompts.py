@@ -59,10 +59,17 @@ You must output a SINGLE valid JSON object based on the following structure:
   "information_facets": [
     {
       "facet_id": "F1",
-      "facet_type": "CAUSE | CONSEQUENCE | DEFINITION | SOLUTION",
+      "facet_type": "EVIDENCE | CAUSE | CONSEQUENCE | DEFINITION | SOLUTION",
+      "description": "Natural language description of this sub-need",
+      "dependency": "null or previous facet_id"
+    },
+    {
+      "facet_id": "F2",
+      "facet_type": "EVIDENCE | CAUSE | CONSEQUENCE | DEFINITION | SOLUTION",
       "description": "Natural language description of this sub-need",
       "dependency": "null or previous facet_id"
     }
+    ...
   ],
   "retrieval_execution": {
     "sparse_keywords": [{"term": "string", "weight": float}],
@@ -114,6 +121,13 @@ Output:
       "facet_id": "F1",
       "facet_type": "EVIDENCE",
       "description": "Log entries matching the exception pattern"
+      "dependency": "null"
+    },
+    {
+      "facet_id": "F2",
+      "facet_type": "CAUSE",
+      "description": "Likely root causes or triggering conditions of these TimeoutExceptions as visible in the logs",
+      "dependency": "F1"
     }
   ],
   "retrieval_execution": {

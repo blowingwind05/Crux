@@ -30,7 +30,7 @@ Role:
 You are the **Critical Judge**.
 
 Given:
-- The user question
+- The User Question
 {query}
 - Rubric
 {rubric}
@@ -63,7 +63,7 @@ Role:
 You are the **Critical Judge**.
 
 Given:
-- The user question
+- The User Question
 {query}
 - Rubric
 {rubric}
