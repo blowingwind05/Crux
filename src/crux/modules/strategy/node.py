@@ -66,7 +66,7 @@ class GapAnalysisNode(BaseNode):
         
         # 构建 prompt 并调用 LLM
         self.log("调用 LLM 进行覆盖度分析...")
-        prompt = get_gap_analysis_prompt(query=query, evidence=evidence_text)
+        prompt = get_gap_analysis_prompt(query=query, evidence=evidence_text, facets=facets)
         analysis = self.llm_client.call_json(prompt)
         
         # 解析分析结果

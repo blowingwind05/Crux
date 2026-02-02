@@ -34,10 +34,33 @@ def run_gap_analysis_example():
     # ========================================
     # 1. 创建配置
     # ========================================
-    config = CruxConfig(
-        mock_llm=False,
-        debug=True,
-    )
+    config_dict = {
+        "llm": {
+            "api_key": "Empty",
+            "base_url": "https://aicloud.oneainexus.cn:30013/inference/aicloud-yanqiang/qwen3-32b-server/v1",
+            "model": "Qwen/Qwen3-32B",
+            "temperature": 0.7,
+            "max_tokens": 32768
+        },
+        "judge": {
+            "use_parallel": True,
+            "max_retry": 5,
+            "max_workers": 4,
+            "batch_size": 4
+        },
+        "search": {
+            "max_iterations": 3,
+            "top_k": 2,
+            "use_bm25": True,
+            "use_vector": True,
+            "use_metadata_filter": True
+        },
+        "schema_path": "config/paper_schema.yaml",
+        "mock_llm": False,
+        "debug": True,
+    }
+    config = CruxConfig.from_dict(config_dict)
+
     # 设置最大迭代次数
     config.search.max_iterations = 3
 
@@ -88,7 +111,15 @@ def run_gap_analysis_example():
     mock_evidence = mock_evidence_sufficient if use_sufficient else mock_evidence_insufficient
 
     input_state: Dict[str, Any] = {
-        "user_query": "帮我全面介绍RAG检索增强生成技术，包括基本原理、优势和最新进展",
+        "user_query": "帮我全面介绍RAG检索增强生成技术",
+        "informative_facets": [
+            {
+            "facet_id": "F1",
+            "facet_type": "DEFINITION",
+            "description": "RAG（Retrieval-Augmented Generation）的核心定义、基本工作流程和关键组成模块",
+            "dependency": "null"
+            }
+        ],
         "verified_evidence": mock_evidence,
         "search_iteration": 0,  # 当前迭代次数
     }
