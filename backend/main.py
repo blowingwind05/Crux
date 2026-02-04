@@ -8,8 +8,8 @@ Crux AgenticRAG Backend API
 from contextlib import asynccontextmanager
 from pathlib import Path
 import sys
-sys.path.append('/Users/mac/Projects/Crux/')
-sys.path.append('G:/Projects/Crux')
+
+sys.path.append(str(Path(__file__).parent.parent))
 from datetime import datetime
 import os
 import uvicorn
