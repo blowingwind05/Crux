@@ -6,6 +6,7 @@ __pycache__/*
 .jbeval
 ppts
 .idea
+.vscode
 skills
 __pycache__
 frontend/node_modules
