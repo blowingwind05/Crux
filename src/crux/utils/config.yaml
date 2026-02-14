@@ -1,0 +1,28 @@
+# IR Papers Retrieval System Configuration
+data_path: "./"
+json_file: "ir_papers.json"
+
+# Embeddings Storage
+papers_embeddings_save_path: "./data/embeddings/"
+papers_index_save_path: "./data/bm25_index/"
+
+# Embedding API Configuration (DMXAPI .com)
+use_api_emb: true
+api_key_emb: "sk-ar5BCVAl0YZWGZEqvA18Z6uKUHHhacFYpWsWJoEFPqLDbOPa"
+base_url_emb: "https://www.dmxapi.com/v1/"  # 注意是 .com
+model_emb: "qwen3-embedding-8b"
+
+# Rerank API Configuration (DMXAPI .cn)
+use_api_rerank: true
+api_key_rerank: "sk-4hASE0X4XFKhQHOUGmdKEBN54p0N7nAWEkMzDMiGXVXfndEH"
+base_url_rerank: "https://www.dmxapi.cn/v1/"  # 注意是 .cn
+model_rerank: "bge-reranker-v2-m3-free"
+
+top_k_retrieval: 60
+top_k_final: 10
+batch_size: 8
+device: "cuda"  # Will be overridden if CUDA not available
+max_retries: 3
+fusion_k: 60
+
+rerank: true

@@ -40,8 +40,8 @@ class PipelineService:
             config = load_config()
             
             # 根据请求参数覆盖配置
-            if request.data_source_type:
-                config.data_source_type = request.data_source_type
+            # if request.data_source_type:
+            #     config.data_source_type = request.data_source_type
             if request.data_source_path:
                 config.data_source_path = request.data_source_path
             if request.schema_path:

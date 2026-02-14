@@ -286,8 +286,10 @@ def load_config(config_path: Optional[str] = None) -> CruxConfig:
     found_path = find_config_file(config_path)
     
     if found_path:
+        print(f"加载配置文件: {found_path}")
         return CruxConfig.from_yaml(found_path)
-    
+    else: 
+        print("未找到配置文件，使用默认配置")
     # 返回默认配置
     return CruxConfig()
 
