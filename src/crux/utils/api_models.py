@@ -53,6 +53,11 @@ class APIEmbeddingModel:
 
         all_embeddings = np.array(all_embeddings)
 
+        if len(all_embeddings) == 0:
+            if convert_to_tensor:
+                return torch.empty(0)
+            return all_embeddings
+
         if normalize_embeddings:
             norms = np.linalg.norm(all_embeddings, axis=1, keepdims=True)
             # 避免除以 0

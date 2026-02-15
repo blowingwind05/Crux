@@ -85,34 +85,54 @@ class HybridRetriever:
     def hybrid_search(self, queries, query_tokens, top_k):
         self.get_papers_embeddings()
         self.get_papers_bm25()
-        # CPU Search
-        queries_emb = self.model_emb.encode(
-            queries,convert_to_tensor=True, normalize_embeddings=True
-        )
-        hits_list = util.semantic_search(queries_emb, self.papers_embeddings, top_k=top_k)
-        dense_res = []
-        for i, hits in enumerate(hits_list):
-            dense_res.append({self.df_papers.iloc[h["corpus_id"]]["arxiv_id"]: h["score"] for h in hits})
-        # First fusion (if multiple queries)
-        if len(dense_res) > 1:
-            dense_fused = {}
-            for arxiv_id in set().union(*[set(res.keys()) for res in dense_res]):
-                r = {}
-                for i, res in enumerate(dense_res):
-                    r[i] = list(res).index(arxiv_id) if arxiv_id in res else 2 * top_k
-                dense_fused[arxiv_id] = sum([1 / (CONFIG["fusion_k"] + r[i]) for i in range(len(dense_res))])
-            dense_fused = sorted(dense_fused.items(), key=lambda x: x[1], reverse=True)
-            dense_res = {arxiv_id: score for arxiv_id, score in dense_fused}
+        print(f"[HybridRetriever] Starting hybrid search for queries: {queries} with tokens: {query_tokens}")
+        
+        # Dense Search
+        dense_res = {}
+        if queries:
+            print(f"[HybridRetriever] Encoding queries: {len(queries)} queries")
+            queries_emb = self.model_emb.encode(
+                queries, convert_to_tensor=True, normalize_embeddings=True, show_progress_bar=True
+            )
+            print(f"[HybridRetriever] Query embeddings computed. Shape: {queries_emb.shape}")
+            hits_list = util.semantic_search(queries_emb, self.papers_embeddings, top_k=top_k)
+            
+            dense_res_list = []
+            for i, hits in enumerate(hits_list):
+                dense_res_list.append({self.df_papers.iloc[h["corpus_id"]]["arxiv_id"]: h["score"] for h in hits})
+            
+            print(f"[HybridRetriever] Dense search done. Top candidate counts: {[len(res) for res in dense_res_list]}")
+            
+            # First fusion (if multiple queries)
+            if len(dense_res_list) > 1:
+                dense_fused = {}
+                for arxiv_id in set().union(*[set(res.keys()) for res in dense_res_list]):
+                    r = {}
+                    for i, res in enumerate(dense_res_list):
+                        r[i] = list(res).index(arxiv_id) if arxiv_id in res else 2 * top_k
+                    dense_fused[arxiv_id] = sum([1 / (CONFIG["fusion_k"] + r[i]) for i in range(len(dense_res_list))])
+                dense_fused = sorted(dense_fused.items(), key=lambda x: x[1], reverse=True)
+                dense_res = {arxiv_id: score for arxiv_id, score in dense_fused}
+            else:
+                dense_res = dense_res_list[0] if dense_res_list else {}
+            print(f"[HybridRetriever] Dense fusion done. Candidates after fusion: {len(dense_res)}")
         else:
-            # Single query, just use the results directly
-            dense_res = dense_res[0] if dense_res else {}
-
+            print("[HybridRetriever] No queries provided, skipping dense search.")
         # Sparse Search (BM25)
-        docs, scores = self.papers_bm25.retrieve(query_tokens, k=top_k)
-        sparse_res = {
-            self.df_papers.iloc[docs[0][i]]["arxiv_id"]: scores[0][i]
-            for i in range(len(docs[0]))
-        }
+        sparse_res = {}
+        # 检查 query_tokens 是否有效 (例如 [[]] 或 [])
+        has_tokens = any(len(t) > 0 for t in query_tokens) if query_tokens else False
+        
+        if has_tokens:
+            docs, scores = self.papers_bm25.retrieve(query_tokens, k=top_k)
+            if len(docs) > 0 and len(docs[0]) > 0:
+                sparse_res = {
+                    self.df_papers.iloc[docs[0][i]]["arxiv_id"]: scores[0][i]
+                    for i in range(len(docs[0]))
+                }
+            print(f"[HybridRetriever] Sparse search done. Candidates: {len(sparse_res)}")
+        else:
+            print("[HybridRetriever] No tokens provided, skipping sparse search.")
 
         # Fusion
         fused = {}
@@ -120,9 +140,9 @@ class HybridRetriever:
             r_dense = list(dense_res).index(arxiv_id) if arxiv_id in dense_res else 2 * top_k
             r_sparse = list(sparse_res).index(arxiv_id) if arxiv_id in sparse_res else 2 * top_k
             fused[arxiv_id] = (1 / (CONFIG["fusion_k"] + r_dense)) + (1 / (CONFIG["fusion_k"] + r_sparse))
-
+        print(f"[HybridRetriever] Final fusion done. Total candidates: {len(fused)}")
         return sorted(fused.items(), key=lambda x: x[1], reverse=True)[:top_k]
-
+        
     def rerank(self, query, candidates, top_k):
         pairs = []
         valid_ids = []
