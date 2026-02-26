@@ -6,7 +6,10 @@ __pycache__/*
 .jbeval
 ppts
 .idea
+.vscode
 skills
 __pycache__
 frontend/node_modules
 frontend/package-lock.json
+data/embeddings/
+data/bm25_index/

@@ -5,7 +5,7 @@
 """
 
 from typing import Optional
-from src.crux.config import CruxConfig
+from src.crux.config import get_config, CruxConfig
 
 
 def get_data_loader(config: Optional[CruxConfig] = None):
@@ -18,7 +18,7 @@ def get_data_loader(config: Optional[CruxConfig] = None):
     Returns:
         数据加载器实例
     """
-    config = config or CruxConfig()
+    config = config or get_config()
     
     if config.data_source_type == "json":
         from src.crux.data.loaders.json_loader import JsonDataLoader
@@ -31,7 +31,10 @@ def get_data_loader(config: Optional[CruxConfig] = None):
     elif config.data_source_type in ("milvus", "qdrant", "es"):
         from src.crux.data.loaders.vector_db import VectorDBLoader
         return VectorDBLoader(config)
-    
+    elif config.data_source_type == "hybrid":
+        print(f"[DataModule] 使用混合检索数据加载器, 路径: {config.data_source_path}")
+        from src.crux.data.loaders.hybrid_db import HybridDataLoader
+        return HybridDataLoader(config)
     else:
         raise ValueError(f"不支持的数据源类型: {config.data_source_type}")
 

@@ -51,7 +51,7 @@ judge:
 # ============================================================
 data_source:
   # 数据源类型: json, csv, milvus, qdrant, es
-  type: "json"
+  type: "hybrid"
   # 数据文件路径（相对于项目根目录或绝对路径）
   path: "data/ir_papers.json"
 
