@@ -215,8 +215,9 @@ class APIEmbeddingModel:
         self.model_name = model_name
         self.max_retries = max_retries
 
-    def encode(self, sentences, batch_size=32, normalize_embeddings=True, show_progress_bar=False):
+    def encode(self, sentences, batch_size=32, convert_to_tensor=False, normalize_embeddings=True, show_progress_bar=False):
         import numpy as np
+
         if isinstance(sentences, str):
             sentences = [sentences]
 

@@ -23,51 +23,27 @@ class HybridRetriever:
     """混合检索引擎（BM25 + Dense + Rerank）"""
 
     def __init__(self, df_papers, retriever_cfg: RetrieverConfig):
-        import torch
 
         self.df_papers = df_papers
         self.cfg = retriever_cfg
 
-        # ---- Embedding 模型 ----
-        if self.cfg.use_api_emb:
-            print(f"Using API for embeddings ({self.cfg.model_emb})")
-            self.model_emb = APIEmbeddingModel(
-                model_name=self.cfg.model_emb,
-                api_key=self.cfg.api_key_emb,
-                base_url=self.cfg.base_url_emb,
-                max_retries=self.cfg.max_retries,
-            )
-        else:
-            from sentence_transformers import SentenceTransformer
-            print(f"Using Local Model for embeddings ({self.cfg.model_emb})")
-            self.model_emb = SentenceTransformer(
-                self.cfg.model_emb,
-                device=self.cfg.device,
-                model_kwargs={
-                    "torch_dtype": torch.float16 if "cuda" in str(self.cfg.device) else torch.float32
-                },
-            )
+        # ---- Embedding 模型 (API) ----
+        print(f"Using API for embeddings ({self.cfg.model_emb})")
+        self.model_emb = APIEmbeddingModel(
+            model_name=self.cfg.model_emb,
+            api_key=self.cfg.api_key_emb,
+            base_url=self.cfg.base_url_emb,
+            max_retries=self.cfg.max_retries,
+        )
 
-        # ---- Reranker 模型 ----
-        if self.cfg.use_api_rerank:
-            print(f"Using API Reranker ({self.cfg.model_rerank})...")
-            self.reranker = APIReranker(
-                model_name=self.cfg.model_rerank,
-                api_key=self.cfg.api_key_rerank,
-                base_url=self.cfg.base_url_rerank,
-                max_retries=self.cfg.max_retries,
-            )
-        else:
-            from sentence_transformers import CrossEncoder
-            print(f"Loading local Reranker ({self.cfg.model_rerank})...")
-            self.reranker = CrossEncoder(
-                self.cfg.model_rerank,
-                device=self.cfg.device,
-                max_length=512,
-                automodel_args={
-                    "dtype": torch.float16 if "cuda" in str(self.cfg.device) else torch.float32
-                },
-            )
+        # ---- Reranker 模型 (API) ----
+        print(f"Using API Reranker ({self.cfg.model_rerank})...")
+        self.reranker = APIReranker(
+            model_name=self.cfg.model_rerank,
+            api_key=self.cfg.api_key_rerank,
+            base_url=self.cfg.base_url_rerank,
+            max_retries=self.cfg.max_retries,
+        )
 
     # ----------------------------------------------------------
     # BM25 索引
@@ -123,7 +99,7 @@ class HybridRetriever:
     # 混合检索
     # ----------------------------------------------------------
     def hybrid_search(self, queries, query_tokens, top_k):
-        from sentence_transformers import util
+        import numpy as np
 
         self.get_papers_embeddings()
         self.get_papers_bm25()
@@ -134,10 +110,21 @@ class HybridRetriever:
         if queries:
             print(f"[HybridRetriever] Encoding queries: {len(queries)} queries")
             queries_emb = self.model_emb.encode(
-                queries, convert_to_tensor=True, normalize_embeddings=True, show_progress_bar=True
+                queries, convert_to_tensor=False, normalize_embeddings=True, show_progress_bar=True
             )
+            queries_emb = np.array(queries_emb)
             print(f"[HybridRetriever] Query embeddings computed. Shape: {queries_emb.shape}")
-            hits_list = util.semantic_search(queries_emb, self.papers_embeddings, top_k=top_k)
+
+            # Numpy-based semantic search (cosine similarity on normalized vectors)
+            corpus_emb = np.array(self.papers_embeddings)
+            scores = queries_emb @ corpus_emb.T  # cosine similarity for normalized vectors
+            n_papers = len(self.df_papers)
+            hits_list = []
+            for q_scores in scores:
+                top_indices = np.argsort(-q_scores)[:top_k]
+                hits_list.append(
+                    [{"corpus_id": int(idx), "score": float(q_scores[idx])} for idx in top_indices if idx < n_papers]
+                )
 
             dense_res_list = []
             for i, hits in enumerate(hits_list):
@@ -173,10 +160,12 @@ class HybridRetriever:
 
         if has_tokens:
             docs, scores = self.papers_bm25.retrieve(query_tokens, k=top_k)
+            n_papers = len(self.df_papers)
             if len(docs) > 0 and len(docs[0]) > 0:
                 sparse_res = {
                     self.df_papers.iloc[docs[0][i]]["arxiv_id"]: scores[0][i]
                     for i in range(len(docs[0]))
+                    if docs[0][i] < n_papers
                 }
             print(f"[HybridRetriever] Sparse search done. Candidates: {len(sparse_res)}")
         else:
