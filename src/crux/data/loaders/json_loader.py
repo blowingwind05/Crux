@@ -9,9 +9,8 @@ import random
 from pathlib import Path
 from typing import List, Dict, Any, Optional
 
-from src.crux.data.loaders.base import BaseDataLoader
+from src.crux.data.loaders.base import BaseDataLoader, apply_constraints
 from src.crux.config import CruxConfig
-from src.crux.utils.constraints import apply_constraints
 
 
 class JsonDataLoader(BaseDataLoader):

@@ -78,6 +78,35 @@ class SearchConfig:
     use_metadata_filter: bool = True
 
 
+@dataclass
+class RetrieverConfig:
+    """混合检索器配置（Embedding / Rerank / BM25）"""
+    # 索引存储路径
+    papers_embeddings_save_path: str = "./data/embeddings/"
+    papers_index_save_path: str = "./data/bm25_index/"
+
+    # Embedding API
+    use_api_emb: bool = True
+    api_key_emb: str = ""
+    base_url_emb: str = "https://www.dmxapi.com/v1/"
+    model_emb: str = "qwen3-embedding-8b"
+
+    # Rerank API
+    use_api_rerank: bool = True
+    api_key_rerank: str = ""
+    base_url_rerank: str = "https://www.dmxapi.cn/v1/"
+    model_rerank: str = "bge-reranker-v2-m3-free"
+
+    # 检索参数
+    top_k_retrieval: int = 60
+    top_k_final: int = 10
+    batch_size: int = 8
+    device: str = "cuda"
+    max_retries: int = 3
+    fusion_k: int = 60
+    rerank: bool = True
+
+
 @dataclass 
 class SchemaConfig:
     """Schema 配置 - 从 YAML 加载"""
@@ -123,6 +152,7 @@ class CruxConfig:
     llm: LLMConfig = field(default_factory=LLMConfig)
     judge: JudgeConfig = field(default_factory=JudgeConfig)
     search: SearchConfig = field(default_factory=SearchConfig)
+    retriever: RetrieverConfig = field(default_factory=RetrieverConfig)
     
     # 数据源配置
     data_source_type: str = "json"  # json, csv, milvus, qdrant, es
@@ -184,6 +214,28 @@ class CruxConfig:
             use_metadata_filter=search_data.get("use_metadata_filter", True),
         )
         
+        # 处理混合检索器配置
+        retriever_data = config_dict.get("retriever", {})
+        retriever_config = RetrieverConfig(
+            papers_embeddings_save_path=retriever_data.get("papers_embeddings_save_path", "./data/embeddings/"),
+            papers_index_save_path=retriever_data.get("papers_index_save_path", "./data/bm25_index/"),
+            use_api_emb=retriever_data.get("use_api_emb", True),
+            api_key_emb=retriever_data.get("api_key_emb", ""),
+            base_url_emb=retriever_data.get("base_url_emb", "https://www.dmxapi.com/v1/"),
+            model_emb=retriever_data.get("model_emb", "qwen3-embedding-8b"),
+            use_api_rerank=retriever_data.get("use_api_rerank", True),
+            api_key_rerank=retriever_data.get("api_key_rerank", ""),
+            base_url_rerank=retriever_data.get("base_url_rerank", "https://www.dmxapi.cn/v1/"),
+            model_rerank=retriever_data.get("model_rerank", "bge-reranker-v2-m3-free"),
+            top_k_retrieval=retriever_data.get("top_k_retrieval", 60),
+            top_k_final=retriever_data.get("top_k_final", 10),
+            batch_size=retriever_data.get("batch_size", 8),
+            device=retriever_data.get("device", "cuda"),
+            max_retries=retriever_data.get("max_retries", 3),
+            fusion_k=retriever_data.get("fusion_k", 60),
+            rerank=retriever_data.get("rerank", True),
+        )
+
         # 处理数据源配置
         data_source = config_dict.get("data_source", {})
         data_source_type = data_source.get("type", config_dict.get("data_source_type", "json"))
@@ -194,6 +246,7 @@ class CruxConfig:
             llm=llm_config,
             judge=judge_config,
             search=search_config,
+            retriever=retriever_config,
             data_source_type=data_source_type,
             data_source_path=data_source_path,
             schema_path=config_dict.get("schema_path"),

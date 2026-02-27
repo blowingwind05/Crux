@@ -34,6 +34,35 @@ search:
   use_metadata_filter: true
 
 # ============================================================
+# 混合检索器配置（Embedding / Rerank / BM25）
+# ============================================================
+retriever:
+  # 索引存储路径
+  papers_embeddings_save_path: "./data/embeddings/"
+  papers_index_save_path: "./data/bm25_index/"
+
+  # Embedding API
+  use_api_emb: true
+  api_key_emb: ${RETRIEVER_EMB_API_KEY:your-embedding-api-key}
+  base_url_emb: "https://www.dmxapi.com/v1/"
+  model_emb: "qwen3-embedding-8b"
+
+  # Rerank API
+  use_api_rerank: true
+  api_key_rerank: ${RETRIEVER_RERANK_API_KEY:your-rerank-api-key}
+  base_url_rerank: "https://www.dmxapi.cn/v1/"
+  model_rerank: "bge-reranker-v2-m3-free"
+
+  # 检索参数
+  top_k_retrieval: 60
+  top_k_final: 10
+  batch_size: 8
+  device: "cuda"
+  max_retries: 3
+  fusion_k: 60
+  rerank: true
+
+# ============================================================
 # 研判配置
 # ============================================================
 judge:

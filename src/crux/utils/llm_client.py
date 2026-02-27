@@ -201,3 +201,127 @@ class LLMClient:
             "rubric": "相关内容",
             "missing_info_gap": None
         }
+
+
+class APIEmbeddingModel:
+    """API 嵌入模型
+
+    通过 OpenAI 兼容接口调用远程 Embedding 服务。
+    """
+
+    def __init__(self, model_name: str, api_key: str, base_url: str, max_retries: int = 3):
+        from openai import OpenAI
+        self.client = OpenAI(api_key=api_key, base_url=base_url)
+        self.model_name = model_name
+        self.max_retries = max_retries
+
+    def encode(self, sentences, batch_size=32, normalize_embeddings=True, show_progress_bar=False):
+        import numpy as np
+        if isinstance(sentences, str):
+            sentences = [sentences]
+
+        all_embeddings = []
+        for i in tqdm(range(0, len(sentences), batch_size), disable=not show_progress_bar, desc="API Embeddings"):
+            batch = sentences[i : i + batch_size]
+            for attempt in range(self.max_retries):
+                try:
+                    response = self.client.embeddings.create(
+                        input=batch,
+                        model=self.model_name,
+                        timeout=60
+                    )
+                    embeddings = [data.embedding for data in response.data]
+                    all_embeddings.extend(embeddings)
+                    break
+                except Exception as e:
+                    print(f"Embedding API Error (attempt {attempt + 1}/{self.max_retries}): {e}")
+                    if attempt == self.max_retries - 1:
+                        print("Max retries reached, using zero vectors as fallback")
+                        all_embeddings.extend([[0.0] * 1536 for _ in batch])
+                    else:
+                        import time
+                        time.sleep(1)
+
+        all_embeddings = np.array(all_embeddings)
+
+        if len(all_embeddings) == 0:
+            return all_embeddings
+
+        if normalize_embeddings:
+            norms = np.linalg.norm(all_embeddings, axis=1, keepdims=True)
+            norms[norms == 0] = 1e-10
+            all_embeddings = all_embeddings / norms
+
+        return all_embeddings
+
+
+class APIReranker:
+    """API 重排序模型
+
+    通过 HTTP 接口调用远程 Rerank 服务。
+    """
+
+    def __init__(self, model_name: str, api_key: str, base_url: str, max_retries: int = 3):
+        import requests as _requests  # noqa: F811
+        self.model_name = model_name
+        self.api_key = api_key
+        self.url = base_url.rstrip("/") + "/rerank" if "rerank" not in base_url else base_url
+        self.url = self.url.replace("//rerank", "/rerank")
+        self.max_retries = max_retries
+
+    def predict(self, sentences, batch_size=8, show_progress_bar=False):
+        import json as _json
+        import numpy as np
+        import requests
+
+        all_scores = []
+
+        for i in tqdm(range(0, len(sentences), batch_size), disable=not show_progress_bar, desc="API Rerank"):
+            batch = sentences[i : i + batch_size]
+
+            if not batch:
+                continue
+
+            current_query = batch[0][0]
+            current_documents = [pair[1] for pair in batch]
+
+            payload = {
+                "model": self.model_name,
+                "query": current_query,
+                "documents": current_documents,
+                "top_n": len(batch),
+                "return_documents": False
+            }
+
+            headers = {
+                "Authorization": f"Bearer {self.api_key}" if not self.api_key.startswith("Bearer") else self.api_key,
+                "Content-Type": "application/json"
+            }
+
+            for attempt in range(self.max_retries):
+                try:
+                    response = requests.post(self.url, headers=headers, data=_json.dumps(payload), timeout=60, verify=False)
+                    response.raise_for_status()
+                    result = response.json()
+
+                    if "results" in result:
+                        batch_scores = [0.0] * len(batch)
+                        for item in result["results"]:
+                            idx = item["index"]
+                            if idx < len(batch_scores):
+                                batch_scores[idx] = item["relevance_score"]
+                        all_scores.extend(batch_scores)
+                    else:
+                        print(f"Warning: 'results' key not found. Raw: {str(result)[:100]}")
+                        all_scores.extend([0.0] * len(batch))
+                    break
+                except Exception as e:
+                    print(f"API Rerank Request Failed (attempt {attempt + 1}/{self.max_retries}): {e}")
+                    if attempt == self.max_retries - 1:
+                        print("Max retries reached, using zero scores as fallback")
+                        all_scores.extend([0.0] * len(batch))
+                    else:
+                        import time
+                        time.sleep(1)
+
+        return np.array(all_scores)
