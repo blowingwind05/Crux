@@ -45,7 +45,12 @@ Tasks:
 
 2. Give the reason for the document's classification.
 
-3. Extract the specific evidence (quote or summary),
+3. Assign a relevance_score between 0.0 and 1.0:
+   - "Perfectly Relevant"  → 0.8–1.0
+   - "Somewhat Relevant"   → 0.4–0.79
+   - "Not Relevant"        → 0.0–0.39
+
+4. Extract the specific evidence (quote or summary),
    - Return [] if the document is classified as "Not Relevant"
    - Return a list of evidence if the document is classified as "Perfectly Relevant" or "Somewhat Relevant"
    - Focus on content that supports the rubric
@@ -53,6 +58,7 @@ Tasks:
 Output format (only JSON, nothing else): 
 {{
     "relevance": "Perfectly Relevant|Somewhat Relevant|Not Relevant",
+    "relevance_score": 0.85,
     "reason": "One short explanation of the classification",
     "evidence": ["quote or summary 1", "quote or summary 2", ...]
 }} 
@@ -78,7 +84,12 @@ Tasks:
 
 2. Give the reason for each document's classification.
 
-3. Extract the specific evidence (quote or summary),
+3. Assign a relevance_score between 0.0 and 1.0 for each document:
+   - "Perfectly Relevant"  → 0.8–1.0
+   - "Somewhat Relevant"   → 0.4–0.79
+   - "Not Relevant"        → 0.0–0.39
+
+4. Extract the specific evidence (quote or summary),
    - Return [] if the document is classified as "Not Relevant"
    - Return a list of evidence if the document is classified as "Perfectly Relevant" or "Somewhat Relevant"
    - Focus on content that supports the rubric
@@ -89,6 +100,7 @@ Output format (only JSON, nothing else):
     {{
       "document_id": 1,
       "relevance": "Perfectly Relevant|Somewhat Relevant|Not Relevant",
+      "relevance_score": 0.85,
       "reason": "One short explanation of the classification",
       "evidence": ["quote or summary 1", "quote or summary 2", ...]
     }},

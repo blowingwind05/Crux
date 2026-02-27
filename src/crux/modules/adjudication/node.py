@@ -118,7 +118,7 @@ class AdjudicationNode(BaseNode):
                     "content": evidence_text,
                     "reason": reason,
                     "source": doc.get("source", "unknown"),
-                    "relevance_score": result.get("relevance_score", 0.8),
+                    "relevance_score": result.get("relevance_score") or self._default_score(result.get("relevance", "")),
                     "facet_id": result.get("facet_id"),
                     "metadata": {
                         "title": doc.get("title", ""),
@@ -210,3 +210,12 @@ class AdjudicationNode(BaseNode):
             parts.append(f"全文: {doc['full_text'][:1000]}...")
 
         return "\n".join(parts) if parts else str(doc)
+
+    def _default_score(self, relevance: str) -> float:
+        """当 LLM 未返回 relevance_score 时，根据分类给出默认分数"""
+        mapping = {
+            "Perfectly Relevant": 0.9,
+            "Somewhat Relevant": 0.6,
+            "Not Relevant": 0.1,
+        }
+        return mapping.get(relevance, 0.5)

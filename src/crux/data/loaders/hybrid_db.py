@@ -9,6 +9,7 @@ import gc
 import json
 from pathlib import Path
 from typing import List, Dict, Any, Optional
+import pandas as pd
 
 from src.crux.data.loaders.base import BaseDataLoader, apply_constraints
 from src.crux.config import CruxConfig, RetrieverConfig
@@ -203,7 +204,7 @@ class HybridRetriever:
             pairs, batch_size=self.cfg.batch_size, show_progress_bar=False
         )
         scored = sorted(zip(valid_ids, scores), key=lambda x: x[1], reverse=True)
-        return [c[0] for c in scored[:top_k]]
+        return [(c[0], float(c[1])) for c in scored[:top_k]]
 
 
 # ============================================================
@@ -270,10 +271,10 @@ class HybridDataLoader(BaseDataLoader):
             self.load()
 
         # 1. 应用元数据过滤
+        print("constraints",constraints)
         filtered_docs = apply_constraints(self._data, constraints)
         print(f"[HybridDataLoader] 过滤后剩余: {len(filtered_docs)} 条")
 
-        import pandas as pd
 
         df_papers = pd.DataFrame(filtered_docs)
         df_papers.fillna("", inplace=True)
@@ -294,15 +295,19 @@ class HybridDataLoader(BaseDataLoader):
         doc_lookup = {doc["arxiv_id"]: doc for doc in filtered_docs}
         if not retriever_cfg.rerank:
             sorted_docs = []
-            for arxiv_id, _ in candidates:
+            for arxiv_id, score in candidates:
                 if arxiv_id in doc_lookup:
-                    sorted_docs.append(doc_lookup[arxiv_id])
+                    doc = doc_lookup[arxiv_id].copy()
+                    doc["score"] = float(score)
+                    sorted_docs.append(doc)
             return sorted_docs
         else:
             merged_query = " ".join(vector_queries)
             tops = retriever.rerank(merged_query, candidates, top_k)
             sorted_docs = []
-            for arxiv_id in tops:
+            for arxiv_id, score in tops:
                 if arxiv_id in doc_lookup:
-                    sorted_docs.append(doc_lookup[arxiv_id])
+                    doc = doc_lookup[arxiv_id].copy()
+                    doc["score"] = float(score)
+                    sorted_docs.append(doc)
             return sorted_docs

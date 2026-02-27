@@ -830,7 +830,7 @@ function CandidateCard({ doc, index }: { doc: CandidateDoc; index: number }) {
                     <div className="font-mono text-lg text-primary">
                         {((doc.score ?? 0) * 100).toFixed(0)}%
                     </div>
-                    <div className="text-xs text-muted-foreground">相关度</div>
+                    <div className="text-xs text-muted-foreground">相似度</div>
                 </div>
 
                 {isExpanded ? (
@@ -891,7 +891,7 @@ function EvidenceCard({ evidence, index }: { evidence: Evidence; index: number }
                         )}
 
                         <span className="ml-auto font-mono text-green-400">
-                            {((evidence.relevance_score ?? 0.8) * 100).toFixed(0)}% 相关
+                            {((evidence.relevance_score ?? 0.8) * 100).toFixed(0)}% 有用性
                         </span>
                     </div>
 

@@ -171,7 +171,7 @@ function RetrieveOutput({ data }: { data: { candidates: CandidateDoc[]; total_re
                 <div className="font-mono text-sm text-stage-retrieve">
                   {(doc.score * 100).toFixed(1)}%
                 </div>
-                <div className="text-xs text-muted-foreground">相关度</div>
+                <div className="text-xs text-muted-foreground">相关性</div>
               </div>
             </div>
           </motion.div>
