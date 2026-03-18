@@ -19,6 +19,12 @@ from .response import (
     ConfigResponse,
     HealthResponse,
 )
+from .inference import (
+    EmbeddingRequest,
+    EmbeddingResponse,
+    RerankRequest,
+    RerankResponse,
+)
 
 __all__ = [
     # Request models
@@ -39,4 +45,9 @@ __all__ = [
     "PipelineResponse",
     "ConfigResponse",
     "HealthResponse",
+    # Inference models
+    "EmbeddingRequest",
+    "EmbeddingResponse",
+    "RerankRequest",
+    "RerankResponse",
 ]

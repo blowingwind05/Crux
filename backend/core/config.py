@@ -25,7 +25,7 @@ class Settings(BaseSettings):
     )
     
     # 配置文件路径（默认使用 .config.yaml）
-    config_path: Optional[str] = Field(default=None)
+    config_path: Optional[str] = Field(default="/workspace/crux/Crux/config_arxiv_full.yaml")
     
     # 数据源默认配置（如果未指定 config_path 则使用）
     default_data_source_type: str = "json"

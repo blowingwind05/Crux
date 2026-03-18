@@ -37,7 +37,7 @@ class PipelineService:
         
         if key not in self._agent_cache:
             # 首先尝试从配置文件加载基础配置
-            config = load_config()
+            config = load_config("/workspace/crux/Crux/config_arxiv_full.yaml")
             
             # 根据请求参数覆盖配置
             # if request.data_source_type:

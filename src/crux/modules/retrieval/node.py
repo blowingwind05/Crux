@@ -76,23 +76,8 @@ class RetrievalNode(BaseNode):
                 "filters": structured
             })
         
-        # 执行 BM25 检索
-        self.log("执行 BM25 稀疏检索...")
-        bm25_results = self._bm25_search(keywords)
-        self.log(f"BM25 召回: {len(bm25_results)} 篇文档")
-        
-        # 执行向量检索
-        self.log("执行向量语义检索...")
-        vector_results = self._vector_search(vector_queries)
-        self.log(f"向量召回: {len(vector_results)} 篇文档")
-        
-        # 执行过滤
-        self.log("应用元数据过滤...")
-        filter_results = self._filter_search(constraints)
-        self.log(f"过滤通过: {len(filter_results)} 篇文档")
-        
-        # 融合结果
-        self.log("融合多路召回结果...")
+        # 执行混合检索（BM25 + 向量 + 过滤 一次性完成）
+        self.log("执行混合检索 (BM25 + 向量 + 过滤)...")
         docs = self.hybrid_search(keywords, vector_queries, constraints)
         
         # 标记来源
@@ -102,8 +87,8 @@ class RetrievalNode(BaseNode):
         
         self.log(f"最终召回文档数: {len(docs)}", details={
             "total": len(docs),
-            "bm25_count": len(bm25_results),
-            "vector_count": len(vector_results),
+            "keywords_count": len(keywords),
+            "queries_count": len(vector_queries),
             "top_k": self.config.search.top_k,
         })
         
