@@ -62,12 +62,10 @@ class UnderstandingNode(BaseNode):
 
         # 调用 LLM 生成结构化意图
         self.log("调用 LLM 进行意图解析...", details={"model": self.config.llm.model})
-        intent_json = self.llm_client.call_json(prompt)
+        intent_obj = self.llm_client.call_json_with_object(prompt, response_object=IntentObject)
 
         # 使用 Pydantic 校验和转换
         try:
-            intent_obj = IntentObject(**intent_json)
-            
             # 记录解析结果
             cognitive = intent_obj.cognitive_strategy
             self.log(f"识别用户目标: {cognitive.user_goal}")
@@ -75,9 +73,9 @@ class UnderstandingNode(BaseNode):
             
             # 记录约束条件
             constraints = intent_obj.constraints
-            structured_count = len(constraints.get("structured_metadata", []))
-            pattern_count = len(constraints.get("unstructured_content_patterns", []))
-            self.log(f"提取约束条件: {structured_count} 个结构化约束, {pattern_count} 个内容模式")
+            structured_count = constraints.structured_metadata
+            pattern_count = constraints.unstructured_content_patterns
+            self.log(f"提取约束条件: {len(structured_count)} 个结构化约束, {len(pattern_count)} 个内容模式")
             
             # 记录信息面
             facets = intent_obj.information_facets

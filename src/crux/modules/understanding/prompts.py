@@ -9,7 +9,7 @@
 # =============================================================================
 
 
-INTENT_PARSING_PROMPT: str = """
+INTENT_PARSING_PROMPT_PAST: str = """
 # Role Definition
 You are the **Intent Parsing Engine** for an advanced Agentic RAG system. Your goal is to translate user natural language queries into a machine-readable `IntentObject` JSON format.
 Your goal is to parse the user query into a machine-readable `IntentObject` JSON format.
@@ -25,7 +25,7 @@ Before generating JSON, perform the following analysis internally:
 1.  **Analyze User Goal:** Is the user exploring, fact-checking, or debugging?
 2.  **Identify Hard Constraints:**
     - Is there a time range? (Metadata)
-    - Is there a specific string pattern (e.g., "Error 502") that must appear? (Content Grep)
+    - Is there a specific string pattern that must appear? (Content Grep)
 3.  **Decompose Information Needs:** Break complex questions into atomic "Facets" (sub-questions).
 4.  **Formulate Retrieval Strategy:**
     - What keywords work for BM25?
@@ -149,6 +149,56 @@ User Query: {{user_query}}
 
 Output JSON:
 """
+
+INTENT_PARSING_PROMPT: str = """
+# Role Definition
+You are the **Intent Parsing Engine** for an advanced Agentic RAG system. Your goal is to translate user natural language queries into a machine-readable `IntentObject` JSON format.
+Your goal is to parse the user query into a machine-readable `IntentObject` JSON format.
+Your analysis must bridge the gap between human ambiguity and rigorous database/search engine execution logic.
+
+# Workflow (Thinking Process)
+Before generating JSON, perform the following analysis internally:
+
+1. **Decide Cognitive Strategy:**
+   - Identify user goal: Identify the fundamental intent of the query. (INVESTIGATIVE / FACTUAL / DEBUGGING / COMPARATIVE)
+   - Decide reasoning topology: Decide on the reasoning pattern. (CAUSAL_CHAIN / TEMPORAL_SEQUENCE / FLAT_LIST)
+   - Determine depth requirement: Decide how deep the analysis should be. (DEEP / SHALLOW)
+
+2. **Identify Constraints (Optional):**
+   - Structured Metadata Constraints: Identify any specific attributes of documents to filter on. (e.g., source=prod, year>2020)
+     - field: year / category / source
+     - operator: eq / neq / gt / lt / in / range
+     - rationale: Why this constraint?
+   - Unstructured Content Constraints: Identify any phrases or patterns of documents to filter on (e.g., "Error 502", regex patterns)
+     - pattern: Exact phrase or regex
+     - pattern_type: regex / exact_phrase / wildcard
+     - scope: full_text / title
+     - is_negative: Should we exclude matches?
+
+3. **Decompose Information Needs:**
+   - Identify the **key information facets** that are important to fully understand and answer the question in a clear, comprehensive, accurate, and well-supported way.
+   - Assign facet_id in sequence: F1, F2, F3...
+   - Define facet_type: EVIDENCE / CAUSE / CONSEQUENCE / DEFINITION / SOLUTION
+   - Specify dependencies if facets relate to each other
+
+4. **Formulate Retrieval Strategy:**
+   - Sparse keywords: Write a list of keywords about the query and assign weights (0.0-1.0) to them.
+   - Dense queries: Write a list of concise queries in natural language to align the semantic meaning to relevant documents.
+   - Hypothetical document: Write a passage that answers the query.
+
+5. **Define Success Criteria:**
+   - Set relevance threshold: HIGH (strict) or MEDIUM (moderate)
+   - criteria_positive: Create a precise, content-based criteria that a document must satisfy to be truly useful for answering the question.
+   - criteria_negative: Create a precise, content-based criteria that a document must not satisfy to be excluded.
+
+# Current Task
+Current Time: {{current_date}}
+User Query: {{user_query}}
+
+# Output Format:
+Please analyze the query and output a JSON object conforming to the schema.
+"""
+
 
 def get_intent_parsing_prompt(
     query: str,

@@ -10,6 +10,7 @@ import logging
 from typing import Optional, Dict, Any, List
 from tqdm import tqdm
 from concurrent.futures import ThreadPoolExecutor, as_completed
+from pydantic import BaseModel
 
 from src.crux.config import CruxConfig
 
@@ -202,6 +203,35 @@ class LLMClient:
             "missing_info_gap": None
         }
 
+
+    def call_json_with_object(self, prompt: str, model: Optional[str] = None, response_object: Optional[BaseModel] = None) -> Dict[str, Any]:
+        """
+        调用 LLM 并返回 JSON 结果
+        
+        Args:
+            prompt: 提示词
+            model: 可选的模型名称
+            
+        Returns:
+            解析后的 JSON 对象
+        """
+        if self.config.mock_llm:
+            return self._mock_response(prompt)
+        
+        try:
+            response = self.client.chat.completions.parse(
+                model=model or self.config.llm.model,
+                messages=[{"role": "user", "content": prompt}],
+                temperature=self.config.llm.temperature,
+                max_tokens=self.config.llm.max_tokens,
+                response_format=response_object or {"type": "json_object"}
+            )
+            
+            parsed = response.choices[0].message.parsed
+            return parsed
+        except Exception as e:
+            logging.info(f"[LLM] 调用失败: {e}")
+            return self._mock_response(prompt)
 
 class APIEmbeddingModel:
     """API 嵌入模型

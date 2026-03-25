@@ -37,6 +37,7 @@ def run_understanding_example():
     # ========================================
     # 1. 创建配置
     # ========================================
+
     config = CruxConfig(
         data_source_type="json",
         data_source_path="data/ir_papers.json",
@@ -44,7 +45,6 @@ def run_understanding_example():
         mock_llm=False,  # 设为 True 可使用 mock 响应进行测试
         debug=True,
     )
-    
     print(f"\n[CONFIG] 配置信息:")
     print(f"  - data_source_type: {config.data_source_type}")
     print(f"  - schema_path: {config.schema_path}")
@@ -64,7 +64,7 @@ def run_understanding_example():
     # 3. 准备输入状态 (模拟 AgentState)
     # ========================================
     # 注意：UnderstandingNode 只需要 user_query
-    test_query = "帮我找一下关于信息检索和 RAG 检索增强生成的最新研究，尤其是智能体相关的论文"
+    test_query = "帮我找一下2024年arxiv上发表的关于信息检索和 RAG 检索增强生成的最新研究，尤其是智能体相关的论文，必须包含关键词'rag'"
     
     input_state: Dict[str, Any] = {
         "user_query": test_query,

@@ -5,8 +5,7 @@ Crux Agent 状态定义
 """
 
 import operator
-from typing import List, Optional, Any
-from typing import TypedDict, Literal, Annotated
+from typing import List, Optional, Any, TypedDict, Literal, Annotated, Union, Dict
 
 from pydantic import BaseModel, Field
 
@@ -17,89 +16,160 @@ from pydantic import BaseModel, Field
 """
 
 
-class StructuredConstraint(BaseModel):
-    """结构化元数据约束条件"""
-    field: str = Field(description="字段名，如 year, category, source 等")
-    operator: str = Field(description="操作符: eq, neq, gt, lt, gte, lte, in, range")
-    value: Any = Field(description="约束值")
-
-
-class ContentPattern(BaseModel):
-    """非结构化内容匹配模式"""
-    pattern: str = Field(description="匹配模式：正则表达式或精确短语")
-    pattern_type: str = Field(default="exact_phrase", description="模式类型: regex, exact_phrase, wildcard")
-    scope: str = Field(default="full_text", description="搜索范围: full_text, title, abstract")
-    is_negative: bool = Field(default=False, description="是否为排除条件")
-    rationale: Optional[str] = Field(default=None, description="设置该约束的原因")
-
-
 class CognitiveStrategy(BaseModel):
-    """认知策略"""
-    user_goal: str = Field(description="用户目标: INVESTIGATIVE | FACTUAL | DEBUGGING | COMPARATIVE")
-    reasoning_topology: str = Field(default="FLAT_LIST",
-                                    description="推理拓扑: CAUSAL_CHAIN | TEMPORAL_SEQUENCE | FLAT_LIST")
-    depth_requirement: str = Field(default="SHALLOW", description="深度需求: DEEP | SHALLOW")
+    user_goal: Annotated[
+        Literal["INVESTIGATIVE", "FACTUAL", "DEBUGGING", "COMPARATIVE"],
+        Field(default="FACTUAL", description="用户目标类型：INVESTIGATIVE(调查分析)、FACTUAL(事实查询)、DEBUGGING(问题排查)、COMPARATIVE(对比分析)")
+    ]
+    reasoning_topology: Annotated[
+        Literal["CAUSAL_CHAIN", "TEMPORAL_SEQUENCE", "FLAT_LIST"],
+        Field(default="FLAT_LIST", description="推理结构：CAUSAL_CHAIN(因果链)、TEMPORAL_SEQUENCE(时间序列)、FLAT_LIST(无结构列表)")
+    ]
+    depth_requirement: Annotated[
+        Literal["DEEP", "SHALLOW"],
+        Field(default="SHALLOW", description="信息深度需求：DEEP(深入分析)、SHALLOW(浅层信息)")
+    ]
+
+
+class StructuredConstraint(BaseModel):
+    field: Annotated[
+        Literal["year", "category", "source"],
+        Field(description="字段名，例如 year、category、source，用于结构化过滤")
+    ]
+    operator: Annotated[
+        Literal["eq", "neq", "gt", "lt", "in", "range"],
+        Field(description="比较操作符：eq(等于)、neq(不等于)、gt(大于)、lt(小于)、in(集合包含)、range(区间)")
+    ]
+    value: Annotated[
+        Union[str, int, list[str],
+            list[int]
+        ],
+        Field(description="约束值，例如 2020、['AI','ML']、[2010,2020]")]
+    rationale: Annotated[
+        Optional[str],
+        Field(default=None, description="设置该约束的原因或意图（用于解释性或调试）")
+    ]
+
+
+class ContentConstraint(BaseModel):
+    pattern: Annotated[
+        str,
+        Field(description="匹配模式，可以是精确短语或re正则表达式，例如 'climate change' 或 '^F\d+$'")
+    ]
+    pattern_type: Annotated[
+        Literal["regex", "exact_phrase", "wildcard"],
+        Field(description="匹配类型：regex(正则表达式)、exact_phrase(精确短语匹配)、wildcard(通配符匹配)")
+    ]
+    scope: Annotated[
+        Literal["full_text", "title"],
+        Field(description="匹配范围：full_text(全文)、title(标题)")
+    ]
+    is_negative: Annotated[
+        bool,
+        Field(description="是否为排除条件：true 表示排除匹配该模式的内容")
+    ]
+    rationale: Annotated[
+        Optional[str],
+        Field(default=None, description="设置该约束的原因或意图（用于解释性或调试）")
+    ]
+
+class Constraints(BaseModel):
+    structured_metadata: Annotated[
+        List[StructuredConstraint],
+        Field(default_factory=list, description="结构化元数据约束列表（用于数据库字段过滤）")
+    ]
+    unstructured_content_patterns: Annotated[
+        List[ContentConstraint],
+        Field(default_factory=list, description="非结构化文本匹配约束列表（用于全文检索过滤或增强）")
+    ]
 
 
 class InformationFacet(BaseModel):
-    """信息面 - 子需求"""
-    facet_id: str = Field(description="唯一标识，如 F1, F2")
-    facet_type: str = Field(description="类型: CAUSE | CONSEQUENCE | DEFINITION | SOLUTION | EVIDENCE")
-    description: str = Field(description="自然语言描述")
-    dependency: Optional[str] = Field(default=None, description="依赖的前置 facet_id")
-
+    facet_id: Annotated[
+        str,
+        Field(pattern=r'^F\d+$', description="子需求唯一标识，必须为 F 开头加数字，例如 F1、F2")
+    ]
+    facet_type: Annotated[
+        Literal["EVIDENCE", "CAUSE", "CONSEQUENCE", "DEFINITION", "SOLUTION"],
+        Field(description="子需求类型：EVIDENCE(证据)、CAUSE(原因)、CONSEQUENCE(结果/影响)、DEFINITION(定义)、SOLUTION(解决方案)")
+    ]
+    description: Annotated[
+        str,
+        Field(description="该子需求的自然语言描述，应清晰说明需要获取的信息内容")
+    ]
+    dependency: Annotated[
+        Optional[str],
+        Field(default=None, description="依赖的前置 facet_id，例如 F1；若无依赖则为 None")
+    ]
 
 class SparseKeyword(BaseModel):
-    """稀疏检索关键词"""
-    term: str = Field(description="关键词")
-    weight: float = Field(default=1.0, description="权重")
-
+    term: Annotated[
+        str,
+        Field(description="用于稀疏检索（关键词匹配）的关键词")
+    ]
+    weight: Annotated[
+        float,
+        Field(default=1.0, description="关键词权重，用于控制检索重要性（默认 1.0）")
+    ]
 
 class RetrievalExecution(BaseModel):
-    """检索执行策略"""
-    sparse_keywords: List[SparseKeyword] = Field(default_factory=list, description="稀疏检索关键词及权重")
-    dense_queries: List[str] = Field(default_factory=list, description="向量检索的语义查询")
-    hypothetical_document: Optional[str] = Field(default=None, description="HyDE 假设文档")
+    sparse_keywords: Annotated[
+        List[SparseKeyword],
+        Field(default_factory=list, description="稀疏检索关键词列表（用于 BM25 等关键词检索）")
+    ]
+    dense_queries: Annotated[
+        List[str],
+        Field(default_factory=list, description="语义检索查询列表（用于向量检索）")
+    ]
+    hypothetical_document: Annotated[
+        Optional[str],
+        Field(default=None, description="HyDE 假设文档，用于增强语义检索效果（生成一段假想答案）")
+    ]
 
 
 class JudgementRubric(BaseModel):
-    """研判标准"""
-    relevance_threshold: str = Field(default="MEDIUM", description="相关性阈值: HIGH | MEDIUM")
-    criteria_positive: str = Field(default="", description="正向判断标准")
-    criteria_negative: str = Field(default="", description="排除标准")
-    evidence_extraction_template: Optional[dict] = Field(default=None, description="证据提取模板")
+    relevance_threshold: Annotated[
+        Literal["HIGH", "MEDIUM"],
+        Field(default="MEDIUM", description="相关性阈值：HIGH(严格)、MEDIUM(中等)")
+    ]
+    criteria_positive: Annotated[
+        str,
+        Field(default="", description="判定为相关的标准，应具体说明哪些内容是有价值的")
+    ]
+    criteria_negative: Annotated[
+        str,
+        Field(default="", description="排除标准，应明确哪些内容需要过滤")
+    ]
 
+# =========================
+# 顶层 IntentObject
+# =========================
 
 class IntentObject(BaseModel):
-    """深度意图对象 - LLM 输出的结构化意图（匹配 INTENT_PARSING_PROMPT 输出格式）"""
-    
-    # 认知策略
-    cognitive_strategy: CognitiveStrategy = Field(
-        default_factory=lambda: CognitiveStrategy(user_goal="FACTUAL"),
-        description="认知策略"
-    )
+    cognitive_strategy: Annotated[
+        CognitiveStrategy,
+        Field(description="认知策略，定义用户意图类型、推理方式和深度需求")
+    ]
 
-    # 约束条件
-    constraints: dict = Field(
-        default_factory=lambda: {"structured_metadata": [], "unstructured_content_patterns": []},
-        description="硬性约束条件"
-    )
+    constraints: Annotated[
+        Constraints,
+        Field(default_factory=Constraints, description="约束条件，包括结构化过滤和文本匹配规则")
+    ]
 
-    # 信息面列表
-    information_facets: List[InformationFacet] = Field(default_factory=list, description="信息面列表")
+    information_facets: Annotated[
+        List[InformationFacet],
+        Field(description="信息需求拆解列表，将复杂问题拆解为多个子问题")
+    ]
 
-    # 检索执行策略
-    retrieval_execution: RetrievalExecution = Field(
-        default_factory=RetrievalExecution,
-        description="检索执行策略"
-    )
+    retrieval_execution: Annotated[
+        RetrievalExecution,
+        Field(description="检索执行策略，包括关键词、语义查询和 HyDE 文档")
+    ]
 
-    # 研判标准
-    judgement_rubric: JudgementRubric = Field(
-        default_factory=JudgementRubric,
-        description="研判标准"
-    )
-
+    judgement_rubric: Annotated[
+        JudgementRubric,
+        Field(description="结果评估标准，用于判断检索结果是否相关及提取证据")
+    ]
 
 """
 全局State
