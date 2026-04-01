@@ -99,6 +99,12 @@ class GapAnalysisNode(BaseNode):
             return self.build_result({
                 "gap_analysis_result": "insufficient",
                 "search_iteration": iteration,
+                "gap_analysis_details": {
+                    "coverage_score": coverage,
+                    "missing_info": missing,
+                    "suggested_queries": suggested_queries,
+                    "raw_analysis": analysis,
+                },
             })
         else:
             if iteration >= max_iterations:
@@ -110,7 +116,13 @@ class GapAnalysisNode(BaseNode):
             
             return self.build_result({
                 "gap_analysis_result": "sufficient",
-                "search_iteration": iteration
+                "search_iteration": iteration,
+                "gap_analysis_details": {
+                    "coverage_score": coverage,
+                    "missing_info": missing,
+                    "suggested_queries": analysis.get("suggested_queries", []),
+                    "raw_analysis": analysis,
+                },
             })
     
     def _format_evidence(self, evidence: list) -> str:

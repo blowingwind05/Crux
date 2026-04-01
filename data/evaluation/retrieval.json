@@ -1,0 +1,64 @@
+{
+  "cases": [
+    {
+      "case_id": "retrieval_agentic_rag",
+      "module": "retrieval",
+      "name": "Retrieval should rank agentic RAG papers first",
+      "input": {
+        "query": "agentic rag multi-hop retrieval",
+        "intent": {
+          "constraints": {
+            "structured_metadata": [],
+            "unstructured_content_patterns": []
+          },
+          "retrieval_execution": {
+            "sparse_keywords": [
+              {
+                "term": "RAG",
+                "weight": 1.0
+              },
+              {
+                "term": "agent",
+                "weight": 1.0
+              }
+            ],
+            "dense_queries": [
+              "multi-hop retrieval agent"
+            ]
+          }
+        },
+        "documents": [
+          {
+            "id": "paper_rag_agent",
+            "title": "Agentic RAG for Multi-Hop Search",
+            "abstract": "This paper studies agent orchestration for RAG and multi-hop retrieval.",
+            "score": 0.0
+          },
+          {
+            "id": "paper_rag_general",
+            "title": "RAG Systems for Enterprise Search",
+            "abstract": "RAG retrieval pipelines for enterprise knowledge bases.",
+            "score": 0.0
+          },
+          {
+            "id": "paper_mt",
+            "title": "Neural Machine Translation Survey",
+            "abstract": "This survey focuses on translation models without retrieval.",
+            "score": 0.0
+          }
+        ]
+      },
+      "expected": {
+        "relevant_doc_ids": [
+          "paper_rag_agent",
+          "paper_rag_general"
+        ],
+        "k": 2,
+        "min_recall_at_k": 1.0
+      },
+      "metadata": {
+        "k": 2
+      }
+    }
+  ]
+}

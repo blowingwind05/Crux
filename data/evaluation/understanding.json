@@ -1,0 +1,117 @@
+{
+  "cases": [
+    {
+      "case_id": "understanding_schema_guard",
+      "module": "understanding",
+      "name": "Understanding should stay within allowed constraint fields",
+      "input": {
+        "query": "帮我找 2024 年关于 agentic RAG 的论文，并尽量聚焦多跳检索。"
+      },
+      "expected": {
+        "intent": {
+          "cognitive_strategy": {
+            "user_goal": "FACTUAL",
+            "reasoning_topology": "FLAT_LIST",
+            "depth_requirement": "DEEP"
+          },
+          "constraints": {
+            "structured_metadata": [
+              {
+                "field": "year",
+                "operator": "eq",
+                "value": 2024,
+                "rationale": "限制年份"
+              }
+            ],
+            "unstructured_content_patterns": []
+          },
+          "information_facets": [
+            {
+              "facet_id": "F1",
+              "facet_type": "DEFINITION",
+              "description": "Agentic RAG 的方法定义",
+              "dependency": null
+            }
+          ],
+          "retrieval_execution": {
+            "sparse_keywords": [
+              {
+                "term": "RAG",
+                "weight": 1.0
+              },
+              {
+                "term": "agent",
+                "weight": 1.0
+              }
+            ],
+            "dense_queries": [
+              "agentic rag multi-hop retrieval"
+            ],
+            "hypothetical_document": null
+          },
+          "judgement_rubric": {
+            "relevance_threshold": "MEDIUM",
+            "criteria_positive": "论文应直接讨论 agentic RAG 或多跳检索。",
+            "criteria_negative": "纯翻译或无检索能力的论文应排除。"
+          }
+        }
+      },
+      "stubs": {
+        "intent_response": {
+          "cognitive_strategy": {
+            "user_goal": "FACTUAL",
+            "reasoning_topology": "FLAT_LIST",
+            "depth_requirement": "DEEP"
+          },
+          "constraints": {
+            "structured_metadata": [
+              {
+                "field": "year",
+                "operator": "eq",
+                "value": 2024,
+                "rationale": "限制年份"
+              }
+            ],
+            "unstructured_content_patterns": []
+          },
+          "information_facets": [
+            {
+              "facet_id": "F1",
+              "facet_type": "DEFINITION",
+              "description": "Agentic RAG 的方法定义",
+              "dependency": null
+            }
+          ],
+          "retrieval_execution": {
+            "sparse_keywords": [
+              {
+                "term": "RAG",
+                "weight": 1.0
+              },
+              {
+                "term": "agent",
+                "weight": 1.0
+              }
+            ],
+            "dense_queries": [
+              "agentic rag multi-hop retrieval"
+            ],
+            "hypothetical_document": null
+          },
+          "judgement_rubric": {
+            "relevance_threshold": "MEDIUM",
+            "criteria_positive": "论文应直接讨论 agentic RAG 或多跳检索。",
+            "criteria_negative": "纯翻译或无检索能力的论文应排除。"
+          }
+        }
+      },
+      "metadata": {
+        "allowed_constraint_fields": [
+          "year",
+          "category",
+          "source"
+        ]
+      }
+    }
+  ]
+}

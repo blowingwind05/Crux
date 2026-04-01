@@ -1,0 +1,144 @@
+{
+  "cases": [
+    {
+      "case_id": "pipeline_two_hop_trace",
+      "module": "pipeline",
+      "name": "Pipeline should iterate once and produce a final report with full trace",
+      "input": {
+        "query": "总结 agentic RAG 的定义和应用",
+        "documents": [
+          {
+            "id": "paper_rag_agent",
+            "title": "Agentic RAG for Multi-Hop Search",
+            "abstract": "Agentic RAG coordinates retrieval and reasoning for multi-hop search.",
+            "source": "arxiv",
+            "score": 0.0
+          },
+          {
+            "id": "paper_rag_apps",
+            "title": "Applications of Agentic RAG",
+            "abstract": "Agentic RAG improves enterprise QA and research assistants.",
+            "source": "arxiv",
+            "score": 0.0
+          },
+          {
+            "id": "paper_mt",
+            "title": "Machine Translation Survey",
+            "abstract": "This paper surveys translation models.",
+            "source": "arxiv",
+            "score": 0.0
+          }
+        ]
+      },
+      "expected": {
+        "gap_statuses": [
+          "insufficient",
+          "sufficient"
+        ],
+        "final_evidence_doc_ids": [
+          "paper_rag_agent",
+          "paper_rag_apps"
+        ]
+      },
+      "stubs": {
+        "intent_response": {
+          "cognitive_strategy": {
+            "user_goal": "FACTUAL",
+            "reasoning_topology": "FLAT_LIST",
+            "depth_requirement": "DEEP"
+          },
+          "constraints": {
+            "structured_metadata": [],
+            "unstructured_content_patterns": []
+          },
+          "information_facets": [
+            {
+              "facet_id": "F1",
+              "facet_type": "DEFINITION",
+              "description": "agentic RAG 的定义",
+              "dependency": null
+            },
+            {
+              "facet_id": "F2",
+              "facet_type": "SOLUTION",
+              "description": "agentic RAG 的应用",
+              "dependency": null
+            }
+          ],
+          "retrieval_execution": {
+            "sparse_keywords": [
+              {
+                "term": "RAG",
+                "weight": 1.0
+              },
+              {
+                "term": "agentic",
+                "weight": 1.0
+              }
+            ],
+            "dense_queries": [
+              "agentic rag applications"
+            ],
+            "hypothetical_document": null
+          },
+          "judgement_rubric": {
+            "relevance_threshold": "MEDIUM",
+            "criteria_positive": "论文应直接讨论 agentic RAG 的定义或应用。",
+            "criteria_negative": "与检索无关的论文应排除。"
+          }
+        },
+        "judgement_batches": [
+          [
+            {
+              "relevance": "Perfectly Relevant",
+              "evidence": [
+                "Agentic RAG coordinates retrieval and reasoning for multi-hop search."
+              ],
+              "reason": "提供了定义性证据。"
+            },
+            {
+              "relevance": "Not Relevant",
+              "evidence": [],
+              "reason": "第一轮先不采纳应用论文。"
+            }
+          ],
+          [
+            {
+              "relevance": "Not Relevant",
+              "evidence": [],
+              "reason": "第二轮不重复采纳定义论文。"
+            },
+            {
+              "relevance": "Perfectly Relevant",
+              "evidence": [
+                "Agentic RAG improves enterprise QA and research assistants."
+              ],
+              "reason": "补齐应用场景证据。"
+            }
+          ]
+        ],
+        "gap_responses": [
+          {
+            "status": "insufficient",
+            "coverage_score": 0.5,
+            "missing_info": [
+              "缺少应用场景证据"
+            ],
+            "suggested_queries": [
+              "agentic rag applications benchmarks"
+            ]
+          },
+          {
+            "status": "sufficient",
+            "coverage_score": 0.9,
+            "missing_info": [],
+            "suggested_queries": []
+          }
+        ]
+      },
+      "metadata": {
+        "max_iterations": 3
+      }
+    }
+  ]
+}

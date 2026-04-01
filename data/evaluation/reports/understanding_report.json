@@ -1,0 +1,149 @@
+{
+  "module": "understanding",
+  "generated_at": "2026-04-01T04:45:59.164619+00:00",
+  "total_cases": 1,
+  "passed_cases": 1,
+  "failed_cases": 0,
+  "average_duration_ms": 0.31689999741502106,
+  "aggregate_metrics": {
+    "intent_accuracy": 1.0,
+    "constraint_precision": 1.0,
+    "constraint_recall": 1.0,
+    "constraint_f1": 1.0,
+    "constraint_exact_match": 1.0,
+    "sparse_keyword_precision": 1.0,
+    "sparse_keyword_recall": 1.0,
+    "sparse_keyword_f1": 1.0,
+    "dense_query_precision": 1.0,
+    "dense_query_recall": 1.0,
+    "dense_query_f1": 1.0,
+    "invalid_constraint_field_count": 0.0,
+    "latency_ms": 0.31689999741502106
+  },
+  "case_results": [
+    {
+      "case_id": "understanding_schema_guard",
+      "module": "understanding",
+      "name": "Understanding should stay within allowed constraint fields",
+      "passed": true,
+      "metrics": {
+        "intent_accuracy": 1.0,
+        "constraint_precision": 1.0,
+        "constraint_recall": 1.0,
+        "constraint_f1": 1.0,
+        "constraint_exact_match": true,
+        "sparse_keyword_precision": 1.0,
+        "sparse_keyword_recall": 1.0,
+        "sparse_keyword_f1": 1.0,
+        "dense_query_precision": 1.0,
+        "dense_query_recall": 1.0,
+        "dense_query_f1": 1.0,
+        "invalid_constraint_field_count": 0,
+        "latency_ms": 0.31689999741502106
+      },
+      "duration_ms": 0.31689999741502106,
+      "actual": {
+        "intent": {
+          "cognitive_strategy": {
+            "user_goal": "FACTUAL",
+            "reasoning_topology": "FLAT_LIST",
+            "depth_requirement": "DEEP"
+          },
+          "constraints": {
+            "structured_metadata": [
+              {
+                "field": "year",
+                "operator": "eq",
+                "value": 2024,
+                "rationale": "限制年份"
+              }
+            ],
+            "unstructured_content_patterns": []
+          },
+          "information_facets": [
+            {
+              "facet_id": "F1",
+              "facet_type": "DEFINITION",
+              "description": "Agentic RAG 的方法定义",
+              "dependency": null
+            }
+          ],
+          "retrieval_execution": {
+            "sparse_keywords": [
+              {
+                "term": "RAG",
+                "weight": 1.0
+              },
+              {
+                "term": "agent",
+                "weight": 1.0
+              }
+            ],
+            "dense_queries": [
+              "agentic rag multi-hop retrieval"
+            ],
+            "hypothetical_document": null
+          },
+          "judgement_rubric": {
+            "relevance_threshold": "MEDIUM",
+            "criteria_positive": "论文应直接讨论 agentic RAG 或多跳检索。",
+            "criteria_negative": "纯翻译或无检索能力的论文应排除。"
+          }
+        },
+        "invalid_constraint_fields": []
+      },
+      "expected": {
+        "intent": {
+          "cognitive_strategy": {
+            "user_goal": "FACTUAL",
+            "reasoning_topology": "FLAT_LIST",
+            "depth_requirement": "DEEP"
+          },
+          "constraints": {
+            "structured_metadata": [
+              {
+                "field": "year",
+                "operator": "eq",
+                "value": 2024,
+                "rationale": "限制年份"
+              }
+            ],
+            "unstructured_content_patterns": []
+          },
+          "information_facets": [
+            {
+              "facet_id": "F1",
+              "facet_type": "DEFINITION",
+              "description": "Agentic RAG 的方法定义",
+              "dependency": null
+            }
+          ],
+          "retrieval_execution": {
+            "sparse_keywords": [
+              {
+                "term": "RAG",
+                "weight": 1.0
+              },
+              {
+                "term": "agent",
+                "weight": 1.0
+              }
+            ],
+            "dense_queries": [
+              "agentic rag multi-hop retrieval"
+            ],
+            "hypothetical_document": null
+          },
+          "judgement_rubric": {
+            "relevance_threshold": "MEDIUM",
+            "criteria_positive": "论文应直接讨论 agentic RAG 或多跳检索。",
+            "criteria_negative": "纯翻译或无检索能力的论文应排除。"
+          }
+        }
+      },
+      "trace": null,
+      "errors": [],
+      "notes": []
+    }
+  ]
+}

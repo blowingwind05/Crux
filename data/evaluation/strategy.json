@@ -1,0 +1,55 @@
+{
+  "cases": [
+    {
+      "case_id": "strategy_gap_detect",
+      "module": "strategy",
+      "name": "Strategy should detect missing application evidence",
+      "input": {
+        "query": "总结 agentic RAG 的定义和应用",
+        "intent": {
+          "information_facets": [
+            {
+              "facet_id": "F1",
+              "facet_type": "DEFINITION",
+              "description": "agentic RAG 的定义",
+              "dependency": null
+            },
+            {
+              "facet_id": "F2",
+              "facet_type": "SOLUTION",
+              "description": "agentic RAG 的应用场景",
+              "dependency": null
+            }
+          ]
+        },
+        "verified_evidence": [
+          {
+            "doc_id": "paper_rag_agent",
+            "content": "Agentic RAG coordinates retrieval and reasoning.",
+            "reason": "定义层面充分。"
+          }
+        ],
+        "search_iteration": 0
+      },
+      "expected": {
+        "status": "insufficient",
+        "coverage_score": 0.5,
+        "missing_info": [
+          "缺少应用场景证据"
+        ]
+      },
+      "stubs": {
+        "gap_response": {
+          "status": "insufficient",
+          "coverage_score": 0.5,
+          "missing_info": [
+            "缺少应用场景证据"
+          ],
+          "suggested_queries": [
+            "agentic rag application benchmarks"
+          ]
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,58 @@
+{
+  "cases": [
+    {
+      "case_id": "adjudication_relevance_filter",
+      "module": "adjudication",
+      "name": "Adjudication should accept only relevant RAG evidence",
+      "input": {
+        "query": "帮我找 agentic RAG 的相关论文",
+        "intent": {
+          "judgement_rubric": {
+            "criteria_positive": "论文应直接讨论 agentic RAG、检索增强或多跳检索。",
+            "criteria_negative": "机器翻译或与检索无关的论文应排除。"
+          }
+        },
+        "candidate_docs": [
+          {
+            "id": "paper_rag_agent",
+            "title": "Agentic RAG for Multi-Hop Search",
+            "abstract": "Agentic RAG coordinates retrieval and reasoning.",
+            "source": "arxiv"
+          },
+          {
+            "id": "paper_mt",
+            "title": "Neural Machine Translation Survey",
+            "abstract": "A survey on translation models.",
+            "source": "arxiv"
+          }
+        ],
+        "search_iteration": 0
+      },
+      "expected": {
+        "relevant_doc_ids": [
+          "paper_rag_agent"
+        ],
+        "evidence_by_doc": {
+          "paper_rag_agent": "Agentic RAG coordinates retrieval and reasoning."
+        },
+        "min_relevance_accuracy": 1.0
+      },
+      "stubs": {
+        "judgement_batch": [
+          {
+            "relevance": "Perfectly Relevant",
+            "evidence": [
+              "Agentic RAG coordinates retrieval and reasoning."
+            ],
+            "reason": "直接讨论 agentic RAG。"
+          },
+          {
+            "relevance": "Not Relevant",
+            "evidence": [],
+            "reason": "只讨论机器翻译。"
+          }
+        ]
+      }
+    }
+  ]
+}

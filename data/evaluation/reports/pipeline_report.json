@@ -1,0 +1,3215 @@
+{
+  "module": "pipeline",
+  "generated_at": "2026-04-01T04:45:59.351500+00:00",
+  "total_cases": 1,
+  "passed_cases": 1,
+  "failed_cases": 0,
+  "average_duration_ms": 5.414999992353842,
+  "aggregate_metrics": {
+    "total_latency_ms": 5.414999992353842,
+    "iteration_count": 2.0,
+    "trace_stage_count": 8.0,
+    "trace_completeness": 1.0,
+    "final_evidence_recall": 1.0,
+    "report_present": 1.0,
+    "gap_path_accuracy": 1.0
+  },
+  "case_results": [
+    {
+      "case_id": "pipeline_two_hop_trace",
+      "module": "pipeline",
+      "name": "Pipeline should iterate once and produce a final report with full trace",
+      "passed": true,
+      "metrics": {
+        "total_latency_ms": 5.414999992353842,
+        "iteration_count": 2,
+        "trace_stage_count": 8,
+        "trace_completeness": 1.0,
+        "final_evidence_recall": 1.0,
+        "report_present": true,
+        "gap_path_accuracy": 1.0
+      },
+      "duration_ms": 5.414999992353842,
+      "actual": {
+        "final_gap_statuses": [
+          "insufficient",
+          "sufficient"
+        ],
+        "final_evidence_doc_ids": [
+          "paper_rag_agent",
+          "paper_rag_apps"
+        ]
+      },
+      "expected": {
+        "gap_statuses": [
+          "insufficient",
+          "sufficient"
+        ],
+        "final_evidence_doc_ids": [
+          "paper_rag_agent",
+          "paper_rag_apps"
+        ]
+      },
+      "trace": {
+        "case_id": "pipeline_two_hop_trace",
+        "query": "总结 agentic RAG 的定义和应用",
+        "started_at": "2026-04-01T04:45:59.346277+00:00",
+        "ended_at": "2026-04-01T04:45:59.349808+00:00",
+        "total_duration_ms": 3.7663999828509986,
+        "stage_traces": [
+          {
+            "stage": "understand",
+            "iteration": 0,
+            "started_at": "2026-04-01T04:45:59.346277+00:00",
+            "ended_at": "2026-04-01T04:45:59.346277+00:00",
+            "duration_ms": 0.2069000038318336,
+            "input_snapshot": {
+              "user_query": "总结 agentic RAG 的定义和应用",
+              "verified_evidence": [],
+              "rejected_docs": [],
+              "candidate_docs": [],
+              "search_iteration": 0,
+              "start_time": 1775018759.346278
+            },
+            "output_snapshot": {
+              "intent": {
+                "cognitive_strategy": {
+                  "user_goal": "FACTUAL",
+                  "reasoning_topology": "FLAT_LIST",
+                  "depth_requirement": "DEEP"
+                },
+                "constraints": {
+                  "structured_metadata": [],
+                  "unstructured_content_patterns": []
+                },
+                "information_facets": [
+                  {
+                    "facet_id": "F1",
+                    "facet_type": "DEFINITION",
+                    "description": "agentic RAG 的定义",
+                    "dependency": null
+                  },
+                  {
+                    "facet_id": "F2",
+                    "facet_type": "SOLUTION",
+                    "description": "agentic RAG 的应用",
+                    "dependency": null
+                  }
+                ],
+                "retrieval_execution": {
+                  "sparse_keywords": [
+                    {
+                      "term": "RAG",
+                      "weight": 1.0
+                    },
+                    {
+                      "term": "agentic",
+                      "weight": 1.0
+                    }
+                  ],
+                  "dense_queries": [
+                    "agentic rag applications"
+                  ],
+                  "hypothetical_document": null
+                },
+                "judgement_rubric": {
+                  "relevance_threshold": "MEDIUM",
+                  "criteria_positive": "论文应直接讨论 agentic RAG 的定义或应用。",
+                  "criteria_negative": "与检索无关的论文应排除。"
+                }
+              },
+              "intent_object": {
+                "cognitive_strategy": {
+                  "user_goal": "FACTUAL",
+                  "reasoning_topology": "FLAT_LIST",
+                  "depth_requirement": "DEEP"
+                },
+                "constraints": {
+                  "structured_metadata": [],
+                  "unstructured_content_patterns": []
+                },
+                "information_facets": [
+                  {
+                    "facet_id": "F1",
+                    "facet_type": "DEFINITION",
+                    "description": "agentic RAG 的定义",
+                    "dependency": null
+                  },
+                  {
+                    "facet_id": "F2",
+                    "facet_type": "SOLUTION",
+                    "description": "agentic RAG 的应用",
+                    "dependency": null
+                  }
+                ],
+                "retrieval_execution": {
+                  "sparse_keywords": [
+                    {
+                      "term": "RAG",
+                      "weight": 1.0
+                    },
+                    {
+                      "term": "agentic",
+                      "weight": 1.0
+                    }
+                  ],
+                  "dense_queries": [
+                    "agentic rag applications"
+                  ],
+                  "hypothetical_document": null
+                },
+                "judgement_rubric": {
+                  "relevance_threshold": "MEDIUM",
+                  "criteria_positive": "论文应直接讨论 agentic RAG 的定义或应用。",
+                  "criteria_negative": "与检索无关的论文应排除。"
+                }
+              },
+              "search_iteration": 0,
+              "verified_evidence": []
+            },
+            "state_after": {
+              "user_query": "总结 agentic RAG 的定义和应用",
+              "verified_evidence": [],
+              "rejected_docs": [],
+              "candidate_docs": [],
+              "search_iteration": 0,
+              "start_time": 1775018759.346278,
+              "intent": {
+                "cognitive_strategy": {
+                  "user_goal": "FACTUAL",
+                  "reasoning_topology": "FLAT_LIST",
+                  "depth_requirement": "DEEP"
+                },
+                "constraints": {
+                  "structured_metadata": [],
+                  "unstructured_content_patterns": []
+                },
+                "information_facets": [
+                  {
+                    "facet_id": "F1",
+                    "facet_type": "DEFINITION",
+                    "description": "agentic RAG 的定义",
+                    "dependency": null
+                  },
+                  {
+                    "facet_id": "F2",
+                    "facet_type": "SOLUTION",
+                    "description": "agentic RAG 的应用",
+                    "dependency": null
+                  }
+                ],
+                "retrieval_execution": {
+                  "sparse_keywords": [
+                    {
+                      "term": "RAG",
+                      "weight": 1.0
+                    },
+                    {
+                      "term": "agentic",
+                      "weight": 1.0
+                    }
+                  ],
+                  "dense_queries": [
+                    "agentic rag applications"
+                  ],
+                  "hypothetical_document": null
+                },
+                "judgement_rubric": {
+                  "relevance_threshold": "MEDIUM",
+                  "criteria_positive": "论文应直接讨论 agentic RAG 的定义或应用。",
+                  "criteria_negative": "与检索无关的论文应排除。"
+                }
+              },
+              "intent_object": {
+                "cognitive_strategy": {
+                  "user_goal": "FACTUAL",
+                  "reasoning_topology": "FLAT_LIST",
+                  "depth_requirement": "DEEP"
+                },
+                "constraints": {
+                  "structured_metadata": [],
+                  "unstructured_content_patterns": []
+                },
+                "information_facets": [
+                  {
+                    "facet_id": "F1",
+                    "facet_type": "DEFINITION",
+                    "description": "agentic RAG 的定义",
+                    "dependency": null
+                  },
+                  {
+                    "facet_id": "F2",
+                    "facet_type": "SOLUTION",
+                    "description": "agentic RAG 的应用",
+                    "dependency": null
+                  }
+                ],
+                "retrieval_execution": {
+                  "sparse_keywords": [
+                    {
+                      "term": "RAG",
+                      "weight": 1.0
+                    },
+                    {
+                      "term": "agentic",
+                      "weight": 1.0
+                    }
+                  ],
+                  "dense_queries": [
+                    "agentic rag applications"
+                  ],
+                  "hypothetical_document": null
+                },
+                "judgement_rubric": {
+                  "relevance_threshold": "MEDIUM",
+                  "criteria_positive": "论文应直接讨论 agentic RAG 的定义或应用。",
+                  "criteria_negative": "与检索无关的论文应排除。"
+                }
+              }
+            },
+            "logs": [
+              {
+                "level": "INFO",
+                "message": "正在解析用户意图...",
+                "timestamp": 1775018759.346278,
+                "details": null
+              },
+              {
+                "level": "INFO",
+                "message": "用户查询: 总结 agentic RAG 的定义和应用",
+                "timestamp": 1775018759.346278,
+                "details": {
+                  "query": "总结 agentic RAG 的定义和应用"
+                }
+              },
+              {
+                "level": "INFO",
+                "message": "构建意图解析 Prompt...",
+                "timestamp": 1775018759.346278,
+                "details": null
+              },
+              {
+                "level": "INFO",
+                "message": "调用 LLM 进行意图解析...",
+                "timestamp": 1775018759.346278,
+                "details": {
+                  "model": "Qwen/Qwen3-32B"
+                }
+              },
+              {
+                "level": "INFO",
+                "message": "识别用户目标: FACTUAL",
+                "timestamp": 1775018759.346278,
+                "details": null
+              },
+              {
+                "level": "INFO",
+                "message": "推理拓扑: FLAT_LIST",
+                "timestamp": 1775018759.346278,
+                "details": null
+              },
+              {
+                "level": "INFO",
+                "message": "提取约束条件: 0 个结构化约束, 0 个内容模式",
+                "timestamp": 1775018759.346278,
+                "details": null
+              },
+              {
+                "level": "INFO",
+                "message": "识别信息面: 2 个",
+                "timestamp": 1775018759.346278,
+                "details": {
+                  "facets": [
+                    "F1",
+                    "F2"
+                  ]
+                }
+              },
+              {
+                "level": "INFO",
+                "message": "生成检索策略: 2 个关键词, 1 个语义查询",
+                "timestamp": 1775018759.346278,
+                "details": null
+              },
+              {
+                "level": "INFO",
+                "message": "意图解析完成",
+                "timestamp": 1775018759.346278,
+                "details": null
+              }
+            ],
+            "error": null
+          },
+          {
+            "stage": "retrieve",
+            "iteration": 0,
+            "started_at": "2026-04-01T04:45:59.346806+00:00",
+            "ended_at": "2026-04-01T04:45:59.346806+00:00",
+            "duration_ms": 0.13290002243593335,
+            "input_snapshot": {
+              "user_query": "总结 agentic RAG 的定义和应用",
+              "verified_evidence": [],
+              "rejected_docs": [],
+              "candidate_docs": [],
+              "search_iteration": 0,
+              "start_time": 1775018759.346278,
+              "intent": {
+                "cognitive_strategy": {
+                  "user_goal": "FACTUAL",
+                  "reasoning_topology": "FLAT_LIST",
+                  "depth_requirement": "DEEP"
+                },
+                "constraints": {
+                  "structured_metadata": [],
+                  "unstructured_content_patterns": []
+                },
+                "information_facets": [
+                  {
+                    "facet_id": "F1",
+                    "facet_type": "DEFINITION",
+                    "description": "agentic RAG 的定义",
+                    "dependency": null
+                  },
+                  {
+                    "facet_id": "F2",
+                    "facet_type": "SOLUTION",
+                    "description": "agentic RAG 的应用",
+                    "dependency": null
+                  }
+                ],
+                "retrieval_execution": {
+                  "sparse_keywords": [
+                    {
+                      "term": "RAG",
+                      "weight": 1.0
+                    },
+                    {
+                      "term": "agentic",
+                      "weight": 1.0
+                    }
+                  ],
+                  "dense_queries": [
+                    "agentic rag applications"
+                  ],
+                  "hypothetical_document": null
+                },
+                "judgement_rubric": {
+                  "relevance_threshold": "MEDIUM",
+                  "criteria_positive": "论文应直接讨论 agentic RAG 的定义或应用。",
+                  "criteria_negative": "与检索无关的论文应排除。"
+                }
+              },
+              "intent_object": {
+                "cognitive_strategy": {
+                  "user_goal": "FACTUAL",
+                  "reasoning_topology": "FLAT_LIST",
+                  "depth_requirement": "DEEP"
+                },
+                "constraints": {
+                  "structured_metadata": [],
+                  "unstructured_content_patterns": []
+                },
+                "information_facets": [
+                  {
+                    "facet_id": "F1",
+                    "facet_type": "DEFINITION",
+                    "description": "agentic RAG 的定义",
+                    "dependency": null
+                  },
+                  {
+                    "facet_id": "F2",
+                    "facet_type": "SOLUTION",
+                    "description": "agentic RAG 的应用",
+                    "dependency": null
+                  }
+                ],
+                "retrieval_execution": {
+                  "sparse_keywords": [
+                    {
+                      "term": "RAG",
+                      "weight": 1.0
+                    },
+                    {
+                      "term": "agentic",
+                      "weight": 1.0
+                    }
+                  ],
+                  "dense_queries": [
+                    "agentic rag applications"
+                  ],
+                  "hypothetical_document": null
+                },
+                "judgement_rubric": {
+                  "relevance_threshold": "MEDIUM",
+                  "criteria_positive": "论文应直接讨论 agentic RAG 的定义或应用。",
+                  "criteria_negative": "与检索无关的论文应排除。"
+                }
+              }
+            },
+            "output_snapshot": {
+              "candidate_docs": [
+                {
+                  "id": "paper_rag_agent",
+                  "title": "Agentic RAG for Multi-Hop Search",
+                  "abstract": "Agentic RAG coordinates retrieval and reasoning for multi-hop search.",
+                  "source": "arxiv",
+                  "score": 0.0
+                },
+                {
+                  "id": "paper_rag_apps",
+                  "title": "Applications of Agentic RAG",
+                  "abstract": "Agentic RAG improves enterprise QA and research assistants.",
+                  "source": "arxiv",
+                  "score": 0.0
+                }
+              ]
+            },
+            "state_after": {
+              "user_query": "总结 agentic RAG 的定义和应用",
+              "verified_evidence": [],
+              "rejected_docs": [],
+              "candidate_docs": [
+                {
+                  "id": "paper_rag_agent",
+                  "title": "Agentic RAG for Multi-Hop Search",
+                  "abstract": "Agentic RAG coordinates retrieval and reasoning for multi-hop search.",
+                  "source": "arxiv",
+                  "score": 0.0
+                },
+                {
+                  "id": "paper_rag_apps",
+                  "title": "Applications of Agentic RAG",
+                  "abstract": "Agentic RAG improves enterprise QA and research assistants.",
+                  "source": "arxiv",
+                  "score": 0.0
+                }
+              ],
+              "search_iteration": 0,
+              "start_time": 1775018759.346278,
+              "intent": {
+                "cognitive_strategy": {
+                  "user_goal": "FACTUAL",
+                  "reasoning_topology": "FLAT_LIST",
+                  "depth_requirement": "DEEP"
+                },
+                "constraints": {
+                  "structured_metadata": [],
+                  "unstructured_content_patterns": []
+                },
+                "information_facets": [
+                  {
+                    "facet_id": "F1",
+                    "facet_type": "DEFINITION",
+                    "description": "agentic RAG 的定义",
+                    "dependency": null
+                  },
+                  {
+                    "facet_id": "F2",
+                    "facet_type": "SOLUTION",
+                    "description": "agentic RAG 的应用",
+                    "dependency": null
+                  }
+                ],
+                "retrieval_execution": {
+                  "sparse_keywords": [
+                    {
+                      "term": "RAG",
+                      "weight": 1.0
+                    },
+                    {
+                      "term": "agentic",
+                      "weight": 1.0
+                    }
+                  ],
+                  "dense_queries": [
+                    "agentic rag applications"
+                  ],
+                  "hypothetical_document": null
+                },
+                "judgement_rubric": {
+                  "relevance_threshold": "MEDIUM",
+                  "criteria_positive": "论文应直接讨论 agentic RAG 的定义或应用。",
+                  "criteria_negative": "与检索无关的论文应排除。"
+                }
+              },
+              "intent_object": {
+                "cognitive_strategy": {
+                  "user_goal": "FACTUAL",
+                  "reasoning_topology": "FLAT_LIST",
+                  "depth_requirement": "DEEP"
+                },
+                "constraints": {
+                  "structured_metadata": [],
+                  "unstructured_content_patterns": []
+                },
+                "information_facets": [
+                  {
+                    "facet_id": "F1",
+                    "facet_type": "DEFINITION",
+                    "description": "agentic RAG 的定义",
+                    "dependency": null
+                  },
+                  {
+                    "facet_id": "F2",
+                    "facet_type": "SOLUTION",
+                    "description": "agentic RAG 的应用",
+                    "dependency": null
+                  }
+                ],
+                "retrieval_execution": {
+                  "sparse_keywords": [
+                    {
+                      "term": "RAG",
+                      "weight": 1.0
+                    },
+                    {
+                      "term": "agentic",
+                      "weight": 1.0
+                    }
+                  ],
+                  "dense_queries": [
+                    "agentic rag applications"
+                  ],
+                  "hypothetical_document": null
+                },
+                "judgement_rubric": {
+                  "relevance_threshold": "MEDIUM",
+                  "criteria_positive": "论文应直接讨论 agentic RAG 的定义或应用。",
+                  "criteria_negative": "与检索无关的论文应排除。"
+                }
+              }
+            },
+            "logs": [
+              {
+                "level": "INFO",
+                "message": "开始混合检索流程...",
+                "timestamp": 1775018759.3468068,
+                "details": null
+              },
+              {
+                "level": "INFO",
+                "message": "BM25 关键词: ['RAG', 'agentic']",
+                "timestamp": 1775018759.3468068,
+                "details": {
+                  "keywords": [
+                    "RAG",
+                    "agentic"
+                  ]
+                }
+              },
+              {
+                "level": "INFO",
+                "message": "向量查询: 1 条",
+                "timestamp": 1775018759.3468068,
+                "details": {
+                  "queries": [
+                    "agentic rag applications"
+                  ]
+                }
+              },
+              {
+                "level": "INFO",
+                "message": "执行混合检索 (BM25 + 向量 + 过滤)...",
+                "timestamp": 1775018759.3468068,
+                "details": null
+              },
+              {
+                "level": "INFO",
+                "message": "最终召回文档数: 2",
+                "timestamp": 1775018759.3468068,
+                "details": {
+                  "total": 2,
+                  "keywords_count": 2,
+                  "queries_count": 1,
+                  "top_k": 2
+                }
+              },
+              {
+                "level": "INFO",
+                "message": "Top-1: Agentic RAG for Multi-Hop Search... (score: 0.000)",
+                "timestamp": 1775018759.3468068,
+                "details": null
+              },
+              {
+                "level": "INFO",
+                "message": "Top-2: Applications of Agentic RAG... (score: 0.000)",
+                "timestamp": 1775018759.3468068,
+                "details": null
+              }
+            ],
+            "error": null
+          },
+          {
+            "stage": "judge",
+            "iteration": 0,
+            "started_at": "2026-04-01T04:45:59.346806+00:00",
+            "ended_at": "2026-04-01T04:45:59.346806+00:00",
+            "duration_ms": 0.11710001854225993,
+            "input_snapshot": {
+              "user_query": "总结 agentic RAG 的定义和应用",
+              "verified_evidence": [],
+              "rejected_docs": [],
+              "candidate_docs": [
+                {
+                  "id": "paper_rag_agent",
+                  "title": "Agentic RAG for Multi-Hop Search",
+                  "abstract": "Agentic RAG coordinates retrieval and reasoning for multi-hop search.",
+                  "source": "arxiv",
+                  "score": 0.0
+                },
+                {
+                  "id": "paper_rag_apps",
+                  "title": "Applications of Agentic RAG",
+                  "abstract": "Agentic RAG improves enterprise QA and research assistants.",
+                  "source": "arxiv",
+                  "score": 0.0
+                }
+              ],
+              "search_iteration": 0,
+              "start_time": 1775018759.346278,
+              "intent": {
+                "cognitive_strategy": {
+                  "user_goal": "FACTUAL",
+                  "reasoning_topology": "FLAT_LIST",
+                  "depth_requirement": "DEEP"
+                },
+                "constraints": {
+                  "structured_metadata": [],
+                  "unstructured_content_patterns": []
+                },
+                "information_facets": [
+                  {
+                    "facet_id": "F1",
+                    "facet_type": "DEFINITION",
+                    "description": "agentic RAG 的定义",
+                    "dependency": null
+                  },
+                  {
+                    "facet_id": "F2",
+                    "facet_type": "SOLUTION",
+                    "description": "agentic RAG 的应用",
+                    "dependency": null
+                  }
+                ],
+                "retrieval_execution": {
+                  "sparse_keywords": [
+                    {
+                      "term": "RAG",
+                      "weight": 1.0
+                    },
+                    {
+                      "term": "agentic",
+                      "weight": 1.0
+                    }
+                  ],
+                  "dense_queries": [
+                    "agentic rag applications"
+                  ],
+                  "hypothetical_document": null
+                },
+                "judgement_rubric": {
+                  "relevance_threshold": "MEDIUM",
+                  "criteria_positive": "论文应直接讨论 agentic RAG 的定义或应用。",
+                  "criteria_negative": "与检索无关的论文应排除。"
+                }
+              },
+              "intent_object": {
+                "cognitive_strategy": {
+                  "user_goal": "FACTUAL",
+                  "reasoning_topology": "FLAT_LIST",
+                  "depth_requirement": "DEEP"
+                },
+                "constraints": {
+                  "structured_metadata": [],
+                  "unstructured_content_patterns": []
+                },
+                "information_facets": [
+                  {
+                    "facet_id": "F1",
+                    "facet_type": "DEFINITION",
+                    "description": "agentic RAG 的定义",
+                    "dependency": null
+                  },
+                  {
+                    "facet_id": "F2",
+                    "facet_type": "SOLUTION",
+                    "description": "agentic RAG 的应用",
+                    "dependency": null
+                  }
+                ],
+                "retrieval_execution": {
+                  "sparse_keywords": [
+                    {
+                      "term": "RAG",
+                      "weight": 1.0
+                    },
+                    {
+                      "term": "agentic",
+                      "weight": 1.0
+                    }
+                  ],
+                  "dense_queries": [
+                    "agentic rag applications"
+                  ],
+                  "hypothetical_document": null
+                },
+                "judgement_rubric": {
+                  "relevance_threshold": "MEDIUM",
+                  "criteria_positive": "论文应直接讨论 agentic RAG 的定义或应用。",
+                  "criteria_negative": "与检索无关的论文应排除。"
+                }
+              }
+            },
+            "output_snapshot": {
+              "verified_evidence": [
+                {
+                  "doc_id": "paper_rag_agent",
+                  "content": "Agentic RAG coordinates retrieval and reasoning for multi-hop search.",
+                  "reason": "提供了定义性证据。",
+                  "source": "arxiv",
+                  "relevance_score": 0.9,
+                  "facet_id": null,
+                  "metadata": {
+                    "title": "Agentic RAG for Multi-Hop Search",
+                    "year": "",
+                    "authors": [],
+                    "url": ""
+                  }
+                }
+              ],
+              "rejected_docs": [
+                {
+                  "doc_id": "paper_rag_apps",
+                  "title": "Applications of Agentic RAG",
+                  "reason": "第一轮先不采纳应用论文。",
+                  "abstract": "Agentic RAG improves enterprise QA and research assistants."
+                }
+              ]
+            },
+            "state_after": {
+              "user_query": "总结 agentic RAG 的定义和应用",
+              "verified_evidence": [
+                {
+                  "doc_id": "paper_rag_agent",
+                  "content": "Agentic RAG coordinates retrieval and reasoning for multi-hop search.",
+                  "reason": "提供了定义性证据。",
+                  "source": "arxiv",
+                  "relevance_score": 0.9,
+                  "facet_id": null,
+                  "metadata": {
+                    "title": "Agentic RAG for Multi-Hop Search",
+                    "year": "",
+                    "authors": [],
+                    "url": ""
+                  }
+                }
+              ],
+              "rejected_docs": [
+                {
+                  "doc_id": "paper_rag_apps",
+                  "title": "Applications of Agentic RAG",
+                  "reason": "第一轮先不采纳应用论文。",
+                  "abstract": "Agentic RAG improves enterprise QA and research assistants."
+                }
+              ],
+              "candidate_docs": [
+                {
+                  "id": "paper_rag_agent",
+                  "title": "Agentic RAG for Multi-Hop Search",
+                  "abstract": "Agentic RAG coordinates retrieval and reasoning for multi-hop search.",
+                  "source": "arxiv",
+                  "score": 0.0
+                },
+                {
+                  "id": "paper_rag_apps",
+                  "title": "Applications of Agentic RAG",
+                  "abstract": "Agentic RAG improves enterprise QA and research assistants.",
+                  "source": "arxiv",
+                  "score": 0.0
+                }
+              ],
+              "search_iteration": 0,
+              "start_time": 1775018759.346278,
+              "intent": {
+                "cognitive_strategy": {
+                  "user_goal": "FACTUAL",
+                  "reasoning_topology": "FLAT_LIST",
+                  "depth_requirement": "DEEP"
+                },
+                "constraints": {
+                  "structured_metadata": [],
+                  "unstructured_content_patterns": []
+                },
+                "information_facets": [
+                  {
+                    "facet_id": "F1",
+                    "facet_type": "DEFINITION",
+                    "description": "agentic RAG 的定义",
+                    "dependency": null
+                  },
+                  {
+                    "facet_id": "F2",
+                    "facet_type": "SOLUTION",
+                    "description": "agentic RAG 的应用",
+                    "dependency": null
+                  }
+                ],
+                "retrieval_execution": {
+                  "sparse_keywords": [
+                    {
+                      "term": "RAG",
+                      "weight": 1.0
+                    },
+                    {
+                      "term": "agentic",
+                      "weight": 1.0
+                    }
+                  ],
+                  "dense_queries": [
+                    "agentic rag applications"
+                  ],
+                  "hypothetical_document": null
+                },
+                "judgement_rubric": {
+                  "relevance_threshold": "MEDIUM",
+                  "criteria_positive": "论文应直接讨论 agentic RAG 的定义或应用。",
+                  "criteria_negative": "与检索无关的论文应排除。"
+                }
+              },
+              "intent_object": {
+                "cognitive_strategy": {
+                  "user_goal": "FACTUAL",
+                  "reasoning_topology": "FLAT_LIST",
+                  "depth_requirement": "DEEP"
+                },
+                "constraints": {
+                  "structured_metadata": [],
+                  "unstructured_content_patterns": []
+                },
+                "information_facets": [
+                  {
+                    "facet_id": "F1",
+                    "facet_type": "DEFINITION",
+                    "description": "agentic RAG 的定义",
+                    "dependency": null
+                  },
+                  {
+                    "facet_id": "F2",
+                    "facet_type": "SOLUTION",
+                    "description": "agentic RAG 的应用",
+                    "dependency": null
+                  }
+                ],
+                "retrieval_execution": {
+                  "sparse_keywords": [
+                    {
+                      "term": "RAG",
+                      "weight": 1.0
+                    },
+                    {
+                      "term": "agentic",
+                      "weight": 1.0
+                    }
+                  ],
+                  "dense_queries": [
+                    "agentic rag applications"
+                  ],
+                  "hypothetical_document": null
+                },
+                "judgement_rubric": {
+                  "relevance_threshold": "MEDIUM",
+                  "criteria_positive": "论文应直接讨论 agentic RAG 的定义或应用。",
+                  "criteria_negative": "与检索无关的论文应排除。"
+                }
+              }
+            },
+            "logs": [
+              {
+                "level": "INFO",
+                "message": "开始深度研判流程...",
+                "timestamp": 1775018759.3468068,
+                "details": null
+              },
+              {
+                "level": "INFO",
+                "message": "待研判文档: 2 篇",
+                "timestamp": 1775018759.3468068,
+                "details": null
+              },
+              {
+                "level": "INFO",
+                "message": "研判准则: 论文应直接讨论 agentic RAG 的定义或应用。 (排除: 与检索无关的论文应排除。)",
+                "timestamp": 1775018759.3468068,
+                "details": null
+              },
+              {
+                "level": "INFO",
+                "message": "并行模式: True",
+                "timestamp": 1775018759.3468068,
+                "details": null
+              },
+              {
+                "level": "INFO",
+                "message": "[ACCEPT] 采纳证据 (ID: paper_rag_agent): Agentic RAG for Multi-Hop Search",
+                "timestamp": 1775018759.3468068,
+                "details": {
+                  "doc_id": "paper_rag_agent",
+                  "reason": "提供了定义性证据。",
+                  "evidence_preview": "Agentic RAG coordinates retrieval and reasoning for multi-hop search."
+                }
+              },
+              {
+                "level": "INFO",
+                "message": "[REJECT] 拒绝文档 (ID: paper_rag_apps): Applications of Agentic RAG",
+                "timestamp": 1775018759.3468068,
+                "details": {
+                  "doc_id": "paper_rag_apps",
+                  "reason": "第一轮先不采纳应用论文。"
+                }
+              },
+              {
+                "level": "INFO",
+                "message": "研判完成: 采纳 1 篇, 拒绝 1 篇",
+                "timestamp": 1775018759.3468068,
+                "details": null
+              },
+              {
+                "level": "INFO",
+                "message": "通过率: 50.0%",
+                "timestamp": 1775018759.3468068,
+                "details": {
+                  "accepted": 1,
+                  "rejected": 1,
+                  "total": 2,
+                  "acceptance_rate": 0.5
+                }
+              }
+            ],
+            "error": null
+          },
+          {
+            "stage": "analyze",
+            "iteration": 0,
+            "started_at": "2026-04-01T04:45:59.347628+00:00",
+            "ended_at": "2026-04-01T04:45:59.347628+00:00",
+            "duration_ms": 0.08250001701526344,
+            "input_snapshot": {
+              "user_query": "总结 agentic RAG 的定义和应用",
+              "verified_evidence": [
+                {
+                  "doc_id": "paper_rag_agent",
+                  "content": "Agentic RAG coordinates retrieval and reasoning for multi-hop search.",
+                  "reason": "提供了定义性证据。",
+                  "source": "arxiv",
+                  "relevance_score": 0.9,
+                  "facet_id": null,
+                  "metadata": {
+                    "title": "Agentic RAG for Multi-Hop Search",
+                    "year": "",
+                    "authors": [],
+                    "url": ""
+                  }
+                }
+              ],
+              "rejected_docs": [
+                {
+                  "doc_id": "paper_rag_apps",
+                  "title": "Applications of Agentic RAG",
+                  "reason": "第一轮先不采纳应用论文。",
+                  "abstract": "Agentic RAG improves enterprise QA and research assistants."
+                }
+              ],
+              "candidate_docs": [
+                {
+                  "id": "paper_rag_agent",
+                  "title": "Agentic RAG for Multi-Hop Search",
+                  "abstract": "Agentic RAG coordinates retrieval and reasoning for multi-hop search.",
+                  "source": "arxiv",
+                  "score": 0.0
+                },
+                {
+                  "id": "paper_rag_apps",
+                  "title": "Applications of Agentic RAG",
+                  "abstract": "Agentic RAG improves enterprise QA and research assistants.",
+                  "source": "arxiv",
+                  "score": 0.0
+                }
+              ],
+              "search_iteration": 0,
+              "start_time": 1775018759.346278,
+              "intent": {
+                "cognitive_strategy": {
+                  "user_goal": "FACTUAL",
+                  "reasoning_topology": "FLAT_LIST",
+                  "depth_requirement": "DEEP"
+                },
+                "constraints": {
+                  "structured_metadata": [],
+                  "unstructured_content_patterns": []
+                },
+                "information_facets": [
+                  {
+                    "facet_id": "F1",
+                    "facet_type": "DEFINITION",
+                    "description": "agentic RAG 的定义",
+                    "dependency": null
+                  },
+                  {
+                    "facet_id": "F2",
+                    "facet_type": "SOLUTION",
+                    "description": "agentic RAG 的应用",
+                    "dependency": null
+                  }
+                ],
+                "retrieval_execution": {
+                  "sparse_keywords": [
+                    {
+                      "term": "RAG",
+                      "weight": 1.0
+                    },
+                    {
+                      "term": "agentic",
+                      "weight": 1.0
+                    }
+                  ],
+                  "dense_queries": [
+                    "agentic rag applications"
+                  ],
+                  "hypothetical_document": null
+                },
+                "judgement_rubric": {
+                  "relevance_threshold": "MEDIUM",
+                  "criteria_positive": "论文应直接讨论 agentic RAG 的定义或应用。",
+                  "criteria_negative": "与检索无关的论文应排除。"
+                }
+              },
+              "intent_object": {
+                "cognitive_strategy": {
+                  "user_goal": "FACTUAL",
+                  "reasoning_topology": "FLAT_LIST",
+                  "depth_requirement": "DEEP"
+                },
+                "constraints": {
+                  "structured_metadata": [],
+                  "unstructured_content_patterns": []
+                },
+                "information_facets": [
+                  {
+                    "facet_id": "F1",
+                    "facet_type": "DEFINITION",
+                    "description": "agentic RAG 的定义",
+                    "dependency": null
+                  },
+                  {
+                    "facet_id": "F2",
+                    "facet_type": "SOLUTION",
+                    "description": "agentic RAG 的应用",
+                    "dependency": null
+                  }
+                ],
+                "retrieval_execution": {
+                  "sparse_keywords": [
+                    {
+                      "term": "RAG",
+                      "weight": 1.0
+                    },
+                    {
+                      "term": "agentic",
+                      "weight": 1.0
+                    }
+                  ],
+                  "dense_queries": [
+                    "agentic rag applications"
+                  ],
+                  "hypothetical_document": null
+                },
+                "judgement_rubric": {
+                  "relevance_threshold": "MEDIUM",
+                  "criteria_positive": "论文应直接讨论 agentic RAG 的定义或应用。",
+                  "criteria_negative": "与检索无关的论文应排除。"
+                }
+              }
+            },
+            "output_snapshot": {
+              "gap_analysis_result": "insufficient",
+              "search_iteration": 1,
+              "gap_analysis_details": {
+                "coverage_score": 0.5,
+                "missing_info": [
+                  "缺少应用场景证据"
+                ],
+                "suggested_queries": [
+                  "agentic rag applications benchmarks"
+                ],
+                "raw_analysis": {
+                  "status": "insufficient",
+                  "coverage_score": 0.5,
+                  "missing_info": [
+                    "缺少应用场景证据"
+                  ],
+                  "suggested_queries": [
+                    "agentic rag applications benchmarks"
+                  ]
+                }
+              }
+            },
+            "state_after": {
+              "user_query": "总结 agentic RAG 的定义和应用",
+              "verified_evidence": [
+                {
+                  "doc_id": "paper_rag_agent",
+                  "content": "Agentic RAG coordinates retrieval and reasoning for multi-hop search.",
+                  "reason": "提供了定义性证据。",
+                  "source": "arxiv",
+                  "relevance_score": 0.9,
+                  "facet_id": null,
+                  "metadata": {
+                    "title": "Agentic RAG for Multi-Hop Search",
+                    "year": "",
+                    "authors": [],
+                    "url": ""
+                  }
+                }
+              ],
+              "rejected_docs": [
+                {
+                  "doc_id": "paper_rag_apps",
+                  "title": "Applications of Agentic RAG",
+                  "reason": "第一轮先不采纳应用论文。",
+                  "abstract": "Agentic RAG improves enterprise QA and research assistants."
+                }
+              ],
+              "candidate_docs": [
+                {
+                  "id": "paper_rag_agent",
+                  "title": "Agentic RAG for Multi-Hop Search",
+                  "abstract": "Agentic RAG coordinates retrieval and reasoning for multi-hop search.",
+                  "source": "arxiv",
+                  "score": 0.0
+                },
+                {
+                  "id": "paper_rag_apps",
+                  "title": "Applications of Agentic RAG",
+                  "abstract": "Agentic RAG improves enterprise QA and research assistants.",
+                  "source": "arxiv",
+                  "score": 0.0
+                }
+              ],
+              "search_iteration": 1,
+              "start_time": 1775018759.346278,
+              "intent": {
+                "cognitive_strategy": {
+                  "user_goal": "FACTUAL",
+                  "reasoning_topology": "FLAT_LIST",
+                  "depth_requirement": "DEEP"
+                },
+                "constraints": {
+                  "structured_metadata": [],
+                  "unstructured_content_patterns": []
+                },
+                "information_facets": [
+                  {
+                    "facet_id": "F1",
+                    "facet_type": "DEFINITION",
+                    "description": "agentic RAG 的定义",
+                    "dependency": null
+                  },
+                  {
+                    "facet_id": "F2",
+                    "facet_type": "SOLUTION",
+                    "description": "agentic RAG 的应用",
+                    "dependency": null
+                  }
+                ],
+                "retrieval_execution": {
+                  "sparse_keywords": [
+                    {
+                      "term": "RAG",
+                      "weight": 1.0
+                    },
+                    {
+                      "term": "agentic",
+                      "weight": 1.0
+                    }
+                  ],
+                  "dense_queries": [
+                    "agentic rag applications"
+                  ],
+                  "hypothetical_document": null
+                },
+                "judgement_rubric": {
+                  "relevance_threshold": "MEDIUM",
+                  "criteria_positive": "论文应直接讨论 agentic RAG 的定义或应用。",
+                  "criteria_negative": "与检索无关的论文应排除。"
+                }
+              },
+              "intent_object": {
+                "cognitive_strategy": {
+                  "user_goal": "FACTUAL",
+                  "reasoning_topology": "FLAT_LIST",
+                  "depth_requirement": "DEEP"
+                },
+                "constraints": {
+                  "structured_metadata": [],
+                  "unstructured_content_patterns": []
+                },
+                "information_facets": [
+                  {
+                    "facet_id": "F1",
+                    "facet_type": "DEFINITION",
+                    "description": "agentic RAG 的定义",
+                    "dependency": null
+                  },
+                  {
+                    "facet_id": "F2",
+                    "facet_type": "SOLUTION",
+                    "description": "agentic RAG 的应用",
+                    "dependency": null
+                  }
+                ],
+                "retrieval_execution": {
+                  "sparse_keywords": [
+                    {
+                      "term": "RAG",
+                      "weight": 1.0
+                    },
+                    {
+                      "term": "agentic",
+                      "weight": 1.0
+                    }
+                  ],
+                  "dense_queries": [
+                    "agentic rag applications"
+                  ],
+                  "hypothetical_document": null
+                },
+                "judgement_rubric": {
+                  "relevance_threshold": "MEDIUM",
+                  "criteria_positive": "论文应直接讨论 agentic RAG 的定义或应用。",
+                  "criteria_negative": "与检索无关的论文应排除。"
+                }
+              },
+              "gap_analysis_result": "insufficient",
+              "gap_analysis_details": {
+                "coverage_score": 0.5,
+                "missing_info": [
+                  "缺少应用场景证据"
+                ],
+                "suggested_queries": [
+                  "agentic rag applications benchmarks"
+                ],
+                "raw_analysis": {
+                  "status": "insufficient",
+                  "coverage_score": 0.5,
+                  "missing_info": [
+                    "缺少应用场景证据"
+                  ],
+                  "suggested_queries": [
+                    "agentic rag applications benchmarks"
+                  ]
+                }
+              }
+            },
+            "logs": [
+              {
+                "level": "INFO",
+                "message": "开始信息缺口分析...",
+                "timestamp": 1775018759.347628,
+                "details": null
+              },
+              {
+                "level": "INFO",
+                "message": "当前迭代: 1/3",
+                "timestamp": 1775018759.347628,
+                "details": null
+              },
+              {
+                "level": "INFO",
+                "message": "已收集证据: 1 条",
+                "timestamp": 1775018759.347628,
+                "details": null
+              },
+              {
+                "level": "INFO",
+                "message": "需满足信息面: 2 个",
+                "timestamp": 1775018759.347628,
+                "details": {
+                  "facets": [
+                    "F1",
+                    "F2"
+                  ]
+                }
+              },
+              {
+                "level": "INFO",
+                "message": "调用 LLM 进行覆盖度分析...",
+                "timestamp": 1775018759.347628,
+                "details": null
+              },
+              {
+                "level": "INFO",
+                "message": "覆盖度评分: 50.0%",
+                "timestamp": 1775018759.347628,
+                "details": null
+              },
+              {
+                "level": "WARN",
+                "message": "[WARNING] 发现信息缺口",
+                "timestamp": 1775018759.347628,
+                "details": {
+                  "missing": [
+                    "缺少应用场景证据"
+                  ],
+                  "coverage": 0.5
+                }
+              },
+              {
+                "level": "WARN",
+                "message": "  - 缺失: 缺少应用场景证据",
+                "timestamp": 1775018759.347628,
+                "details": null
+              },
+              {
+                "level": "INFO",
+                "message": "建议补充查询: 1 条",
+                "timestamp": 1775018759.347628,
+                "details": null
+              },
+              {
+                "level": "INFO",
+                "message": "  → agentic rag applications benchmarks",
+                "timestamp": 1775018759.347628,
+                "details": null
+              },
+              {
+                "level": "INFO",
+                "message": "决策: 回流到检索阶段 (迭代 1/3)",
+                "timestamp": 1775018759.347628,
+                "details": null
+              }
+            ],
+            "error": null
+          },
+          {
+            "stage": "retrieve",
+            "iteration": 1,
+            "started_at": "2026-04-01T04:45:59.347628+00:00",
+            "ended_at": "2026-04-01T04:45:59.347628+00:00",
+            "duration_ms": 0.07680000271648169,
+            "input_snapshot": {
+              "user_query": "总结 agentic RAG 的定义和应用",
+              "verified_evidence": [
+                {
+                  "doc_id": "paper_rag_agent",
+                  "content": "Agentic RAG coordinates retrieval and reasoning for multi-hop search.",
+                  "reason": "提供了定义性证据。",
+                  "source": "arxiv",
+                  "relevance_score": 0.9,
+                  "facet_id": null,
+                  "metadata": {
+                    "title": "Agentic RAG for Multi-Hop Search",
+                    "year": "",
+                    "authors": [],
+                    "url": ""
+                  }
+                }
+              ],
+              "rejected_docs": [
+                {
+                  "doc_id": "paper_rag_apps",
+                  "title": "Applications of Agentic RAG",
+                  "reason": "第一轮先不采纳应用论文。",
+                  "abstract": "Agentic RAG improves enterprise QA and research assistants."
+                }
+              ],
+              "candidate_docs": [
+                {
+                  "id": "paper_rag_agent",
+                  "title": "Agentic RAG for Multi-Hop Search",
+                  "abstract": "Agentic RAG coordinates retrieval and reasoning for multi-hop search.",
+                  "source": "arxiv",
+                  "score": 0.0
+                },
+                {
+                  "id": "paper_rag_apps",
+                  "title": "Applications of Agentic RAG",
+                  "abstract": "Agentic RAG improves enterprise QA and research assistants.",
+                  "source": "arxiv",
+                  "score": 0.0
+                }
+              ],
+              "search_iteration": 1,
+              "start_time": 1775018759.346278,
+              "intent": {
+                "cognitive_strategy": {
+                  "user_goal": "FACTUAL",
+                  "reasoning_topology": "FLAT_LIST",
+                  "depth_requirement": "DEEP"
+                },
+                "constraints": {
+                  "structured_metadata": [],
+                  "unstructured_content_patterns": []
+                },
+                "information_facets": [
+                  {
+                    "facet_id": "F1",
+                    "facet_type": "DEFINITION",
+                    "description": "agentic RAG 的定义",
+                    "dependency": null
+                  },
+                  {
+                    "facet_id": "F2",
+                    "facet_type": "SOLUTION",
+                    "description": "agentic RAG 的应用",
+                    "dependency": null
+                  }
+                ],
+                "retrieval_execution": {
+                  "sparse_keywords": [
+                    {
+                      "term": "RAG",
+                      "weight": 1.0
+                    },
+                    {
+                      "term": "agentic",
+                      "weight": 1.0
+                    }
+                  ],
+                  "dense_queries": [
+                    "agentic rag applications"
+                  ],
+                  "hypothetical_document": null
+                },
+                "judgement_rubric": {
+                  "relevance_threshold": "MEDIUM",
+                  "criteria_positive": "论文应直接讨论 agentic RAG 的定义或应用。",
+                  "criteria_negative": "与检索无关的论文应排除。"
+                }
+              },
+              "intent_object": {
+                "cognitive_strategy": {
+                  "user_goal": "FACTUAL",
+                  "reasoning_topology": "FLAT_LIST",
+                  "depth_requirement": "DEEP"
+                },
+                "constraints": {
+                  "structured_metadata": [],
+                  "unstructured_content_patterns": []
+                },
+                "information_facets": [
+                  {
+                    "facet_id": "F1",
+                    "facet_type": "DEFINITION",
+                    "description": "agentic RAG 的定义",
+                    "dependency": null
+                  },
+                  {
+                    "facet_id": "F2",
+                    "facet_type": "SOLUTION",
+                    "description": "agentic RAG 的应用",
+                    "dependency": null
+                  }
+                ],
+                "retrieval_execution": {
+                  "sparse_keywords": [
+                    {
+                      "term": "RAG",
+                      "weight": 1.0
+                    },
+                    {
+                      "term": "agentic",
+                      "weight": 1.0
+                    }
+                  ],
+                  "dense_queries": [
+                    "agentic rag applications"
+                  ],
+                  "hypothetical_document": null
+                },
+                "judgement_rubric": {
+                  "relevance_threshold": "MEDIUM",
+                  "criteria_positive": "论文应直接讨论 agentic RAG 的定义或应用。",
+                  "criteria_negative": "与检索无关的论文应排除。"
+                }
+              },
+              "gap_analysis_result": "insufficient",
+              "gap_analysis_details": {
+                "coverage_score": 0.5,
+                "missing_info": [
+                  "缺少应用场景证据"
+                ],
+                "suggested_queries": [
+                  "agentic rag applications benchmarks"
+                ],
+                "raw_analysis": {
+                  "status": "insufficient",
+                  "coverage_score": 0.5,
+                  "missing_info": [
+                    "缺少应用场景证据"
+                  ],
+                  "suggested_queries": [
+                    "agentic rag applications benchmarks"
+                  ]
+                }
+              }
+            },
+            "output_snapshot": {
+              "candidate_docs": [
+                {
+                  "id": "paper_rag_agent",
+                  "title": "Agentic RAG for Multi-Hop Search",
+                  "abstract": "Agentic RAG coordinates retrieval and reasoning for multi-hop search.",
+                  "source": "arxiv",
+                  "score": 0.0
+                },
+                {
+                  "id": "paper_rag_apps",
+                  "title": "Applications of Agentic RAG",
+                  "abstract": "Agentic RAG improves enterprise QA and research assistants.",
+                  "source": "arxiv",
+                  "score": 0.0
+                }
+              ]
+            },
+            "state_after": {
+              "user_query": "总结 agentic RAG 的定义和应用",
+              "verified_evidence": [
+                {
+                  "doc_id": "paper_rag_agent",
+                  "content": "Agentic RAG coordinates retrieval and reasoning for multi-hop search.",
+                  "reason": "提供了定义性证据。",
+                  "source": "arxiv",
+                  "relevance_score": 0.9,
+                  "facet_id": null,
+                  "metadata": {
+                    "title": "Agentic RAG for Multi-Hop Search",
+                    "year": "",
+                    "authors": [],
+                    "url": ""
+                  }
+                }
+              ],
+              "rejected_docs": [
+                {
+                  "doc_id": "paper_rag_apps",
+                  "title": "Applications of Agentic RAG",
+                  "reason": "第一轮先不采纳应用论文。",
+                  "abstract": "Agentic RAG improves enterprise QA and research assistants."
+                }
+              ],
+              "candidate_docs": [
+                {
+                  "id": "paper_rag_agent",
+                  "title": "Agentic RAG for Multi-Hop Search",
+                  "abstract": "Agentic RAG coordinates retrieval and reasoning for multi-hop search.",
+                  "source": "arxiv",
+                  "score": 0.0
+                },
+                {
+                  "id": "paper_rag_apps",
+                  "title": "Applications of Agentic RAG",
+                  "abstract": "Agentic RAG improves enterprise QA and research assistants.",
+                  "source": "arxiv",
+                  "score": 0.0
+                }
+              ],
+              "search_iteration": 1,
+              "start_time": 1775018759.346278,
+              "intent": {
+                "cognitive_strategy": {
+                  "user_goal": "FACTUAL",
+                  "reasoning_topology": "FLAT_LIST",
+                  "depth_requirement": "DEEP"
+                },
+                "constraints": {
+                  "structured_metadata": [],
+                  "unstructured_content_patterns": []
+                },
+                "information_facets": [
+                  {
+                    "facet_id": "F1",
+                    "facet_type": "DEFINITION",
+                    "description": "agentic RAG 的定义",
+                    "dependency": null
+                  },
+                  {
+                    "facet_id": "F2",
+                    "facet_type": "SOLUTION",
+                    "description": "agentic RAG 的应用",
+                    "dependency": null
+                  }
+                ],
+                "retrieval_execution": {
+                  "sparse_keywords": [
+                    {
+                      "term": "RAG",
+                      "weight": 1.0
+                    },
+                    {
+                      "term": "agentic",
+                      "weight": 1.0
+                    }
+                  ],
+                  "dense_queries": [
+                    "agentic rag applications"
+                  ],
+                  "hypothetical_document": null
+                },
+                "judgement_rubric": {
+                  "relevance_threshold": "MEDIUM",
+                  "criteria_positive": "论文应直接讨论 agentic RAG 的定义或应用。",
+                  "criteria_negative": "与检索无关的论文应排除。"
+                }
+              },
+              "intent_object": {
+                "cognitive_strategy": {
+                  "user_goal": "FACTUAL",
+                  "reasoning_topology": "FLAT_LIST",
+                  "depth_requirement": "DEEP"
+                },
+                "constraints": {
+                  "structured_metadata": [],
+                  "unstructured_content_patterns": []
+                },
+                "information_facets": [
+                  {
+                    "facet_id": "F1",
+                    "facet_type": "DEFINITION",
+                    "description": "agentic RAG 的定义",
+                    "dependency": null
+                  },
+                  {
+                    "facet_id": "F2",
+                    "facet_type": "SOLUTION",
+                    "description": "agentic RAG 的应用",
+                    "dependency": null
+                  }
+                ],
+                "retrieval_execution": {
+                  "sparse_keywords": [
+                    {
+                      "term": "RAG",
+                      "weight": 1.0
+                    },
+                    {
+                      "term": "agentic",
+                      "weight": 1.0
+                    }
+                  ],
+                  "dense_queries": [
+                    "agentic rag applications"
+                  ],
+                  "hypothetical_document": null
+                },
+                "judgement_rubric": {
+                  "relevance_threshold": "MEDIUM",
+                  "criteria_positive": "论文应直接讨论 agentic RAG 的定义或应用。",
+                  "criteria_negative": "与检索无关的论文应排除。"
+                }
+              },
+              "gap_analysis_result": "insufficient",
+              "gap_analysis_details": {
+                "coverage_score": 0.5,
+                "missing_info": [
+                  "缺少应用场景证据"
+                ],
+                "suggested_queries": [
+                  "agentic rag applications benchmarks"
+                ],
+                "raw_analysis": {
+                  "status": "insufficient",
+                  "coverage_score": 0.5,
+                  "missing_info": [
+                    "缺少应用场景证据"
+                  ],
+                  "suggested_queries": [
+                    "agentic rag applications benchmarks"
+                  ]
+                }
+              }
+            },
+            "logs": [
+              {
+                "level": "INFO",
+                "message": "开始混合检索流程...",
+                "timestamp": 1775018759.347628,
+                "details": null
+              },
+              {
+                "level": "INFO",
+                "message": "当前为第 2 次迭代检索",
+                "timestamp": 1775018759.347628,
+                "details": null
+              },
+              {
+                "level": "INFO",
+                "message": "BM25 关键词: ['RAG', 'agentic']",
+                "timestamp": 1775018759.347628,
+                "details": {
+                  "keywords": [
+                    "RAG",
+                    "agentic"
+                  ]
+                }
+              },
+              {
+                "level": "INFO",
+                "message": "向量查询: 1 条",
+                "timestamp": 1775018759.347628,
+                "details": {
+                  "queries": [
+                    "agentic rag applications"
+                  ]
+                }
+              },
+              {
+                "level": "INFO",
+                "message": "执行混合检索 (BM25 + 向量 + 过滤)...",
+                "timestamp": 1775018759.347628,
+                "details": null
+              },
+              {
+                "level": "INFO",
+                "message": "最终召回文档数: 2",
+                "timestamp": 1775018759.347628,
+                "details": {
+                  "total": 2,
+                  "keywords_count": 2,
+                  "queries_count": 1,
+                  "top_k": 2
+                }
+              },
+              {
+                "level": "INFO",
+                "message": "Top-1: Agentic RAG for Multi-Hop Search... (score: 0.000)",
+                "timestamp": 1775018759.347628,
+                "details": null
+              },
+              {
+                "level": "INFO",
+                "message": "Top-2: Applications of Agentic RAG... (score: 0.000)",
+                "timestamp": 1775018759.347628,
+                "details": null
+              }
+            ],
+            "error": null
+          },
+          {
+            "stage": "judge",
+            "iteration": 1,
+            "started_at": "2026-04-01T04:45:59.348760+00:00",
+            "ended_at": "2026-04-01T04:45:59.348760+00:00",
+            "duration_ms": 0.069500005338341,
+            "input_snapshot": {
+              "user_query": "总结 agentic RAG 的定义和应用",
+              "verified_evidence": [
+                {
+                  "doc_id": "paper_rag_agent",
+                  "content": "Agentic RAG coordinates retrieval and reasoning for multi-hop search.",
+                  "reason": "提供了定义性证据。",
+                  "source": "arxiv",
+                  "relevance_score": 0.9,
+                  "facet_id": null,
+                  "metadata": {
+                    "title": "Agentic RAG for Multi-Hop Search",
+                    "year": "",
+                    "authors": [],
+                    "url": ""
+                  }
+                }
+              ],
+              "rejected_docs": [
+                {
+                  "doc_id": "paper_rag_apps",
+                  "title": "Applications of Agentic RAG",
+                  "reason": "第一轮先不采纳应用论文。",
+                  "abstract": "Agentic RAG improves enterprise QA and research assistants."
+                }
+              ],
+              "candidate_docs": [
+                {
+                  "id": "paper_rag_agent",
+                  "title": "Agentic RAG for Multi-Hop Search",
+                  "abstract": "Agentic RAG coordinates retrieval and reasoning for multi-hop search.",
+                  "source": "arxiv",
+                  "score": 0.0
+                },
+                {
+                  "id": "paper_rag_apps",
+                  "title": "Applications of Agentic RAG",
+                  "abstract": "Agentic RAG improves enterprise QA and research assistants.",
+                  "source": "arxiv",
+                  "score": 0.0
+                }
+              ],
+              "search_iteration": 1,
+              "start_time": 1775018759.346278,
+              "intent": {
+                "cognitive_strategy": {
+                  "user_goal": "FACTUAL",
+                  "reasoning_topology": "FLAT_LIST",
+                  "depth_requirement": "DEEP"
+                },
+                "constraints": {
+                  "structured_metadata": [],
+                  "unstructured_content_patterns": []
+                },
+                "information_facets": [
+                  {
+                    "facet_id": "F1",
+                    "facet_type": "DEFINITION",
+                    "description": "agentic RAG 的定义",
+                    "dependency": null
+                  },
+                  {
+                    "facet_id": "F2",
+                    "facet_type": "SOLUTION",
+                    "description": "agentic RAG 的应用",
+                    "dependency": null
+                  }
+                ],
+                "retrieval_execution": {
+                  "sparse_keywords": [
+                    {
+                      "term": "RAG",
+                      "weight": 1.0
+                    },
+                    {
+                      "term": "agentic",
+                      "weight": 1.0
+                    }
+                  ],
+                  "dense_queries": [
+                    "agentic rag applications"
+                  ],
+                  "hypothetical_document": null
+                },
+                "judgement_rubric": {
+                  "relevance_threshold": "MEDIUM",
+                  "criteria_positive": "论文应直接讨论 agentic RAG 的定义或应用。",
+                  "criteria_negative": "与检索无关的论文应排除。"
+                }
+              },
+              "intent_object": {
+                "cognitive_strategy": {
+                  "user_goal": "FACTUAL",
+                  "reasoning_topology": "FLAT_LIST",
+                  "depth_requirement": "DEEP"
+                },
+                "constraints": {
+                  "structured_metadata": [],
+                  "unstructured_content_patterns": []
+                },
+                "information_facets": [
+                  {
+                    "facet_id": "F1",
+                    "facet_type": "DEFINITION",
+                    "description": "agentic RAG 的定义",
+                    "dependency": null
+                  },
+                  {
+                    "facet_id": "F2",
+                    "facet_type": "SOLUTION",
+                    "description": "agentic RAG 的应用",
+                    "dependency": null
+                  }
+                ],
+                "retrieval_execution": {
+                  "sparse_keywords": [
+                    {
+                      "term": "RAG",
+                      "weight": 1.0
+                    },
+                    {
+                      "term": "agentic",
+                      "weight": 1.0
+                    }
+                  ],
+                  "dense_queries": [
+                    "agentic rag applications"
+                  ],
+                  "hypothetical_document": null
+                },
+                "judgement_rubric": {
+                  "relevance_threshold": "MEDIUM",
+                  "criteria_positive": "论文应直接讨论 agentic RAG 的定义或应用。",
+                  "criteria_negative": "与检索无关的论文应排除。"
+                }
+              },
+              "gap_analysis_result": "insufficient",
+              "gap_analysis_details": {
+                "coverage_score": 0.5,
+                "missing_info": [
+                  "缺少应用场景证据"
+                ],
+                "suggested_queries": [
+                  "agentic rag applications benchmarks"
+                ],
+                "raw_analysis": {
+                  "status": "insufficient",
+                  "coverage_score": 0.5,
+                  "missing_info": [
+                    "缺少应用场景证据"
+                  ],
+                  "suggested_queries": [
+                    "agentic rag applications benchmarks"
+                  ]
+                }
+              }
+            },
+            "output_snapshot": {
+              "verified_evidence": [
+                {
+                  "doc_id": "paper_rag_apps",
+                  "content": "Agentic RAG improves enterprise QA and research assistants.",
+                  "reason": "补齐应用场景证据。",
+                  "source": "arxiv",
+                  "relevance_score": 0.9,
+                  "facet_id": null,
+                  "metadata": {
+                    "title": "Applications of Agentic RAG",
+                    "year": "",
+                    "authors": [],
+                    "url": ""
+                  }
+                }
+              ],
+              "rejected_docs": [
+                {
+                  "doc_id": "paper_rag_agent",
+                  "title": "Agentic RAG for Multi-Hop Search",
+                  "reason": "第二轮不重复采纳定义论文。",
+                  "abstract": "Agentic RAG coordinates retrieval and reasoning for multi-hop search."
+                }
+              ]
+            },
+            "state_after": {
+              "user_query": "总结 agentic RAG 的定义和应用",
+              "verified_evidence": [
+                {
+                  "doc_id": "paper_rag_agent",
+                  "content": "Agentic RAG coordinates retrieval and reasoning for multi-hop search.",
+                  "reason": "提供了定义性证据。",
+                  "source": "arxiv",
+                  "relevance_score": 0.9,
+                  "facet_id": null,
+                  "metadata": {
+                    "title": "Agentic RAG for Multi-Hop Search",
+                    "year": "",
+                    "authors": [],
+                    "url": ""
+                  }
+                },
+                {
+                  "doc_id": "paper_rag_apps",
+                  "content": "Agentic RAG improves enterprise QA and research assistants.",
+                  "reason": "补齐应用场景证据。",
+                  "source": "arxiv",
+                  "relevance_score": 0.9,
+                  "facet_id": null,
+                  "metadata": {
+                    "title": "Applications of Agentic RAG",
+                    "year": "",
+                    "authors": [],
+                    "url": ""
+                  }
+                }
+              ],
+              "rejected_docs": [
+                {
+                  "doc_id": "paper_rag_agent",
+                  "title": "Agentic RAG for Multi-Hop Search",
+                  "reason": "第二轮不重复采纳定义论文。",
+                  "abstract": "Agentic RAG coordinates retrieval and reasoning for multi-hop search."
+                }
+              ],
+              "candidate_docs": [
+                {
+                  "id": "paper_rag_agent",
+                  "title": "Agentic RAG for Multi-Hop Search",
+                  "abstract": "Agentic RAG coordinates retrieval and reasoning for multi-hop search.",
+                  "source": "arxiv",
+                  "score": 0.0
+                },
+                {
+                  "id": "paper_rag_apps",
+                  "title": "Applications of Agentic RAG",
+                  "abstract": "Agentic RAG improves enterprise QA and research assistants.",
+                  "source": "arxiv",
+                  "score": 0.0
+                }
+              ],
+              "search_iteration": 1,
+              "start_time": 1775018759.346278,
+              "intent": {
+                "cognitive_strategy": {
+                  "user_goal": "FACTUAL",
+                  "reasoning_topology": "FLAT_LIST",
+                  "depth_requirement": "DEEP"
+                },
+                "constraints": {
+                  "structured_metadata": [],
+                  "unstructured_content_patterns": []
+                },
+                "information_facets": [
+                  {
+                    "facet_id": "F1",
+                    "facet_type": "DEFINITION",
+                    "description": "agentic RAG 的定义",
+                    "dependency": null
+                  },
+                  {
+                    "facet_id": "F2",
+                    "facet_type": "SOLUTION",
+                    "description": "agentic RAG 的应用",
+                    "dependency": null
+                  }
+                ],
+                "retrieval_execution": {
+                  "sparse_keywords": [
+                    {
+                      "term": "RAG",
+                      "weight": 1.0
+                    },
+                    {
+                      "term": "agentic",
+                      "weight": 1.0
+                    }
+                  ],
+                  "dense_queries": [
+                    "agentic rag applications"
+                  ],
+                  "hypothetical_document": null
+                },
+                "judgement_rubric": {
+                  "relevance_threshold": "MEDIUM",
+                  "criteria_positive": "论文应直接讨论 agentic RAG 的定义或应用。",
+                  "criteria_negative": "与检索无关的论文应排除。"
+                }
+              },
+              "intent_object": {
+                "cognitive_strategy": {
+                  "user_goal": "FACTUAL",
+                  "reasoning_topology": "FLAT_LIST",
+                  "depth_requirement": "DEEP"
+                },
+                "constraints": {
+                  "structured_metadata": [],
+                  "unstructured_content_patterns": []
+                },
+                "information_facets": [
+                  {
+                    "facet_id": "F1",
+                    "facet_type": "DEFINITION",
+                    "description": "agentic RAG 的定义",
+                    "dependency": null
+                  },
+                  {
+                    "facet_id": "F2",
+                    "facet_type": "SOLUTION",
+                    "description": "agentic RAG 的应用",
+                    "dependency": null
+                  }
+                ],
+                "retrieval_execution": {
+                  "sparse_keywords": [
+                    {
+                      "term": "RAG",
+                      "weight": 1.0
+                    },
+                    {
+                      "term": "agentic",
+                      "weight": 1.0
+                    }
+                  ],
+                  "dense_queries": [
+                    "agentic rag applications"
+                  ],
+                  "hypothetical_document": null
+                },
+                "judgement_rubric": {
+                  "relevance_threshold": "MEDIUM",
+                  "criteria_positive": "论文应直接讨论 agentic RAG 的定义或应用。",
+                  "criteria_negative": "与检索无关的论文应排除。"
+                }
+              },
+              "gap_analysis_result": "insufficient",
+              "gap_analysis_details": {
+                "coverage_score": 0.5,
+                "missing_info": [
+                  "缺少应用场景证据"
+                ],
+                "suggested_queries": [
+                  "agentic rag applications benchmarks"
+                ],
+                "raw_analysis": {
+                  "status": "insufficient",
+                  "coverage_score": 0.5,
+                  "missing_info": [
+                    "缺少应用场景证据"
+                  ],
+                  "suggested_queries": [
+                    "agentic rag applications benchmarks"
+                  ]
+                }
+              }
+            },
+            "logs": [
+              {
+                "level": "INFO",
+                "message": "开始深度研判流程...",
+                "timestamp": 1775018759.3487608,
+                "details": null
+              },
+              {
+                "level": "INFO",
+                "message": "待研判文档: 2 篇",
+                "timestamp": 1775018759.3487608,
+                "details": null
+              },
+              {
+                "level": "INFO",
+                "message": "研判准则: 论文应直接讨论 agentic RAG 的定义或应用。 (排除: 与检索无关的论文应排除。)",
+                "timestamp": 1775018759.3487608,
+                "details": null
+              },
+              {
+                "level": "INFO",
+                "message": "并行模式: True",
+                "timestamp": 1775018759.3487608,
+                "details": null
+              },
+              {
+                "level": "INFO",
+                "message": "[REJECT] 拒绝文档 (ID: paper_rag_agent): Agentic RAG for Multi-Hop Search",
+                "timestamp": 1775018759.3487608,
+                "details": {
+                  "doc_id": "paper_rag_agent",
+                  "reason": "第二轮不重复采纳定义论文。"
+                }
+              },
+              {
+                "level": "INFO",
+                "message": "[ACCEPT] 采纳证据 (ID: paper_rag_apps): Applications of Agentic RAG",
+                "timestamp": 1775018759.3487608,
+                "details": {
+                  "doc_id": "paper_rag_apps",
+                  "reason": "补齐应用场景证据。",
+                  "evidence_preview": "Agentic RAG improves enterprise QA and research assistants."
+                }
+              },
+              {
+                "level": "INFO",
+                "message": "研判完成: 采纳 1 篇, 拒绝 1 篇",
+                "timestamp": 1775018759.3487608,
+                "details": null
+              },
+              {
+                "level": "INFO",
+                "message": "通过率: 50.0%",
+                "timestamp": 1775018759.3487608,
+                "details": {
+                  "accepted": 1,
+                  "rejected": 1,
+                  "total": 2,
+                  "acceptance_rate": 0.5
+                }
+              }
+            ],
+            "error": null
+          },
+          {
+            "stage": "analyze",
+            "iteration": 1,
+            "started_at": "2026-04-01T04:45:59.348760+00:00",
+            "ended_at": "2026-04-01T04:45:59.348760+00:00",
+            "duration_ms": 0.06640001083724201,
+            "input_snapshot": {
+              "user_query": "总结 agentic RAG 的定义和应用",
+              "verified_evidence": [
+                {
+                  "doc_id": "paper_rag_agent",
+                  "content": "Agentic RAG coordinates retrieval and reasoning for multi-hop search.",
+                  "reason": "提供了定义性证据。",
+                  "source": "arxiv",
+                  "relevance_score": 0.9,
+                  "facet_id": null,
+                  "metadata": {
+                    "title": "Agentic RAG for Multi-Hop Search",
+                    "year": "",
+                    "authors": [],
+                    "url": ""
+                  }
+                },
+                {
+                  "doc_id": "paper_rag_apps",
+                  "content": "Agentic RAG improves enterprise QA and research assistants.",
+                  "reason": "补齐应用场景证据。",
+                  "source": "arxiv",
+                  "relevance_score": 0.9,
+                  "facet_id": null,
+                  "metadata": {
+                    "title": "Applications of Agentic RAG",
+                    "year": "",
+                    "authors": [],
+                    "url": ""
+                  }
+                }
+              ],
+              "rejected_docs": [
+                {
+                  "doc_id": "paper_rag_agent",
+                  "title": "Agentic RAG for Multi-Hop Search",
+                  "reason": "第二轮不重复采纳定义论文。",
+                  "abstract": "Agentic RAG coordinates retrieval and reasoning for multi-hop search."
+                }
+              ],
+              "candidate_docs": [
+                {
+                  "id": "paper_rag_agent",
+                  "title": "Agentic RAG for Multi-Hop Search",
+                  "abstract": "Agentic RAG coordinates retrieval and reasoning for multi-hop search.",
+                  "source": "arxiv",
+                  "score": 0.0
+                },
+                {
+                  "id": "paper_rag_apps",
+                  "title": "Applications of Agentic RAG",
+                  "abstract": "Agentic RAG improves enterprise QA and research assistants.",
+                  "source": "arxiv",
+                  "score": 0.0
+                }
+              ],
+              "search_iteration": 1,
+              "start_time": 1775018759.346278,
+              "intent": {
+                "cognitive_strategy": {
+                  "user_goal": "FACTUAL",
+                  "reasoning_topology": "FLAT_LIST",
+                  "depth_requirement": "DEEP"
+                },
+                "constraints": {
+                  "structured_metadata": [],
+                  "unstructured_content_patterns": []
+                },
+                "information_facets": [
+                  {
+                    "facet_id": "F1",
+                    "facet_type": "DEFINITION",
+                    "description": "agentic RAG 的定义",
+                    "dependency": null
+                  },
+                  {
+                    "facet_id": "F2",
+                    "facet_type": "SOLUTION",
+                    "description": "agentic RAG 的应用",
+                    "dependency": null
+                  }
+                ],
+                "retrieval_execution": {
+                  "sparse_keywords": [
+                    {
+                      "term": "RAG",
+                      "weight": 1.0
+                    },
+                    {
+                      "term": "agentic",
+                      "weight": 1.0
+                    }
+                  ],
+                  "dense_queries": [
+                    "agentic rag applications"
+                  ],
+                  "hypothetical_document": null
+                },
+                "judgement_rubric": {
+                  "relevance_threshold": "MEDIUM",
+                  "criteria_positive": "论文应直接讨论 agentic RAG 的定义或应用。",
+                  "criteria_negative": "与检索无关的论文应排除。"
+                }
+              },
+              "intent_object": {
+                "cognitive_strategy": {
+                  "user_goal": "FACTUAL",
+                  "reasoning_topology": "FLAT_LIST",
+                  "depth_requirement": "DEEP"
+                },
+                "constraints": {
+                  "structured_metadata": [],
+                  "unstructured_content_patterns": []
+                },
+                "information_facets": [
+                  {
+                    "facet_id": "F1",
+                    "facet_type": "DEFINITION",
+                    "description": "agentic RAG 的定义",
+                    "dependency": null
+                  },
+                  {
+                    "facet_id": "F2",
+                    "facet_type": "SOLUTION",
+                    "description": "agentic RAG 的应用",
+                    "dependency": null
+                  }
+                ],
+                "retrieval_execution": {
+                  "sparse_keywords": [
+                    {
+                      "term": "RAG",
+                      "weight": 1.0
+                    },
+                    {
+                      "term": "agentic",
+                      "weight": 1.0
+                    }
+                  ],
+                  "dense_queries": [
+                    "agentic rag applications"
+                  ],
+                  "hypothetical_document": null
+                },
+                "judgement_rubric": {
+                  "relevance_threshold": "MEDIUM",
+                  "criteria_positive": "论文应直接讨论 agentic RAG 的定义或应用。",
+                  "criteria_negative": "与检索无关的论文应排除。"
+                }
+              },
+              "gap_analysis_result": "insufficient",
+              "gap_analysis_details": {
+                "coverage_score": 0.5,
+                "missing_info": [
+                  "缺少应用场景证据"
+                ],
+                "suggested_queries": [
+                  "agentic rag applications benchmarks"
+                ],
+                "raw_analysis": {
+                  "status": "insufficient",
+                  "coverage_score": 0.5,
+                  "missing_info": [
+                    "缺少应用场景证据"
+                  ],
+                  "suggested_queries": [
+                    "agentic rag applications benchmarks"
+                  ]
+                }
+              }
+            },
+            "output_snapshot": {
+              "gap_analysis_result": "sufficient",
+              "search_iteration": 2,
+              "gap_analysis_details": {
+                "coverage_score": 0.9,
+                "missing_info": [],
+                "suggested_queries": [],
+                "raw_analysis": {
+                  "status": "sufficient",
+                  "coverage_score": 0.9,
+                  "missing_info": [],
+                  "suggested_queries": []
+                }
+              }
+            },
+            "state_after": {
+              "user_query": "总结 agentic RAG 的定义和应用",
+              "verified_evidence": [
+                {
+                  "doc_id": "paper_rag_agent",
+                  "content": "Agentic RAG coordinates retrieval and reasoning for multi-hop search.",
+                  "reason": "提供了定义性证据。",
+                  "source": "arxiv",
+                  "relevance_score": 0.9,
+                  "facet_id": null,
+                  "metadata": {
+                    "title": "Agentic RAG for Multi-Hop Search",
+                    "year": "",
+                    "authors": [],
+                    "url": ""
+                  }
+                },
+                {
+                  "doc_id": "paper_rag_apps",
+                  "content": "Agentic RAG improves enterprise QA and research assistants.",
+                  "reason": "补齐应用场景证据。",
+                  "source": "arxiv",
+                  "relevance_score": 0.9,
+                  "facet_id": null,
+                  "metadata": {
+                    "title": "Applications of Agentic RAG",
+                    "year": "",
+                    "authors": [],
+                    "url": ""
+                  }
+                }
+              ],
+              "rejected_docs": [
+                {
+                  "doc_id": "paper_rag_agent",
+                  "title": "Agentic RAG for Multi-Hop Search",
+                  "reason": "第二轮不重复采纳定义论文。",
+                  "abstract": "Agentic RAG coordinates retrieval and reasoning for multi-hop search."
+                }
+              ],
+              "candidate_docs": [
+                {
+                  "id": "paper_rag_agent",
+                  "title": "Agentic RAG for Multi-Hop Search",
+                  "abstract": "Agentic RAG coordinates retrieval and reasoning for multi-hop search.",
+                  "source": "arxiv",
+                  "score": 0.0
+                },
+                {
+                  "id": "paper_rag_apps",
+                  "title": "Applications of Agentic RAG",
+                  "abstract": "Agentic RAG improves enterprise QA and research assistants.",
+                  "source": "arxiv",
+                  "score": 0.0
+                }
+              ],
+              "search_iteration": 2,
+              "start_time": 1775018759.346278,
+              "intent": {
+                "cognitive_strategy": {
+                  "user_goal": "FACTUAL",
+                  "reasoning_topology": "FLAT_LIST",
+                  "depth_requirement": "DEEP"
+                },
+                "constraints": {
+                  "structured_metadata": [],
+                  "unstructured_content_patterns": []
+                },
+                "information_facets": [
+                  {
+                    "facet_id": "F1",
+                    "facet_type": "DEFINITION",
+                    "description": "agentic RAG 的定义",
+                    "dependency": null
+                  },
+                  {
+                    "facet_id": "F2",
+                    "facet_type": "SOLUTION",
+                    "description": "agentic RAG 的应用",
+                    "dependency": null
+                  }
+                ],
+                "retrieval_execution": {
+                  "sparse_keywords": [
+                    {
+                      "term": "RAG",
+                      "weight": 1.0
+                    },
+                    {
+                      "term": "agentic",
+                      "weight": 1.0
+                    }
+                  ],
+                  "dense_queries": [
+                    "agentic rag applications"
+                  ],
+                  "hypothetical_document": null
+                },
+                "judgement_rubric": {
+                  "relevance_threshold": "MEDIUM",
+                  "criteria_positive": "论文应直接讨论 agentic RAG 的定义或应用。",
+                  "criteria_negative": "与检索无关的论文应排除。"
+                }
+              },
+              "intent_object": {
+                "cognitive_strategy": {
+                  "user_goal": "FACTUAL",
+                  "reasoning_topology": "FLAT_LIST",
+                  "depth_requirement": "DEEP"
+                },
+                "constraints": {
+                  "structured_metadata": [],
+                  "unstructured_content_patterns": []
+                },
+                "information_facets": [
+                  {
+                    "facet_id": "F1",
+                    "facet_type": "DEFINITION",
+                    "description": "agentic RAG 的定义",
+                    "dependency": null
+                  },
+                  {
+                    "facet_id": "F2",
+                    "facet_type": "SOLUTION",
+                    "description": "agentic RAG 的应用",
+                    "dependency": null
+                  }
+                ],
+                "retrieval_execution": {
+                  "sparse_keywords": [
+                    {
+                      "term": "RAG",
+                      "weight": 1.0
+                    },
+                    {
+                      "term": "agentic",
+                      "weight": 1.0
+                    }
+                  ],
+                  "dense_queries": [
+                    "agentic rag applications"
+                  ],
+                  "hypothetical_document": null
+                },
+                "judgement_rubric": {
+                  "relevance_threshold": "MEDIUM",
+                  "criteria_positive": "论文应直接讨论 agentic RAG 的定义或应用。",
+                  "criteria_negative": "与检索无关的论文应排除。"
+                }
+              },
+              "gap_analysis_result": "sufficient",
+              "gap_analysis_details": {
+                "coverage_score": 0.9,
+                "missing_info": [],
+                "suggested_queries": [],
+                "raw_analysis": {
+                  "status": "sufficient",
+                  "coverage_score": 0.9,
+                  "missing_info": [],
+                  "suggested_queries": []
+                }
+              }
+            },
+            "logs": [
+              {
+                "level": "INFO",
+                "message": "开始信息缺口分析...",
+                "timestamp": 1775018759.3487608,
+                "details": null
+              },
+              {
+                "level": "INFO",
+                "message": "当前迭代: 2/3",
+                "timestamp": 1775018759.3487608,
+                "details": null
+              },
+              {
+                "level": "INFO",
+                "message": "已收集证据: 2 条",
+                "timestamp": 1775018759.3487608,
+                "details": null
+              },
+              {
+                "level": "INFO",
+                "message": "需满足信息面: 2 个",
+                "timestamp": 1775018759.3487608,
+                "details": {
+                  "facets": [
+                    "F1",
+                    "F2"
+                  ]
+                }
+              },
+              {
+                "level": "INFO",
+                "message": "调用 LLM 进行覆盖度分析...",
+                "timestamp": 1775018759.3487608,
+                "details": null
+              },
+              {
+                "level": "INFO",
+                "message": "覆盖度评分: 90.0%",
+                "timestamp": 1775018759.3487608,
+                "details": null
+              },
+              {
+                "level": "INFO",
+                "message": "[SUCCESS] 信息覆盖充足",
+                "timestamp": 1775018759.3487608,
+                "details": null
+              },
+              {
+                "level": "INFO",
+                "message": "决策: 进入报告生成阶段",
+                "timestamp": 1775018759.3487608,
+                "details": null
+              }
+            ],
+            "error": null
+          },
+          {
+            "stage": "report",
+            "iteration": 1,
+            "started_at": "2026-04-01T04:45:59.349808+00:00",
+            "ended_at": "2026-04-01T04:45:59.349808+00:00",
+            "duration_ms": 0.07639999967068434,
+            "input_snapshot": {
+              "user_query": "总结 agentic RAG 的定义和应用",
+              "verified_evidence": [
+                {
+                  "doc_id": "paper_rag_agent",
+                  "content": "Agentic RAG coordinates retrieval and reasoning for multi-hop search.",
+                  "reason": "提供了定义性证据。",
+                  "source": "arxiv",
+                  "relevance_score": 0.9,
+                  "facet_id": null,
+                  "metadata": {
+                    "title": "Agentic RAG for Multi-Hop Search",
+                    "year": "",
+                    "authors": [],
+                    "url": ""
+                  }
+                },
+                {
+                  "doc_id": "paper_rag_apps",
+                  "content": "Agentic RAG improves enterprise QA and research assistants.",
+                  "reason": "补齐应用场景证据。",
+                  "source": "arxiv",
+                  "relevance_score": 0.9,
+                  "facet_id": null,
+                  "metadata": {
+                    "title": "Applications of Agentic RAG",
+                    "year": "",
+                    "authors": [],
+                    "url": ""
+                  }
+                }
+              ],
+              "rejected_docs": [
+                {
+                  "doc_id": "paper_rag_agent",
+                  "title": "Agentic RAG for Multi-Hop Search",
+                  "reason": "第二轮不重复采纳定义论文。",
+                  "abstract": "Agentic RAG coordinates retrieval and reasoning for multi-hop search."
+                }
+              ],
+              "candidate_docs": [
+                {
+                  "id": "paper_rag_agent",
+                  "title": "Agentic RAG for Multi-Hop Search",
+                  "abstract": "Agentic RAG coordinates retrieval and reasoning for multi-hop search.",
+                  "source": "arxiv",
+                  "score": 0.0
+                },
+                {
+                  "id": "paper_rag_apps",
+                  "title": "Applications of Agentic RAG",
+                  "abstract": "Agentic RAG improves enterprise QA and research assistants.",
+                  "source": "arxiv",
+                  "score": 0.0
+                }
+              ],
+              "search_iteration": 2,
+              "start_time": 1775018759.346278,
+              "intent": {
+                "cognitive_strategy": {
+                  "user_goal": "FACTUAL",
+                  "reasoning_topology": "FLAT_LIST",
+                  "depth_requirement": "DEEP"
+                },
+                "constraints": {
+                  "structured_metadata": [],
+                  "unstructured_content_patterns": []
+                },
+                "information_facets": [
+                  {
+                    "facet_id": "F1",
+                    "facet_type": "DEFINITION",
+                    "description": "agentic RAG 的定义",
+                    "dependency": null
+                  },
+                  {
+                    "facet_id": "F2",
+                    "facet_type": "SOLUTION",
+                    "description": "agentic RAG 的应用",
+                    "dependency": null
+                  }
+                ],
+                "retrieval_execution": {
+                  "sparse_keywords": [
+                    {
+                      "term": "RAG",
+                      "weight": 1.0
+                    },
+                    {
+                      "term": "agentic",
+                      "weight": 1.0
+                    }
+                  ],
+                  "dense_queries": [
+                    "agentic rag applications"
+                  ],
+                  "hypothetical_document": null
+                },
+                "judgement_rubric": {
+                  "relevance_threshold": "MEDIUM",
+                  "criteria_positive": "论文应直接讨论 agentic RAG 的定义或应用。",
+                  "criteria_negative": "与检索无关的论文应排除。"
+                }
+              },
+              "intent_object": {
+                "cognitive_strategy": {
+                  "user_goal": "FACTUAL",
+                  "reasoning_topology": "FLAT_LIST",
+                  "depth_requirement": "DEEP"
+                },
+                "constraints": {
+                  "structured_metadata": [],
+                  "unstructured_content_patterns": []
+                },
+                "information_facets": [
+                  {
+                    "facet_id": "F1",
+                    "facet_type": "DEFINITION",
+                    "description": "agentic RAG 的定义",
+                    "dependency": null
+                  },
+                  {
+                    "facet_id": "F2",
+                    "facet_type": "SOLUTION",
+                    "description": "agentic RAG 的应用",
+                    "dependency": null
+                  }
+                ],
+                "retrieval_execution": {
+                  "sparse_keywords": [
+                    {
+                      "term": "RAG",
+                      "weight": 1.0
+                    },
+                    {
+                      "term": "agentic",
+                      "weight": 1.0
+                    }
+                  ],
+                  "dense_queries": [
+                    "agentic rag applications"
+                  ],
+                  "hypothetical_document": null
+                },
+                "judgement_rubric": {
+                  "relevance_threshold": "MEDIUM",
+                  "criteria_positive": "论文应直接讨论 agentic RAG 的定义或应用。",
+                  "criteria_negative": "与检索无关的论文应排除。"
+                }
+              },
+              "gap_analysis_result": "sufficient",
+              "gap_analysis_details": {
+                "coverage_score": 0.9,
+                "missing_info": [],
+                "suggested_queries": [],
+                "raw_analysis": {
+                  "status": "sufficient",
+                  "coverage_score": 0.9,
+                  "missing_info": [],
+                  "suggested_queries": []
+                }
+              }
+            },
+            "output_snapshot": {
+              "final_report": "==================================================\n[REPORT] AgenticRAG Analysis Report\n==================================================\n\n[Query] 总结 agentic RAG 的定义和应用\n[Iterations] 2\n[Evidence Count] 2\n\n--------------------------------------------------\n[KEY FINDINGS]\n--------------------------------------------------\n\n[Evidence 1]\n  Content: Agentic RAG coordinates retrieval and reasoning for multi-hop search.\n  Source: arxiv (ID: paper_rag_agent)\n  Reason: 提供了定义性证据。\n  Title: Agentic RAG for Multi-Hop Search\n\n[Evidence 2]\n  Content: Agentic RAG improves enterprise QA and research assistants.\n  Source: arxiv (ID: paper_rag_apps)\n  Reason: 补齐应用场景证据。\n  Title: Applications of Agentic RAG\n\n==================================================\n报告生成时间: 2026-04-01 12:45:59\n=================================================="
+            },
+            "state_after": {
+              "user_query": "总结 agentic RAG 的定义和应用",
+              "verified_evidence": [
+                {
+                  "doc_id": "paper_rag_agent",
+                  "content": "Agentic RAG coordinates retrieval and reasoning for multi-hop search.",
+                  "reason": "提供了定义性证据。",
+                  "source": "arxiv",
+                  "relevance_score": 0.9,
+                  "facet_id": null,
+                  "metadata": {
+                    "title": "Agentic RAG for Multi-Hop Search",
+                    "year": "",
+                    "authors": [],
+                    "url": ""
+                  }
+                },
+                {
+                  "doc_id": "paper_rag_apps",
+                  "content": "Agentic RAG improves enterprise QA and research assistants.",
+                  "reason": "补齐应用场景证据。",
+                  "source": "arxiv",
+                  "relevance_score": 0.9,
+                  "facet_id": null,
+                  "metadata": {
+                    "title": "Applications of Agentic RAG",
+                    "year": "",
+                    "authors": [],
+                    "url": ""
+                  }
+                }
+              ],
+              "rejected_docs": [
+                {
+                  "doc_id": "paper_rag_agent",
+                  "title": "Agentic RAG for Multi-Hop Search",
+                  "reason": "第二轮不重复采纳定义论文。",
+                  "abstract": "Agentic RAG coordinates retrieval and reasoning for multi-hop search."
+                }
+              ],
+              "candidate_docs": [
+                {
+                  "id": "paper_rag_agent",
+                  "title": "Agentic RAG for Multi-Hop Search",
+                  "abstract": "Agentic RAG coordinates retrieval and reasoning for multi-hop search.",
+                  "source": "arxiv",
+                  "score": 0.0
+                },
+                {
+                  "id": "paper_rag_apps",
+                  "title": "Applications of Agentic RAG",
+                  "abstract": "Agentic RAG improves enterprise QA and research assistants.",
+                  "source": "arxiv",
+                  "score": 0.0
+                }
+              ],
+              "search_iteration": 2,
+              "start_time": 1775018759.346278,
+              "intent": {
+                "cognitive_strategy": {
+                  "user_goal": "FACTUAL",
+                  "reasoning_topology": "FLAT_LIST",
+                  "depth_requirement": "DEEP"
+                },
+                "constraints": {
+                  "structured_metadata": [],
+                  "unstructured_content_patterns": []
+                },
+                "information_facets": [
+                  {
+                    "facet_id": "F1",
+                    "facet_type": "DEFINITION",
+                    "description": "agentic RAG 的定义",
+                    "dependency": null
+                  },
+                  {
+                    "facet_id": "F2",
+                    "facet_type": "SOLUTION",
+                    "description": "agentic RAG 的应用",
+                    "dependency": null
+                  }
+                ],
+                "retrieval_execution": {
+                  "sparse_keywords": [
+                    {
+                      "term": "RAG",
+                      "weight": 1.0
+                    },
+                    {
+                      "term": "agentic",
+                      "weight": 1.0
+                    }
+                  ],
+                  "dense_queries": [
+                    "agentic rag applications"
+                  ],
+                  "hypothetical_document": null
+                },
+                "judgement_rubric": {
+                  "relevance_threshold": "MEDIUM",
+                  "criteria_positive": "论文应直接讨论 agentic RAG 的定义或应用。",
+                  "criteria_negative": "与检索无关的论文应排除。"
+                }
+              },
+              "intent_object": {
+                "cognitive_strategy": {
+                  "user_goal": "FACTUAL",
+                  "reasoning_topology": "FLAT_LIST",
+                  "depth_requirement": "DEEP"
+                },
+                "constraints": {
+                  "structured_metadata": [],
+                  "unstructured_content_patterns": []
+                },
+                "information_facets": [
+                  {
+                    "facet_id": "F1",
+                    "facet_type": "DEFINITION",
+                    "description": "agentic RAG 的定义",
+                    "dependency": null
+                  },
+                  {
+                    "facet_id": "F2",
+                    "facet_type": "SOLUTION",
+                    "description": "agentic RAG 的应用",
+                    "dependency": null
+                  }
+                ],
+                "retrieval_execution": {
+                  "sparse_keywords": [
+                    {
+                      "term": "RAG",
+                      "weight": 1.0
+                    },
+                    {
+                      "term": "agentic",
+                      "weight": 1.0
+                    }
+                  ],
+                  "dense_queries": [
+                    "agentic rag applications"
+                  ],
+                  "hypothetical_document": null
+                },
+                "judgement_rubric": {
+                  "relevance_threshold": "MEDIUM",
+                  "criteria_positive": "论文应直接讨论 agentic RAG 的定义或应用。",
+                  "criteria_negative": "与检索无关的论文应排除。"
+                }
+              },
+              "gap_analysis_result": "sufficient",
+              "gap_analysis_details": {
+                "coverage_score": 0.9,
+                "missing_info": [],
+                "suggested_queries": [],
+                "raw_analysis": {
+                  "status": "sufficient",
+                  "coverage_score": 0.9,
+                  "missing_info": [],
+                  "suggested_queries": []
+                }
+              },
+              "final_report": "==================================================\n[REPORT] AgenticRAG Analysis Report\n==================================================\n\n[Query] 总结 agentic RAG 的定义和应用\n[Iterations] 2\n[Evidence Count] 2\n\n--------------------------------------------------\n[KEY FINDINGS]\n--------------------------------------------------\n\n[Evidence 1]\n  Content: Agentic RAG coordinates retrieval and reasoning for multi-hop search.\n  Source: arxiv (ID: paper_rag_agent)\n  Reason: 提供了定义性证据。\n  Title: Agentic RAG for Multi-Hop Search\n\n[Evidence 2]\n  Content: Agentic RAG improves enterprise QA and research assistants.\n  Source: arxiv (ID: paper_rag_apps)\n  Reason: 补齐应用场景证据。\n  Title: Applications of Agentic RAG\n\n==================================================\n报告生成时间: 2026-04-01 12:45:59\n=================================================="
+            },
+            "logs": [
+              {
+                "level": "INFO",
+                "message": "开始生成最终报告...",
+                "timestamp": 1775018759.3487608,
+                "details": null
+              },
+              {
+                "level": "INFO",
+                "message": "原始查询: 总结 agentic RAG 的定义和应用",
+                "timestamp": 1775018759.3487608,
+                "details": null
+              },
+              {
+                "level": "INFO",
+                "message": "总迭代次数: 2",
+                "timestamp": 1775018759.3487608,
+                "details": null
+              },
+              {
+                "level": "INFO",
+                "message": "可用证据: 2 条",
+                "timestamp": 1775018759.3487608,
+                "details": null
+              },
+              {
+                "level": "INFO",
+                "message": "证据来源分布: {'arxiv': 2}",
+                "timestamp": 1775018759.3487608,
+                "details": {
+                  "arxiv": 2
+                }
+              },
+              {
+                "level": "INFO",
+                "message": "整合证据，生成结构化报告...",
+                "timestamp": 1775018759.3487608,
+                "details": null
+              },
+              {
+                "level": "INFO",
+                "message": "报告生成完成 (耗时: 0ms)",
+                "timestamp": 1775018759.3487608,
+                "details": null
+              },
+              {
+                "level": "INFO",
+                "message": "关键发现摘要:",
+                "timestamp": 1775018759.3487608,
+                "details": null
+              },
+              {
+                "level": "INFO",
+                "message": "  [1] 提供了定义性证据。...",
+                "timestamp": 1775018759.3487608,
+                "details": null
+              },
+              {
+                "level": "INFO",
+                "message": "  [2] 补齐应用场景证据。...",
+                "timestamp": 1775018759.3487608,
+                "details": null
+              },
+              {
+                "level": "INFO",
+                "message": "报告置信度: 64.0%",
+                "timestamp": 1775018759.3487608,
+                "details": {
+                  "confidence": 0.6399999999999999,
+                  "evidence_count": 2,
+                  "iterations": 2
+                }
+              }
+            ],
+            "error": null
+          }
+        ],
+        "final_state": {
+          "user_query": "总结 agentic RAG 的定义和应用",
+          "verified_evidence": [
+            {
+              "doc_id": "paper_rag_agent",
+              "content": "Agentic RAG coordinates retrieval and reasoning for multi-hop search.",
+              "reason": "提供了定义性证据。",
+              "source": "arxiv",
+              "relevance_score": 0.9,
+              "facet_id": null,
+              "metadata": {
+                "title": "Agentic RAG for Multi-Hop Search",
+                "year": "",
+                "authors": [],
+                "url": ""
+              }
+            },
+            {
+              "doc_id": "paper_rag_apps",
+              "content": "Agentic RAG improves enterprise QA and research assistants.",
+              "reason": "补齐应用场景证据。",
+              "source": "arxiv",
+              "relevance_score": 0.9,
+              "facet_id": null,
+              "metadata": {
+                "title": "Applications of Agentic RAG",
+                "year": "",
+                "authors": [],
+                "url": ""
+              }
+            }
+          ],
+          "rejected_docs": [
+            {
+              "doc_id": "paper_rag_agent",
+              "title": "Agentic RAG for Multi-Hop Search",
+              "reason": "第二轮不重复采纳定义论文。",
+              "abstract": "Agentic RAG coordinates retrieval and reasoning for multi-hop search."
+            }
+          ],
+          "candidate_docs": [
+            {
+              "id": "paper_rag_agent",
+              "title": "Agentic RAG for Multi-Hop Search",
+              "abstract": "Agentic RAG coordinates retrieval and reasoning for multi-hop search.",
+              "source": "arxiv",
+              "score": 0.0
+            },
+            {
+              "id": "paper_rag_apps",
+              "title": "Applications of Agentic RAG",
+              "abstract": "Agentic RAG improves enterprise QA and research assistants.",
+              "source": "arxiv",
+              "score": 0.0
+            }
+          ],
+          "search_iteration": 2,
+          "start_time": 1775018759.346278,
+          "intent": {
+            "cognitive_strategy": {
+              "user_goal": "FACTUAL",
+              "reasoning_topology": "FLAT_LIST",
+              "depth_requirement": "DEEP"
+            },
+            "constraints": {
+              "structured_metadata": [],
+              "unstructured_content_patterns": []
+            },
+            "information_facets": [
+              {
+                "facet_id": "F1",
+                "facet_type": "DEFINITION",
+                "description": "agentic RAG 的定义",
+                "dependency": null
+              },
+              {
+                "facet_id": "F2",
+                "facet_type": "SOLUTION",
+                "description": "agentic RAG 的应用",
+                "dependency": null
+              }
+            ],
+            "retrieval_execution": {
+              "sparse_keywords": [
+                {
+                  "term": "RAG",
+                  "weight": 1.0
+                },
+                {
+                  "term": "agentic",
+                  "weight": 1.0
+                }
+              ],
+              "dense_queries": [
+                "agentic rag applications"
+              ],
+              "hypothetical_document": null
+            },
+            "judgement_rubric": {
+              "relevance_threshold": "MEDIUM",
+              "criteria_positive": "论文应直接讨论 agentic RAG 的定义或应用。",
+              "criteria_negative": "与检索无关的论文应排除。"
+            }
+          },
+          "intent_object": {
+            "cognitive_strategy": {
+              "user_goal": "FACTUAL",
+              "reasoning_topology": "FLAT_LIST",
+              "depth_requirement": "DEEP"
+            },
+            "constraints": {
+              "structured_metadata": [],
+              "unstructured_content_patterns": []
+            },
+            "information_facets": [
+              {
+                "facet_id": "F1",
+                "facet_type": "DEFINITION",
+                "description": "agentic RAG 的定义",
+                "dependency": null
+              },
+              {
+                "facet_id": "F2",
+                "facet_type": "SOLUTION",
+                "description": "agentic RAG 的应用",
+                "dependency": null
+              }
+            ],
+            "retrieval_execution": {
+              "sparse_keywords": [
+                {
+                  "term": "RAG",
+                  "weight": 1.0
+                },
+                {
+                  "term": "agentic",
+                  "weight": 1.0
+                }
+              ],
+              "dense_queries": [
+                "agentic rag applications"
+              ],
+              "hypothetical_document": null
+            },
+            "judgement_rubric": {
+              "relevance_threshold": "MEDIUM",
+              "criteria_positive": "论文应直接讨论 agentic RAG 的定义或应用。",
+              "criteria_negative": "与检索无关的论文应排除。"
+            }
+          },
+          "gap_analysis_result": "sufficient",
+          "gap_analysis_details": {
+            "coverage_score": 0.9,
+            "missing_info": [],
+            "suggested_queries": [],
+            "raw_analysis": {
+              "status": "sufficient",
+              "coverage_score": 0.9,
+              "missing_info": [],
+              "suggested_queries": []
+            }
+          },
+          "final_report": "==================================================\n[REPORT] AgenticRAG Analysis Report\n==================================================\n\n[Query] 总结 agentic RAG 的定义和应用\n[Iterations] 2\n[Evidence Count] 2\n\n--------------------------------------------------\n[KEY FINDINGS]\n--------------------------------------------------\n\n[Evidence 1]\n  Content: Agentic RAG coordinates retrieval and reasoning for multi-hop search.\n  Source: arxiv (ID: paper_rag_agent)\n  Reason: 提供了定义性证据。\n  Title: Agentic RAG for Multi-Hop Search\n\n[Evidence 2]\n  Content: Agentic RAG improves enterprise QA and research assistants.\n  Source: arxiv (ID: paper_rag_apps)\n  Reason: 补齐应用场景证据。\n  Title: Applications of Agentic RAG\n\n==================================================\n报告生成时间: 2026-04-01 12:45:59\n=================================================="
+        }
+      },
+      "errors": [],
+      "notes": []
+    }
+  ]
+}
