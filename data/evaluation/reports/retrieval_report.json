@@ -1,17 +1,23 @@
 {
   "module": "retrieval",
-  "generated_at": "2026-04-01T04:45:59.168588+00:00",
+  "generated_at": "2026-04-01T06:09:30.812278+00:00",
   "total_cases": 1,
   "passed_cases": 1,
   "failed_cases": 0,
-  "average_duration_ms": 0.08399999933317304,
+  "average_duration_ms": 0.09369998588226736,
   "aggregate_metrics": {
     "recall_at_k": 1.0,
     "precision_at_k": 1.0,
     "mrr": 1.0,
     "ndcg_at_k": 1.0,
-    "latency_ms": 0.08399999933317304,
-    "retrieved_count": 2.0
+    "llm_overall_score": 0.9,
+    "llm_pass_recommendation": 1.0,
+    "latency_ms": 0.09369998588226736,
+    "retrieved_count": 2.0,
+    "llm_topk_relevance_score": 0.94,
+    "llm_ranking_quality_score": 0.9,
+    "llm_coverage_of_need_score": 0.87,
+    "llm_constraint_alignment_score": 0.89
   },
   "case_results": [
     {
@@ -24,15 +30,69 @@
         "precision_at_k": 1.0,
         "mrr": 1.0,
         "ndcg_at_k": 1.0,
-        "latency_ms": 0.08399999933317304,
-        "retrieved_count": 2
+        "llm_overall_score": 0.9,
+        "llm_pass_recommendation": true,
+        "latency_ms": 0.09369998588226736,
+        "retrieved_count": 2,
+        "llm_topk_relevance_score": 0.94,
+        "llm_ranking_quality_score": 0.9,
+        "llm_coverage_of_need_score": 0.87,
+        "llm_constraint_alignment_score": 0.89
       },
-      "duration_ms": 0.08399999933317304,
+      "duration_ms": 0.09369998588226736,
       "actual": {
         "ranked_doc_ids": [
           "paper_rag_agent",
           "paper_rag_general"
-        ]
+        ],
+        "top_k_documents": [
+          {
+            "id": "paper_rag_agent",
+            "title": "Agentic RAG for Multi-Hop Search",
+            "abstract": "This paper studies agent orchestration for RAG and multi-hop retrieval.",
+            "score": 0.0,
+            "source": "hybrid"
+          },
+          {
+            "id": "paper_rag_general",
+            "title": "RAG Systems for Enterprise Search",
+            "abstract": "RAG retrieval pipelines for enterprise knowledge bases.",
+            "score": 0.0,
+            "source": "hybrid"
+          }
+        ],
+        "llm_judgement": {
+          "overall_score": 0.9,
+          "pass_recommendation": true,
+          "summary": "The ranked results strongly satisfy the query and place the most relevant paper first.",
+          "strengths": [
+            "The first result is highly aligned with agentic RAG.",
+            "The top-2 set covers both focused and broader RAG material."
+          ],
+          "issues": [],
+          "dimensions": [
+            {
+              "name": "topk_relevance",
+              "score": 0.94,
+              "reasoning": "Both top documents are relevant to the query."
+            },
+            {
+              "name": "ranking_quality",
+              "score": 0.9,
+              "reasoning": "The most specific paper is correctly ranked first."
+            },
+            {
+              "name": "coverage_of_need",
+              "score": 0.87,
+              "reasoning": "The ranked set covers the main topic well."
+            },
+            {
+              "name": "constraint_alignment",
+              "score": 0.89,
+              "reasoning": "The retrieval output respects the intent and avoids off-topic material in top-2."
+            }
+          ]
+        }
       },
       "expected": {
         "relevant_doc_ids": [
@@ -40,11 +100,14 @@
           "paper_rag_general"
         ],
         "k": 2,
-        "min_recall_at_k": 1.0
+        "min_recall_at_k": 1.0,
+        "min_llm_overall_score": 0.7
       },
       "trace": null,
       "errors": [],
-      "notes": []
+      "notes": [
+        "The ranked results strongly satisfy the query and place the most relevant paper first."
+      ]
     }
   ]
 }

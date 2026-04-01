@@ -16,7 +16,7 @@ def load_evaluation_cases(path: str | Path, module: Optional[str] = None) -> Lis
 
     cases: List[EvaluationCase] = []
     for file_path in files:
-        with open(file_path, "r", encoding="utf-8") as handle:
+        with open(file_path, "r", encoding="utf-8-sig") as handle:
             raw = json.load(handle)
 
         raw_cases = raw.get("cases", []) if isinstance(raw, dict) else raw

@@ -1,4 +1,4 @@
-{
+﻿{
   "cases": [
     {
       "case_id": "pipeline_two_hop_trace",
@@ -38,7 +38,8 @@
         "final_evidence_doc_ids": [
           "paper_rag_agent",
           "paper_rag_apps"
-        ]
+        ],
+        "min_llm_overall_score": 0.75
       },
       "stubs": {
         "intent_response": {
@@ -134,7 +135,44 @@
             "missing_info": [],
             "suggested_queries": []
           }
-        ]
+        ],
+        "pipeline_evaluator_judgement": {
+          "overall_score": 0.92,
+          "pass_recommendation": true,
+          "summary": "The pipeline reaches a well-supported final report after one reasonable loop and preserves a coherent trace.",
+          "strengths": [
+            "The loop is justified by a real information gap.",
+            "The final report is supported by evidence from both iterations."
+          ],
+          "issues": [],
+          "dimensions": [
+            {
+              "name": "goal_satisfaction",
+              "score": 0.92,
+              "reasoning": "The final output covers both definition and application."
+            },
+            {
+              "name": "report_quality",
+              "score": 0.9,
+              "reasoning": "The report is concise but supported and coherent."
+            },
+            {
+              "name": "evidence_support",
+              "score": 0.94,
+              "reasoning": "The accepted evidence is sufficient for the stated goal."
+            },
+            {
+              "name": "iteration_strategy",
+              "score": 0.91,
+              "reasoning": "The extra loop is justified and not wasteful."
+            },
+            {
+              "name": "trace_coherence",
+              "score": 0.93,
+              "reasoning": "The trace reflects a clean and logically ordered execution path."
+            }
+          ]
+        }
       },
       "metadata": {
         "max_iterations": 3

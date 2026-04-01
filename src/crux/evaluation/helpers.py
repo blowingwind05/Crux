@@ -7,7 +7,8 @@ import json
 from typing import Any, Dict, Iterable, List, Optional, Set
 
 from src.crux.config import CruxConfig
-from src.crux.evaluation.fixtures import extract_doc_id
+from src.crux.evaluation.fixtures import StubLLMClient, extract_doc_id
+from src.crux.evaluation.llm_judge import LLMJudgeVerdict, LLMEvaluationJudge
 
 
 DEFAULT_SCHEMA_PATH = "data/paper_schema.yaml"
@@ -116,3 +117,26 @@ def evidence_map_by_doc(evidence_items: List[Dict[str, Any]]) -> Dict[str, str]:
     for item in evidence_items:
         result[extract_doc_id(item)] = str(item.get("content", ""))
     return result
+
+
+def build_evaluation_judge(
+    config: CruxConfig,
+    case_stubs: Dict[str, Any],
+    stub_key: str,
+) -> LLMEvaluationJudge:
+    """Create an evaluation judge backed by either a stub or the real LLMClient."""
+    stub_response = case_stubs.get(stub_key)
+    if stub_response is not None:
+        return LLMEvaluationJudge(
+            config=config,
+            llm_client=StubLLMClient(call_json_with_object=[stub_response]),
+        )
+    return LLMEvaluationJudge(config=config)
+
+
+def dimension_scores(verdict: LLMJudgeVerdict) -> Dict[str, float]:
+    """Flatten LLM dimension scores into metric keys."""
+    return {
+        f"llm_{dimension.name}_score": float(dimension.score)
+        for dimension in verdict.dimensions
+    }

@@ -6,7 +6,7 @@ import time
 
 from src.crux.evaluation.base import BaseEvaluator, EvaluationCase, EvaluationResult
 from src.crux.evaluation.fixtures import StubLLMClient, extract_doc_id
-from src.crux.evaluation.helpers import build_config
+from src.crux.evaluation.helpers import build_config, build_evaluation_judge, dimension_scores
 from src.crux.evaluation.metrics import precision_recall_f1, text_overlap_f1
 from src.crux.modules.adjudication import AdjudicationNode
 
@@ -17,6 +17,7 @@ class AdjudicationEvaluator(BaseEvaluator):
     def evaluate_case(self, case: EvaluationCase) -> EvaluationResult:
         config = build_config(case.metadata.get("config"))
         config.judge.use_parallel = True
+        judge = build_evaluation_judge(config, case.stubs, "adjudication_evaluator_judgement")
 
         node = AdjudicationNode(config)
         node.llm_client = StubLLMClient(batch_call_json=[case.stubs["judgement_batch"]])
@@ -56,6 +57,28 @@ class AdjudicationEvaluator(BaseEvaluator):
         ]
         evidence_quality = sum(evidence_scores) / len(evidence_scores) if evidence_scores else 0.0
 
+        verdict = judge.evaluate(
+            task_name="Adjudication module evaluation",
+            instructions=(
+                "Assess whether the module made semantically sound accept/reject decisions and extracted "
+                "useful evidence. Treat paraphrased evidence as valid if it preserves meaning."
+            ),
+            payload={
+                "query": case.input["query"],
+                "rubric": case.input["intent"],
+                "candidate_docs": case.input["candidate_docs"],
+                "expected": case.expected,
+                "actual_verified_evidence": output.get("verified_evidence", []),
+                "actual_rejected_docs": output.get("rejected_docs", []),
+            },
+            dimensions=[
+                "relevance_decision_quality",
+                "evidence_quality",
+                "rejection_quality",
+                "rubric_alignment",
+            ],
+        )
+
         metrics = {
             "relevance_accuracy": relevance_accuracy,
             "relevance_precision": precision,
@@ -63,10 +86,18 @@ class AdjudicationEvaluator(BaseEvaluator):
             "relevance_f1": f1,
             "evidence_quality": evidence_quality,
             "acceptance_rate": len(actual_positive) / max(len(case.input["candidate_docs"]), 1),
+            "llm_overall_score": verdict.overall_score,
+            "llm_pass_recommendation": verdict.pass_recommendation,
             "latency_ms": duration_ms,
+            **dimension_scores(verdict),
         }
 
-        passed = bool(relevance_accuracy >= float(case.expected.get("min_relevance_accuracy", 0.0)))
+        min_llm_score = float(case.expected.get("min_llm_overall_score", 0.75))
+        passed = bool(
+            verdict.overall_score >= min_llm_score
+            and verdict.pass_recommendation
+            and relevance_accuracy >= float(case.expected.get("min_relevance_accuracy", 0.0))
+        )
 
         return EvaluationResult(
             case_id=case.case_id,
@@ -78,6 +109,8 @@ class AdjudicationEvaluator(BaseEvaluator):
             actual={
                 "accepted_doc_ids": sorted(actual_positive),
                 "rejected_doc_ids": [item.get("doc_id") for item in output.get("rejected_docs", [])],
+                "llm_judgement": verdict.model_dump(),
             },
             expected=case.expected,
+            notes=[verdict.summary, *verdict.issues],
         )

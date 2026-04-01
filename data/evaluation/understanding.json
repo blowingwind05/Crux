@@ -1,4 +1,4 @@
-{
+﻿{
   "cases": [
     {
       "case_id": "understanding_schema_guard",
@@ -54,7 +54,8 @@
             "criteria_positive": "论文应直接讨论 agentic RAG 或多跳检索。",
             "criteria_negative": "纯翻译或无检索能力的论文应排除。"
           }
-        }
+        },
+        "min_llm_overall_score": 0.75
       },
       "stubs": {
         "intent_response": {
@@ -103,6 +104,38 @@
             "criteria_positive": "论文应直接讨论 agentic RAG 或多跳检索。",
             "criteria_negative": "纯翻译或无检索能力的论文应排除。"
           }
+        },
+        "understanding_evaluator_judgement": {
+          "overall_score": 0.93,
+          "pass_recommendation": true,
+          "summary": "The generated intent is semantically aligned with the query and respects the allowed schema fields.",
+          "strengths": [
+            "The year constraint is correct.",
+            "The retrieval plan captures agentic RAG and multi-hop retrieval."
+          ],
+          "issues": [],
+          "dimensions": [
+            {
+              "name": "intent_alignment",
+              "score": 0.95,
+              "reasoning": "The user goal and depth requirement match the query well."
+            },
+            {
+              "name": "constraint_semantics",
+              "score": 0.92,
+              "reasoning": "The year constraint is correct and no invalid fields are used."
+            },
+            {
+              "name": "retrieval_plan_quality",
+              "score": 0.91,
+              "reasoning": "Keywords and dense query are semantically appropriate."
+            },
+            {
+              "name": "rubric_quality",
+              "score": 0.93,
+              "reasoning": "The rubric expresses both positive and negative criteria clearly."
+            }
+          ]
         }
       },
       "metadata": {

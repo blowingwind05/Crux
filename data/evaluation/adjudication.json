@@ -1,4 +1,4 @@
-{
+﻿{
   "cases": [
     {
       "case_id": "adjudication_relevance_filter",
@@ -35,7 +35,8 @@
         "evidence_by_doc": {
           "paper_rag_agent": "Agentic RAG coordinates retrieval and reasoning."
         },
-        "min_relevance_accuracy": 1.0
+        "min_relevance_accuracy": 1.0,
+        "min_llm_overall_score": 0.75
       },
       "stubs": {
         "judgement_batch": [
@@ -51,7 +52,39 @@
             "evidence": [],
             "reason": "只讨论机器翻译。"
           }
-        ]
+        ],
+        "adjudication_evaluator_judgement": {
+          "overall_score": 0.94,
+          "pass_recommendation": true,
+          "summary": "The module made correct accept/reject decisions and extracted appropriate evidence.",
+          "strengths": [
+            "Relevant paper accepted with grounded evidence.",
+            "Off-topic translation paper rejected correctly."
+          ],
+          "issues": [],
+          "dimensions": [
+            {
+              "name": "relevance_decision_quality",
+              "score": 0.96,
+              "reasoning": "The accept/reject decisions are semantically correct."
+            },
+            {
+              "name": "evidence_quality",
+              "score": 0.92,
+              "reasoning": "The evidence quote captures the paper's core contribution."
+            },
+            {
+              "name": "rejection_quality",
+              "score": 0.94,
+              "reasoning": "The rejected document is clearly off-topic."
+            },
+            {
+              "name": "rubric_alignment",
+              "score": 0.93,
+              "reasoning": "The decisions follow the provided rubric closely."
+            }
+          ]
+        }
       }
     }
   ]

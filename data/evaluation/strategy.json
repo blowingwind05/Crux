@@ -1,4 +1,4 @@
-{
+﻿{
   "cases": [
     {
       "case_id": "strategy_gap_detect",
@@ -36,7 +36,8 @@
         "coverage_score": 0.5,
         "missing_info": [
           "缺少应用场景证据"
-        ]
+        ],
+        "min_llm_overall_score": 0.75
       },
       "stubs": {
         "gap_response": {
@@ -47,6 +48,38 @@
           ],
           "suggested_queries": [
             "agentic rag application benchmarks"
+          ]
+        },
+        "strategy_evaluator_judgement": {
+          "overall_score": 0.91,
+          "pass_recommendation": true,
+          "summary": "The strategy module correctly identifies the information gap and proposes a sensible follow-up query.",
+          "strengths": [
+            "Gap decision is correct.",
+            "Suggested query is useful and targeted."
+          ],
+          "issues": [],
+          "dimensions": [
+            {
+              "name": "gap_decision_quality",
+              "score": 0.95,
+              "reasoning": "The current evidence clearly lacks application coverage, so insufficient is correct."
+            },
+            {
+              "name": "missing_info_quality",
+              "score": 0.9,
+              "reasoning": "The missing information is described accurately."
+            },
+            {
+              "name": "suggested_query_quality",
+              "score": 0.88,
+              "reasoning": "The suggested query is likely to retrieve the missing evidence."
+            },
+            {
+              "name": "coverage_assessment_quality",
+              "score": 0.9,
+              "reasoning": "The coverage score is directionally appropriate."
+            }
           ]
         }
       }

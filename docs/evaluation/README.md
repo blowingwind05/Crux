@@ -1,14 +1,23 @@
-# Crux Evaluation
+﻿# Crux Evaluation
 
-Crux now includes a local evaluation framework under `src/crux/evaluation`.
+Crux now includes an evaluation framework under `src/crux/evaluation`.
 
-It covers:
+## What it evaluates
 
 - `understanding`: intent parsing quality, constraint extraction quality, schema field compliance
-- `retrieval`: `Recall@K`, `Precision@K`, `MRR`, `NDCG@K`, retrieval latency
-- `adjudication`: relevance accuracy, evidence quality, acceptance rate
-- `strategy`: gap detection accuracy, missing-info overlap, coverage score
-- `pipeline`: end-to-end execution, iteration path validation, full execution trace capture
+- `retrieval`: retrieval coverage, ranking quality, semantic relevance, latency
+- `adjudication`: relevance decision quality, evidence quality, rejection quality
+- `strategy`: gap detection quality, missing-info quality, suggested query quality
+- `pipeline`: end-to-end execution, iteration path, final report quality, full execution trace
+
+## Evaluation method
+
+The framework now uses a dual-track approach:
+
+- Structural metrics: exact or semi-structured checks such as `Recall@K`, latency, schema field legality, and trace completeness
+- LLM judge metrics: semantic scoring produced by `LLMClient` using structured JSON outputs
+
+This is intended to avoid brittle evaluation based only on exact equality or token overlap.
 
 ## Run
 
@@ -18,14 +27,13 @@ python -m src.crux.evaluation.cli --module all
 
 Reports are written to `data/evaluation/reports/` by default.
 
-## Dataset format
+## Offline verification
 
-Each suite is a JSON file under `data/evaluation/`.
+Sample datasets under `data/evaluation/` include stubbed module outputs and stubbed evaluator judgements, so the framework can be verified locally without calling an external model.
 
-- `input`: module input payload
-- `expected`: gold labels and pass thresholds
-- `stubs`: deterministic LLM outputs for offline evaluation
-- `metadata`: evaluator-specific config such as `k`, `max_iterations`, or allowed fields
+## Live LLM judging
+
+If a case does not provide an evaluator-judgement stub, the evaluator will fall back to the real `LLMClient` configuration from Crux and use the configured model as the semantic judge.
 
 ## Pipeline trace
 
@@ -36,5 +44,3 @@ Pipeline evaluation writes a full stage trace per case, including:
 - merged state after the stage
 - stage logs
 - stage duration
-
-This is intended to support the closed-loop workflow of `understand -> retrieve -> judge -> analyze -> ... -> report`.

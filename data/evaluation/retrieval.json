@@ -1,4 +1,4 @@
-{
+﻿{
   "cases": [
     {
       "case_id": "retrieval_agentic_rag",
@@ -54,7 +54,42 @@
           "paper_rag_general"
         ],
         "k": 2,
-        "min_recall_at_k": 1.0
+        "min_recall_at_k": 1.0,
+        "min_llm_overall_score": 0.7
+      },
+      "stubs": {
+        "retrieval_evaluator_judgement": {
+          "overall_score": 0.9,
+          "pass_recommendation": true,
+          "summary": "The ranked results strongly satisfy the query and place the most relevant paper first.",
+          "strengths": [
+            "The first result is highly aligned with agentic RAG.",
+            "The top-2 set covers both focused and broader RAG material."
+          ],
+          "issues": [],
+          "dimensions": [
+            {
+              "name": "topk_relevance",
+              "score": 0.94,
+              "reasoning": "Both top documents are relevant to the query."
+            },
+            {
+              "name": "ranking_quality",
+              "score": 0.9,
+              "reasoning": "The most specific paper is correctly ranked first."
+            },
+            {
+              "name": "coverage_of_need",
+              "score": 0.87,
+              "reasoning": "The ranked set covers the main topic well."
+            },
+            {
+              "name": "constraint_alignment",
+              "score": 0.89,
+              "reasoning": "The retrieval output respects the intent and avoids off-topic material in top-2."
+            }
+          ]
+        }
       },
       "metadata": {
         "k": 2

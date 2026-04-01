@@ -10,8 +10,10 @@ from src.crux.evaluation.fixtures import StubLLMClient
 from src.crux.evaluation.helpers import (
     allowed_constraint_fields,
     build_config,
+    build_evaluation_judge,
     constraint_set,
     dense_query_set,
+    dimension_scores,
     sparse_keyword_set,
 )
 from src.crux.evaluation.metrics import set_match_metrics
@@ -25,6 +27,7 @@ class UnderstandingEvaluator(BaseEvaluator):
         config = build_config(case.metadata.get("config"))
         node = UnderstandingNode(config)
         node.llm_client = StubLLMClient(call_json_with_object=[case.stubs["intent_response"]])
+        judge = build_evaluation_judge(config, case.stubs, "understanding_evaluator_judgement")
 
         input_state = {
             "user_query": case.input["query"],
@@ -71,6 +74,29 @@ class UnderstandingEvaluator(BaseEvaluator):
         expected_goal = expected_intent.get("cognitive_strategy", {}).get("user_goal")
         intent_accuracy = 1.0 if actual_goal == expected_goal else 0.0
 
+        verdict = judge.evaluate(
+            task_name="Understanding module evaluation",
+            instructions=(
+                "Assess whether the produced intent object correctly captures the user's goal, "
+                "constraints, retrieval plan, and judgement rubric. "
+                "Treat semantically equivalent wording as correct. "
+                "Penalize schema-invalid constraint fields heavily."
+            ),
+            payload={
+                "query": case.input["query"],
+                "allowed_constraint_fields": sorted(allowed_fields),
+                "expected_intent": expected_intent,
+                "actual_intent": actual_intent,
+                "invalid_constraint_fields": invalid_fields,
+            },
+            dimensions=[
+                "intent_alignment",
+                "constraint_semantics",
+                "retrieval_plan_quality",
+                "rubric_quality",
+            ],
+        )
+
         metrics = {
             "intent_accuracy": intent_accuracy,
             "constraint_precision": constraint_precision,
@@ -84,10 +110,18 @@ class UnderstandingEvaluator(BaseEvaluator):
             "dense_query_recall": dense_recall,
             "dense_query_f1": dense_f1,
             "invalid_constraint_field_count": len(invalid_fields),
+            "llm_overall_score": verdict.overall_score,
+            "llm_pass_recommendation": verdict.pass_recommendation,
             "latency_ms": duration_ms,
+            **dimension_scores(verdict),
         }
 
-        passed = bool(intent_accuracy == 1.0 and constraint_f1 >= 0.8 and not invalid_fields)
+        min_llm_score = float(case.expected.get("min_llm_overall_score", 0.75))
+        passed = bool(
+            verdict.overall_score >= min_llm_score
+            and verdict.pass_recommendation
+            and not invalid_fields
+        )
 
         return EvaluationResult(
             case_id=case.case_id,
@@ -96,6 +130,11 @@ class UnderstandingEvaluator(BaseEvaluator):
             passed=passed,
             metrics=metrics,
             duration_ms=duration_ms,
-            actual={"intent": actual_intent, "invalid_constraint_fields": invalid_fields},
+            actual={
+                "intent": actual_intent,
+                "invalid_constraint_fields": invalid_fields,
+                "llm_judgement": verdict.model_dump(),
+            },
             expected=case.expected,
+            notes=[verdict.summary, *verdict.issues],
         )

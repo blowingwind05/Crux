@@ -8,7 +8,13 @@ from typing import Dict, List
 
 from src.crux.evaluation.base import BaseEvaluator, EvaluationCase, EvaluationResult
 from src.crux.evaluation.fixtures import InMemoryDataLoader, StubLLMClient, extract_doc_id
-from src.crux.evaluation.helpers import build_config, clean_stage_output, merge_state
+from src.crux.evaluation.helpers import (
+    build_config,
+    build_evaluation_judge,
+    clean_stage_output,
+    dimension_scores,
+    merge_state,
+)
 from src.crux.evaluation.metrics import recall_at_k
 from src.crux.evaluation.trace import TraceRecorder
 from src.crux.modules.adjudication import AdjudicationNode
@@ -117,6 +123,7 @@ class PipelineEvaluator(BaseEvaluator):
         runner = TraceablePipelineRunner(case)
         run_result = runner.run()
         duration_ms = (time.perf_counter() - started) * 1000
+        judge = build_evaluation_judge(runner.config, case.stubs, "pipeline_evaluator_judgement")
 
         final_state = run_result["final_state"]
         trace = run_result["trace"]
@@ -130,6 +137,40 @@ class PipelineEvaluator(BaseEvaluator):
             for stage in trace["stage_traces"]
             if stage["stage"] == "analyze"
         ]
+        condensed_trace = [
+            {
+                "stage": stage["stage"],
+                "iteration": stage["iteration"],
+                "duration_ms": stage["duration_ms"],
+                "output_keys": sorted(stage.get("output_snapshot", {}).keys()),
+                "log_count": len(stage.get("logs", [])),
+            }
+            for stage in trace["stage_traces"]
+        ]
+
+        verdict = judge.evaluate(
+            task_name="Pipeline end-to-end evaluation",
+            instructions=(
+                "Assess whether the whole pipeline satisfied the user goal, used iterations reasonably, "
+                "produced a supported final report, and maintained a coherent execution trace. "
+                "Do not rely only on exact id matches; judge semantic adequacy."
+            ),
+            payload={
+                "query": case.input["query"],
+                "expected": case.expected,
+                "final_report": final_state.get("final_report", ""),
+                "final_verified_evidence": final_state.get("verified_evidence", []),
+                "actual_gap_statuses": actual_statuses,
+                "condensed_trace": condensed_trace,
+            },
+            dimensions=[
+                "goal_satisfaction",
+                "report_quality",
+                "evidence_support",
+                "iteration_strategy",
+                "trace_coherence",
+            ],
+        )
 
         metrics = {
             "total_latency_ms": duration_ms,
@@ -141,9 +182,19 @@ class PipelineEvaluator(BaseEvaluator):
             ),
             "report_present": bool(final_state.get("final_report")),
             "gap_path_accuracy": 1.0 if actual_statuses == expected_statuses else 0.0,
+            "llm_overall_score": verdict.overall_score,
+            "llm_pass_recommendation": verdict.pass_recommendation,
+            **dimension_scores(verdict),
         }
 
-        passed = bool(metrics["report_present"] and metrics["gap_path_accuracy"] == 1.0)
+        min_llm_score = float(case.expected.get("min_llm_overall_score", 0.75))
+        passed = bool(
+            metrics["report_present"]
+            and metrics["gap_path_accuracy"] == 1.0
+            and metrics["trace_completeness"] == 1.0
+            and verdict.overall_score >= min_llm_score
+            and verdict.pass_recommendation
+        )
 
         return EvaluationResult(
             case_id=case.case_id,
@@ -155,9 +206,11 @@ class PipelineEvaluator(BaseEvaluator):
             actual={
                 "final_gap_statuses": actual_statuses,
                 "final_evidence_doc_ids": sorted(final_doc_ids),
+                "llm_judgement": verdict.model_dump(),
             },
             expected=case.expected,
             trace=trace,
+            notes=[verdict.summary, *verdict.issues],
         )
 
     def _trace_completeness(self, stage_traces: List[Dict]) -> float:
