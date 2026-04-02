@@ -9,13 +9,13 @@ Modules 核心业务模块
 
 from src.crux.modules.understanding import UnderstandingNode
 from src.crux.modules.retrieval import RetrievalNode
-from src.crux.modules.adjudication import AdjudicationNode
+from src.crux.modules.judge import JudgeNode
 from src.crux.modules.strategy import GapAnalysisNode, ReportNode
 
 __all__ = [
     "UnderstandingNode",
-    "RetrievalNode", 
-    "AdjudicationNode",
+    "RetrievalNode",
+    "JudgeNode",
     "GapAnalysisNode",
     "ReportNode",
 ]

@@ -7,7 +7,7 @@ LLM 客户端
 
 import json
 import logging
-from typing import Optional, Dict, Any, List
+from typing import Dict, Any, List, Optional, Type
 from tqdm import tqdm
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from pydantic import BaseModel
@@ -51,187 +51,361 @@ class LLMClient:
             )
         return self._client
     
-    def call_json(self, prompt: str, model: Optional[str] = None) -> Dict[str, Any]:
+    def call_json(self, prompt: str) -> Dict[str, Any]:
         """
-        调用 LLM 并返回 JSON 结果
-        
+        调用 LLM，返回原始 dict（json_object 模式）。
+
         Args:
             prompt: 提示词
-            model: 可选的模型名称
-            
+
         Returns:
-            解析后的 JSON 对象
+            json.loads 解析后的 dict
         """
         if self.config.mock_llm:
-            return self._mock_response(prompt)
-        
-        try:
-            response = self.client.chat.completions.create(
-                model=model or self.config.llm.model,
-                messages=[{"role": "user", "content": prompt}],
-                temperature=self.config.llm.temperature,
-                max_tokens=self.config.llm.max_tokens,
-                response_format={"type": "json_object"}
-            )
-            
-            content = response.choices[0].message.content
-            return json.loads(content)
-        except Exception as e:
-            logging.info(f"[LLM] 调用失败: {e}")
-            return self._mock_response(prompt)
-
-    def _call_json_with_status(self, prompt: str, model: Optional[str] = None) -> tuple:
-        """
-        内部方法：调用 LLM 并返回 (结果, 状态) 元组
-        
-        用于 batch_call_json 的重试逻辑
-        """
-        if self.config.mock_llm:
-            return (self._mock_response(prompt), _SUCCESS)
+            return {}
 
         try:
             response = self.client.chat.completions.create(
-                model=model or self.config.llm.model,
+                model=self.config.llm.model,
                 messages=[{"role": "user", "content": prompt}],
                 temperature=self.config.llm.temperature,
                 max_tokens=self.config.llm.max_tokens,
-                response_format={"type": "json_object"}
+                response_format={"type": "json_object"},
             )
-            content = response.choices[0].message.content
-            return (json.loads(content), _SUCCESS)
+            return json.loads(response.choices[0].message.content)
         except Exception as e:
-            logging.info(f"[LLM] 调用失败: {e}")
-            return (self._mock_response(prompt), _FAILURE)
+            logging.info(f"[LLM] call_json 失败: {e}")
+            return {}
+
+    def call_response(self, prompt: str) -> str:
+        """
+        调用 LLM，返回纯文本 content（无格式约束）。
+
+        Args:
+            prompt: 提示词
+
+        Returns:
+            模型返回的原始文本字符串
+        """
+        if self.config.mock_llm:
+            return "[mock response]"
+
+        try:
+            response = self.client.chat.completions.create(
+                model=self.config.llm.model,
+                messages=[{"role": "user", "content": prompt}],
+                temperature=self.config.llm.temperature,
+                max_tokens=self.config.llm.max_tokens,
+            )
+            return response.choices[0].message.content
+        except Exception as e:
+            logging.info(f"[LLM] call_response 失败: {e}")
+            return ""
 
     def batch_call_json(
         self,
         prompts: List[str],
-        model: Optional[str] = None,
         max_retry: int = 5,
-        max_workers: int = 4
+        max_workers: int = 4,
     ) -> List[Dict[str, Any]]:
         """
-        批量调用 LLM 并返回 JSON 结果
-
-        支持并行调用和自动重试失败的请求。
+        并行批量调用 LLM（json_object 模式），支持自动重试。
 
         Args:
             prompts: 提示词列表
-            model: 可选的模型名称
             max_retry: 最大重试次数
             max_workers: 并发线程数
 
         Returns:
-            结果列表，顺序与输入 prompts 一致。
-            每个元素为解析后的 JSON 对象。
+            dict 列表，顺序与输入 prompts 一致。
         """
         if self.config.mock_llm:
-            return [self._mock_response(prompt) for prompt in prompts]
+            return [self._mock_response(p) for p in prompts]
 
-        # 内部使用带状态的结果进行重试跟踪
-        results_with_status = [None] * len(prompts)
+        results_with_status: List[Optional[tuple]] = [None] * len(prompts)
         idxs_to_retry = list(range(len(prompts)))
-        current_prompts = prompts
+        current_prompts = list(prompts)
         retry_count = 0
 
         while idxs_to_retry and retry_count < max_retry:
             with ThreadPoolExecutor(max_workers=max_workers) as executor:
                 futures = {
-                    executor.submit(self._call_json_with_status, current_prompts[i], model): i
+                    executor.submit(self.call_json, current_prompts[i]): i
                     for i in range(len(current_prompts))
                 }
                 for future in tqdm(
                     as_completed(futures),
                     total=len(futures),
-                    desc=f'Processing (retry {retry_count})'
+                    desc=f"Batch JSON (retry {retry_count})",
                 ):
                     sub_idx = futures[future]
                     idx = idxs_to_retry[sub_idx]
-                    results_with_status[idx] = future.result()
+                    result = future.result()
+                    status = _FAILURE if result is None else _SUCCESS
+                    results_with_status[idx] = (result, status)
 
-            # 收集失败的请求索引，准备重试
-            idxs_to_retry = [i for i, x in enumerate(results_with_status) if x and x[1] == _FAILURE]
+            idxs_to_retry = [
+                i for i, x in enumerate(results_with_status)
+                if x is None or x[1] == _FAILURE
+            ]
             current_prompts = [prompts[i] for i in idxs_to_retry]
             retry_count += 1
 
-        # 提取结果（去除状态标记）
-        return [r[0] for r in results_with_status]
-    
-    def _mock_response(self, prompt: str) -> Dict[str, Any]:
-        """
-        Mock 响应 - 用于测试
-        
-        根据 prompt 内容返回不同的 mock 数据
-        """
-        # Gap analysis
-        if "Strategy Planner" in prompt or "信息覆盖" in prompt:
-            return {
-                "status": "sufficient",
-                "missing_info": None
-            }
-        
-        # Adjudication
-        if "Critical Judge" in prompt or "研判" in prompt:
-            return {
-                "relevance": "Perfectly Relevant",
-                "evidence": ["这是一篇关于信息检索的重要论文。", "提出了新颖的检索增强方法。"],
-                "reason": "内容与查询直接相关"
-            }
-        
-        # Intent parsing
-        if "Intent Parsing" in prompt or "意图解析" in prompt:
-            return {
-                "user_goal": "FACTUAL",
-                "constraints": {
-                    "structured_metadata": [
-                        {"field": "category", "operator": "in", "value": ["cs.IR", "cs.CL", "cs.AI"]}
-                    ]
-                },
-                "keywords_bm25": ["信息检索", "RAG", "检索增强"],
-                "queries_vector": ["检索增强生成技术研究", "信息检索智能体"],
-                "rubric": "文档必须与信息检索或 RAG 技术相关",
-                "missing_info_gap": None
-            }
-        
-        # Default
-        return {
-            "user_goal": "FACTUAL",
-            "constraints": {"structured_metadata": []},
-            "keywords_bm25": [],
-            "queries_vector": [],
-            "rubric": "相关内容",
-            "missing_info_gap": None
-        }
+        return [r[0] if r else None for r in results_with_status]
 
-
-    def call_json_with_object(self, prompt: str, model: Optional[str] = None, response_object: Optional[BaseModel] = None) -> Dict[str, Any]:
+    def batch_call_response(
+        self,
+        prompts: List[str],
+        max_retry: int = 5,
+        max_workers: int = 4,
+    ) -> List[str]:
         """
-        调用 LLM 并返回 JSON 结果
-        
+        并行批量调用 LLM（纯文本模式），支持自动重试。
+
         Args:
-            prompt: 提示词
-            model: 可选的模型名称
-            
+            prompts: 提示词列表
+            max_retry: 最大重试次数
+            max_workers: 并发线程数
+
         Returns:
-            解析后的 JSON 对象
+            文本字符串列表，顺序与输入 prompts 一致。
         """
         if self.config.mock_llm:
-            return self._mock_response(prompt)
-        
+            return ["[mock response]" for _ in prompts]
+
+        results_with_status: List[Optional[tuple]] = [None] * len(prompts)
+        idxs_to_retry = list(range(len(prompts)))
+        current_prompts = list(prompts)
+        retry_count = 0
+
+        while idxs_to_retry and retry_count < max_retry:
+            with ThreadPoolExecutor(max_workers=max_workers) as executor:
+                futures = {
+                    executor.submit(self.call_response, current_prompts[i]): i
+                    for i in range(len(current_prompts))
+                }
+                for future in tqdm(
+                    as_completed(futures),
+                    total=len(futures),
+                    desc=f"Batch response (retry {retry_count})",
+                ):
+                    sub_idx = futures[future]
+                    idx = idxs_to_retry[sub_idx]
+                    result = future.result()
+                    status = _FAILURE if not result else _SUCCESS
+                    results_with_status[idx] = (result, status)
+
+            idxs_to_retry = [
+                i for i, x in enumerate(results_with_status)
+                if x is None or x[1] == _FAILURE
+            ]
+            current_prompts = [prompts[i] for i in idxs_to_retry]
+            retry_count += 1
+
+        return [r[0] if r else "" for r in results_with_status]
+
+    def call_object(
+        self,
+        prompt: str,
+        response_object: Type[BaseModel],
+    ) -> BaseModel:
+        """
+        调用 LLM，返回 Pydantic 对象（Structured Outputs 模式）。
+
+        Args:
+            prompt: 提示词
+            response_object: 必须提供的 Pydantic 模型类
+
+        Returns:
+            response_object 的实例
+        """
+        if self.config.mock_llm:
+            return response_object.model_validate(self._mock_response(prompt, response_object))
+
         try:
             response = self.client.chat.completions.parse(
-                model=model or self.config.llm.model,
+                model=self.config.llm.model,
                 messages=[{"role": "user", "content": prompt}],
                 temperature=self.config.llm.temperature,
                 max_tokens=self.config.llm.max_tokens,
-                response_format=response_object or {"type": "json_object"}
+                response_format=response_object,
             )
-            
-            parsed = response.choices[0].message.parsed
-            return parsed
+            return response.choices[0].message.parsed
         except Exception as e:
-            logging.info(f"[LLM] 调用失败: {e}")
-            return self._mock_response(prompt)
+            logging.info(f"[LLM] call_object 失败: {e}")
+            return response_object.model_validate(self._mock_response(prompt, response_object))
+
+    def batch_call_object(
+        self,
+        prompts: List[str],
+        response_object: Type[BaseModel],
+        max_retry: int = 5,
+        max_workers: int = 4,
+    ) -> List[BaseModel]:
+        """
+        并行批量调用 LLM（Structured Outputs 模式），支持自动重试。
+
+        Args:
+            prompts: 提示词列表
+            response_object: 必须提供的 Pydantic 模型类
+            max_retry: 最大重试次数
+            max_workers: 并发线程数
+
+        Returns:
+            BaseModel 实例列表，顺序与输入 prompts 一致。
+        """
+        if self.config.mock_llm:
+            return [response_object.model_validate(self._mock_response(p, response_object)) for p in prompts]
+
+        results_with_status: List[tuple | None] = [None] * len(prompts)
+        idxs_to_retry = list(range(len(prompts)))
+        current_prompts = list(prompts)
+        retry_count = 0
+
+        while idxs_to_retry and retry_count < max_retry:
+            with ThreadPoolExecutor(max_workers=max_workers) as executor:
+                futures = {
+                    executor.submit(self.call_object, current_prompts[i], response_object): i
+                    for i in range(len(current_prompts))
+                }
+                for future in tqdm(
+                    as_completed(futures),
+                    total=len(futures),
+                    desc=f"Batch call (retry {retry_count})",
+                ):
+                    sub_idx = futures[future]
+                    idx = idxs_to_retry[sub_idx]
+                    result = future.result()
+                    status = _FAILURE if result is None else _SUCCESS
+                    results_with_status[idx] = (result, status)
+
+            idxs_to_retry = [
+                i for i, x in enumerate(results_with_status)
+                if x is None or x[1] == _FAILURE
+            ]
+            current_prompts = [prompts[i] for i in idxs_to_retry]
+            retry_count += 1
+
+        return [r[0] if r else None for r in results_with_status]
+
+    def _mock_response(self, prompt: str, response_object: Optional[Type[BaseModel]] = None) -> Dict[str, Any]:
+        """
+        根据 response_object 类型返回对应的 mock 数据 dict。
+        调用方会用 response_object.model_validate() 将其转为 Pydantic 实例。
+        """
+        if response_object is None:
+            return {}
+
+        name = response_object.__name__
+
+        # ── Stage 1a: CognitiveState ───────────────────────────────────
+        if name == "CognitiveState":
+            return {
+                "cognitive_mode": "exploratory",
+                "logical_dependency": "independent_parallel",
+            }
+
+        # ── Stage 1b: Constraints ──────────────────────────────────────
+        if name == "Constraints":
+            return {
+                "structured_metadata": [],
+                "unstructured_content_patterns": [],
+            }
+
+        # ── Stage 2: AgentPlan ─────────────────────────────────────────
+        if name == "AgentPlan":
+            return {
+                "facets": [
+                    {
+                        "facet_id": "F1",
+                        "description": "Overview and background of the topic",
+                        "dependency": None,
+                        "rubric": {
+                            "tolerance_level": "high",
+                            "quality_preference": ["survey papers", "review articles"],
+                            "content_requirements": ["provides general overview"],
+                        },
+                    },
+                    {
+                        "facet_id": "F2",
+                        "description": "Key methods and techniques",
+                        "dependency": None,
+                        "rubric": {
+                            "tolerance_level": "medium",
+                            "quality_preference": ["research papers", "technical reports"],
+                            "content_requirements": ["describes specific methods or algorithms"],
+                        },
+                    },
+                ],
+                "criteria": {
+                    "metric_type": "coverage",
+                    "threshold_description": "All facets have at least one high or medium relevance document",
+                    "specific_conditions": [
+                        "F1 has at least one overview document",
+                        "F2 has at least one method-focused document",
+                    ],
+                },
+            }
+
+        # ── Stage 3: FacetExpansion ────────────────────────────────────
+        if name == "FacetExpansion":
+            # Extract facet_id from prompt if possible
+            facet_id = "F1"
+            for line in prompt.splitlines():
+                if "Facet ID:" in line:
+                    facet_id = line.split("Facet ID:")[-1].strip()
+                    break
+            return {
+                "facet_id": facet_id,
+                "facet_query": f"overview and introduction to the topic for {facet_id}",
+                "sparse_keywords": ["information retrieval", "RAG", "agentic search"],
+                "hypothetical_document": (
+                    "This paper provides a comprehensive survey of retrieval-augmented generation methods, "
+                    "covering key architectures, datasets, and benchmarks in the field."
+                ),
+            }
+
+        # ── Judge: FacetJudgments ──────────────────────────────────────
+        if name == "FacetJudgments":
+            # Extract doc_ids from prompt
+            import re
+            doc_ids = re.findall(r"doc_id:\s*(\S+)", prompt)
+            if not doc_ids:
+                doc_ids = ["doc_mock_1"]
+            return {
+                "judgments": [
+                    {
+                        "doc_id": did,
+                        "summary": "A relevant paper discussing information retrieval techniques.",
+                        "relevance_level": "medium",
+                        "reason": "The document covers the facet topic at a general level.",
+                    }
+                    for did in doc_ids
+                ]
+            }
+
+        # ── Strategy: FacetSufficiencyResult ──────────────────────────
+        if name == "FacetSufficiencyResult":
+            # Extract facet_ids from the facets_evidence_block section
+            import re
+            facet_ids = re.findall(r"###\s*Facet\s+(\w+):", prompt)
+            if not facet_ids:
+                facet_ids = ["F1"]
+            return {
+                "overall_sufficient": True,
+                "facets": [
+                    {
+                        "facet_id": fid,
+                        "satisfied": True,
+                        "reason": "Sufficient evidence collected for this facet.",
+                    }
+                    for fid in facet_ids
+                ],
+            }
+
+        # ── Default fallback ───────────────────────────────────────────
+        return {}
+
 
 class APIEmbeddingModel:
     """API 嵌入模型

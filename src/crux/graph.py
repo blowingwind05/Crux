@@ -36,25 +36,25 @@ class AgentGraph:
         from src.crux.modules import (
             UnderstandingNode,
             RetrievalNode,
-            AdjudicationNode,
+            JudgeNode,
             GapAnalysisNode,
             ReportNode,
         )
-        
+
         # 1. 初始化图
         workflow = StateGraph(AgentState)
-        
+
         # 2. 创建节点实例
         understanding = UnderstandingNode(self.config)
         retrieval = RetrievalNode(self.config)
-        adjudication = AdjudicationNode(self.config)
+        judge = JudgeNode(self.config)
         gap_analysis = GapAnalysisNode(self.config)
         report = ReportNode(self.config)
-        
+
         # 3. 添加节点
         workflow.add_node("understand", understanding.process)
         workflow.add_node("retrieve", retrieval.process)
-        workflow.add_node("judge", adjudication.process)
+        workflow.add_node("judge", judge.process)
         workflow.add_node("analyze", gap_analysis.process)
         workflow.add_node("report", report.process)
         
