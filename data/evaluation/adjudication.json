@@ -1,0 +1,91 @@
+﻿{
+  "cases": [
+    {
+      "case_id": "adjudication_relevance_filter",
+      "module": "adjudication",
+      "name": "Adjudication should accept only relevant RAG evidence",
+      "input": {
+        "query": "帮我找 agentic RAG 的相关论文",
+        "intent": {
+          "judgement_rubric": {
+            "criteria_positive": "论文应直接讨论 agentic RAG、检索增强或多跳检索。",
+            "criteria_negative": "机器翻译或与检索无关的论文应排除。"
+          }
+        },
+        "candidate_docs": [
+          {
+            "id": "paper_rag_agent",
+            "title": "Agentic RAG for Multi-Hop Search",
+            "abstract": "Agentic RAG coordinates retrieval and reasoning.",
+            "source": "arxiv"
+          },
+          {
+            "id": "paper_mt",
+            "title": "Neural Machine Translation Survey",
+            "abstract": "A survey on translation models.",
+            "source": "arxiv"
+          }
+        ],
+        "search_iteration": 0
+      },
+      "expected": {
+        "relevant_doc_ids": [
+          "paper_rag_agent"
+        ],
+        "evidence_by_doc": {
+          "paper_rag_agent": "Agentic RAG coordinates retrieval and reasoning."
+        },
+        "min_relevance_accuracy": 1.0,
+        "min_llm_overall_score": 0.75
+      },
+      "stubs": {
+        "judgement_batch": [
+          {
+            "relevance": "Perfectly Relevant",
+            "evidence": [
+              "Agentic RAG coordinates retrieval and reasoning."
+            ],
+            "reason": "直接讨论 agentic RAG。"
+          },
+          {
+            "relevance": "Not Relevant",
+            "evidence": [],
+            "reason": "只讨论机器翻译。"
+          }
+        ],
+        "adjudication_evaluator_judgement": {
+          "overall_score": 0.94,
+          "pass_recommendation": true,
+          "summary": "The module made correct accept/reject decisions and extracted appropriate evidence.",
+          "strengths": [
+            "Relevant paper accepted with grounded evidence.",
+            "Off-topic translation paper rejected correctly."
+          ],
+          "issues": [],
+          "dimensions": [
+            {
+              "name": "relevance_decision_quality",
+              "score": 0.96,
+              "reasoning": "The accept/reject decisions are semantically correct."
+            },
+            {
+              "name": "evidence_quality",
+              "score": 0.92,
+              "reasoning": "The evidence quote captures the paper's core contribution."
+            },
+            {
+              "name": "rejection_quality",
+              "score": 0.94,
+              "reasoning": "The rejected document is clearly off-topic."
+            },
+            {
+              "name": "rubric_alignment",
+              "score": 0.93,
+              "reasoning": "The decisions follow the provided rubric closely."
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

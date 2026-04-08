@@ -62,8 +62,11 @@ class LLMClient:
             json.loads 解析后的 dict
         """
         if self.config.mock_llm:
-            return {}
-
+            mock_response = self._mock_response(prompt)
+            if response_object is not None and isinstance(mock_response, dict):
+                return response_object.model_validate(mock_response)
+            return mock_response
+        
         try:
             response = self.client.chat.completions.create(
                 model=self.config.llm.model,
@@ -74,8 +77,11 @@ class LLMClient:
             )
             return json.loads(response.choices[0].message.content)
         except Exception as e:
-            logging.info(f"[LLM] call_json 失败: {e}")
-            return {}
+            logging.info(f"[LLM] 调用失败: {e}")
+            mock_response = self._mock_response(prompt)
+            if response_object is not None and isinstance(mock_response, dict):
+                return response_object.model_validate(mock_response)
+            return mock_response
 
     def call_response(self, prompt: str) -> str:
         """

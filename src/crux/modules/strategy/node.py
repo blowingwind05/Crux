@@ -74,7 +74,12 @@ class GapAnalysisNode(BaseNode):
             return self.build_result({
                 "gap_analysis_result": "sufficient",
                 "search_iteration": iteration,
-                "satisfied_facets": set(),
+                "gap_analysis_details": {
+                    "coverage_score": coverage,
+                    "missing_info": missing,
+                    "suggested_queries": suggested_queries,
+                    "raw_analysis": analysis,
+                },
             })
 
         self.log(f"待评估 Facet: {[f['facet_id'] for f in pending_facets]}")
@@ -107,25 +112,12 @@ class GapAnalysisNode(BaseNode):
             return self.build_result({
                 "gap_analysis_result": "sufficient",
                 "search_iteration": iteration,
-                "satisfied_facets": newly_satisfied,
-            })
-        else:
-            insufficient_ids: Set[str] = {f.facet_id for f in remaining}
-            self.log(f"未满足 Facet: {insufficient_ids}，回流补充检索", level="WARN")
-
-            # 裁剪 expansions，只保留未满足 Facet → RetrievalNode 无需修改
-            patched_intent = {
-                **intent,
-                "expansions": [
-                    e for e in intent.get("expansions", [])
-                    if e["facet_id"] in insufficient_ids
-                ],
-            }
-            return self.build_result({
-                "gap_analysis_result": "insufficient",
-                "search_iteration": iteration,
-                "satisfied_facets": newly_satisfied,
-                "intent": patched_intent,
+                "gap_analysis_details": {
+                    "coverage_score": coverage,
+                    "missing_info": missing,
+                    "suggested_queries": analysis.get("suggested_queries", []),
+                    "raw_analysis": analysis,
+                },
             })
 
 

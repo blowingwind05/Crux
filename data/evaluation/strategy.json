@@ -1,0 +1,88 @@
+﻿{
+  "cases": [
+    {
+      "case_id": "strategy_gap_detect",
+      "module": "strategy",
+      "name": "Strategy should detect missing application evidence",
+      "input": {
+        "query": "总结 agentic RAG 的定义和应用",
+        "intent": {
+          "information_facets": [
+            {
+              "facet_id": "F1",
+              "facet_type": "DEFINITION",
+              "description": "agentic RAG 的定义",
+              "dependency": null
+            },
+            {
+              "facet_id": "F2",
+              "facet_type": "SOLUTION",
+              "description": "agentic RAG 的应用场景",
+              "dependency": null
+            }
+          ]
+        },
+        "verified_evidence": [
+          {
+            "doc_id": "paper_rag_agent",
+            "content": "Agentic RAG coordinates retrieval and reasoning.",
+            "reason": "定义层面充分。"
+          }
+        ],
+        "search_iteration": 0
+      },
+      "expected": {
+        "status": "insufficient",
+        "coverage_score": 0.5,
+        "missing_info": [
+          "缺少应用场景证据"
+        ],
+        "min_llm_overall_score": 0.75
+      },
+      "stubs": {
+        "gap_response": {
+          "status": "insufficient",
+          "coverage_score": 0.5,
+          "missing_info": [
+            "缺少应用场景证据"
+          ],
+          "suggested_queries": [
+            "agentic rag application benchmarks"
+          ]
+        },
+        "strategy_evaluator_judgement": {
+          "overall_score": 0.91,
+          "pass_recommendation": true,
+          "summary": "The strategy module correctly identifies the information gap and proposes a sensible follow-up query.",
+          "strengths": [
+            "Gap decision is correct.",
+            "Suggested query is useful and targeted."
+          ],
+          "issues": [],
+          "dimensions": [
+            {
+              "name": "gap_decision_quality",
+              "score": 0.95,
+              "reasoning": "The current evidence clearly lacks application coverage, so insufficient is correct."
+            },
+            {
+              "name": "missing_info_quality",
+              "score": 0.9,
+              "reasoning": "The missing information is described accurately."
+            },
+            {
+              "name": "suggested_query_quality",
+              "score": 0.88,
+              "reasoning": "The suggested query is likely to retrieve the missing evidence."
+            },
+            {
+              "name": "coverage_assessment_quality",
+              "score": 0.9,
+              "reasoning": "The coverage score is directionally appropriate."
+            }
+          ]
+        }
+      }
+    }
+  ]
+}
