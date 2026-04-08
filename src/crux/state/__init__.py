@@ -1,5 +1,8 @@
 """Unified exports for structured state models."""
 
+import operator
+from typing import Annotated, Any, Dict, List, Literal, Set, TypedDict
+
 from src.crux.state.cognitive import (
     CognitiveModeType,
     CognitiveState,
@@ -25,7 +28,26 @@ from src.crux.state.retrieval import (
     FacetSufficiencyResult,
 )
 
+
+class AgentState(TypedDict, total=False):
+    """Top-level pipeline state flowing across the Crux graph."""
+
+    user_query: str
+    intent: Dict[str, Any]
+    candidate_docs: List[dict]
+    verified_evidence: Annotated[List[dict], operator.add]
+    rejected_docs: Annotated[List[dict], operator.add]
+    gap_analysis_result: Literal["sufficient", "insufficient"]
+    search_iteration: int
+    satisfied_facets: Annotated[Set[str], operator.or_]
+    seen_doc_ids: Annotated[Set[str], operator.or_]
+    final_report: str
+    schema_path: str
+    start_time: float
+
+
 __all__ = [
+    "AgentState",
     "CognitiveModeType",
     "LogicalDependencyType",
     "CognitiveState",

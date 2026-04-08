@@ -249,6 +249,8 @@ class LLMClient:
         response_object: Optional[Type[BaseModel]] = None,
     ):
         """Validate a JSON-mode response against a Pydantic schema."""
+        if self.config.mock_llm and response_object is not None:
+            return response_object.model_validate(self._mock_response(prompt, response_object))
         payload = self.call_json(prompt, model=model)
         if response_object is None:
             return payload
@@ -436,6 +438,16 @@ class LLMClient:
             }
 
         # ── Default fallback ───────────────────────────────────────────
+        if name == "LLMJudgeVerdict":
+            return {
+                "overall_score": 0.8,
+                "pass_recommendation": True,
+                "summary": "Mock evaluation verdict.",
+                "strengths": ["Mock strengths"],
+                "issues": [],
+                "dimensions": [],
+            }
+
         return {}
 
 

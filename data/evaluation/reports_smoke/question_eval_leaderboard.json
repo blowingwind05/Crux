@@ -1,0 +1,15 @@
+[
+  {
+    "model_name": "mock-smoke",
+    "model": "Qwen/Qwen3-32B",
+    "base_url": "https://aicloud.oneainexus.cn:30013/inference/aicloud-yanqiang/qwen3-32b-server/v1",
+    "cases": 1,
+    "passed_cases": 1,
+    "failed_cases": 0,
+    "pass_rate": 1.0,
+    "avg_llm_overall_score": 0.8,
+    "avg_latency_ms": 21.284300004481338,
+    "avg_iteration_count": 1.0,
+    "avg_evidence_count": 4.0
+  }
+]

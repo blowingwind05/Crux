@@ -1,0 +1,2519 @@
+{
+  "module": "question_eval_mock-smoke",
+  "generated_at": "2026-04-08T05:39:10.048953+00:00",
+  "total_cases": 1,
+  "passed_cases": 1,
+  "failed_cases": 0,
+  "average_duration_ms": 21.284300004481338,
+  "aggregate_metrics": {
+    "model_name": "mock-smoke",
+    "total_latency_ms": 21.284300004481338,
+    "iteration_count": 1.0,
+    "trace_stage_count": 5.0,
+    "evidence_count": 4.0,
+    "unique_evidence_count": 3.0,
+    "report_present": 1.0,
+    "llm_overall_score": 0.8,
+    "llm_pass_recommendation": 1.0,
+    "llm_query_understanding_score": 0.0,
+    "llm_evidence_relevance_score": 0.0,
+    "llm_answer_completeness_score": 0.0,
+    "llm_answer_faithfulness_score": 0.0,
+    "llm_answer_clarity_score": 0.0,
+    "llm_trace_coherence_score": 0.0
+  },
+  "case_results": [
+    {
+      "case_id": "question_0001",
+      "module": "question_eval",
+      "name": "哪些论文使用了耦合自编码器进行多模态细胞类型分析？",
+      "passed": true,
+      "metrics": {
+        "total_latency_ms": 21.284300004481338,
+        "iteration_count": 1,
+        "trace_stage_count": 5,
+        "evidence_count": 4,
+        "unique_evidence_count": 3,
+        "report_present": true,
+        "llm_overall_score": 0.8,
+        "llm_pass_recommendation": true,
+        "llm_query_understanding_score": 0.0,
+        "llm_evidence_relevance_score": 0.0,
+        "llm_answer_completeness_score": 0.0,
+        "llm_answer_faithfulness_score": 0.0,
+        "llm_answer_clarity_score": 0.0,
+        "llm_trace_coherence_score": 0.0
+      },
+      "duration_ms": 21.284300004481338,
+      "actual": {
+        "question": "哪些论文使用了耦合自编码器进行多模态细胞类型分析？",
+        "dataset_row": {
+          "question": "哪些论文使用了耦合自编码器进行多模态细胞类型分析？"
+        },
+        "final_report": "============================================================\n[REPORT] Crux AgenticRAG Analysis Report\n============================================================\n\n[Query]      哪些论文使用了耦合自编码器进行多模态细胞类型分析？\n[Iterations] 1\n[Evidence]   4 docs\n[Facets]     F1, F2\n\n\n--------------------------------------------------\n[Facet: F1] (2 docs)\n--------------------------------------------------\n\n  doc_id : 2512.07189\n  level  : medium\n  summary: A relevant paper discussing information retrieval techniques.\n  reason : The document covers the facet topic at a general level.\n  title  : PIR-DSN: A Decentralized Storage Network Supporting Private Information Retrieval\n\n  doc_id : 2512.23647\n  level  : medium\n  summary: A relevant paper discussing information retrieval techniques.\n  reason : The document covers the facet topic at a general level.\n  title  : Nested Browser-Use Learning for Agentic Information Seeking\n\n--------------------------------------------------\n[Facet: F2] (2 docs)\n--------------------------------------------------\n\n  doc_id : 2512.07189\n  level  : medium\n  summary: A relevant paper discussing information retrieval techniques.\n  reason : The document covers the facet topic at a general level.\n  title  : PIR-DSN: A Decentralized Storage Network Supporting Private Information Retrieval\n\n  doc_id : 2512.21039\n  level  : medium\n  summary: A relevant paper discussing information retrieval techniques.\n  reason : The document covers the facet topic at a general level.\n  title  : Agentic Multi-Persona Framework for Evidence-Aware Fake News Detection\n\n============================================================\nGenerated: 2026-04-08 13:39:10\n============================================================",
+        "verified_evidence": [
+          {
+            "doc_id": "2512.07189",
+            "facet_id": "F1",
+            "summary": "A relevant paper discussing information retrieval techniques.",
+            "relevance_level": "medium",
+            "reason": "The document covers the facet topic at a general level.",
+            "title": "PIR-DSN: A Decentralized Storage Network Supporting Private Information Retrieval",
+            "abstract": "Decentralized Storage Networks (DSNs) are emerging as a foundational infrastructure for Web 3.0, offering global peer-to-peer storage. However, a critical vulnerability persists: user privacy during file retrieval remains largely unaddressed, risking the exposure of sensitive information. To overcome this, we introduce PIR-DSN, the first DSN protocol to integrate Private Information Retrieval (PIR) for both single and multi-server settings. Our key innovations include a novel secure mapping method that transforms sparse file identifiers into compact integer indexes, enabling both public verifiability of file operations and efficient private retrieval. Furthermore, PIR-DSN guarantees Byzantine-robust private retrieval through file replication across multiple miners. We implement and rigorously evaluate PIR-DSN against three prominent industrial DSN systems. Experimental results demonstrate that PIR-DSN achieves comparable overhead for file upload and deletion. While PIR inherently introduces an additional computational cost leading to higher retrieval latency, PIR-DSN maintains comparable throughput. These findings underscore PIR-DSN's practical viability for privacy-sensitive applications within DSN environments.",
+            "metadata": {
+              "year": "",
+              "authors": [
+                "Jiahao Zhang",
+                "Minghui Xu",
+                "Hechuan Guo",
+                "et al."
+              ],
+              "url": "http://arxiv.org/abs/2512.07189v1"
+            }
+          },
+          {
+            "doc_id": "2512.23647",
+            "facet_id": "F1",
+            "summary": "A relevant paper discussing information retrieval techniques.",
+            "relevance_level": "medium",
+            "reason": "The document covers the facet topic at a general level.",
+            "title": "Nested Browser-Use Learning for Agentic Information Seeking",
+            "abstract": "Information-seeking (IS) agents have achieved strong performance across a range of wide and deep search tasks, yet their tool use remains largely restricted to API-level snippet retrieval and URL-based page fetching, limiting access to the richer information available through real browsing. While full browser interaction could unlock deeper capabilities, its fine-grained control and verbose page content returns introduce substantial complexity for ReAct-style function-calling agents. To bridge this gap, we propose Nested Browser-Use Learning (NestBrowse), which introduces a minimal and complete browser-action framework that decouples interaction control from page exploration through a nested structure. This design simplifies agentic reasoning while enabling effective deep-web information acquisition. Empirical results on challenging deep IS benchmarks demonstrate that NestBrowse offers clear benefits in practice. Further in-depth analyses underscore its efficiency and flexibility.",
+            "metadata": {
+              "year": "",
+              "authors": [
+                "Baixuan Li",
+                "Jialong Wu",
+                "Wenbiao Yin",
+                "et al."
+              ],
+              "url": "http://arxiv.org/abs/2512.23647v1"
+            }
+          },
+          {
+            "doc_id": "2512.07189",
+            "facet_id": "F2",
+            "summary": "A relevant paper discussing information retrieval techniques.",
+            "relevance_level": "medium",
+            "reason": "The document covers the facet topic at a general level.",
+            "title": "PIR-DSN: A Decentralized Storage Network Supporting Private Information Retrieval",
+            "abstract": "Decentralized Storage Networks (DSNs) are emerging as a foundational infrastructure for Web 3.0, offering global peer-to-peer storage. However, a critical vulnerability persists: user privacy during file retrieval remains largely unaddressed, risking the exposure of sensitive information. To overcome this, we introduce PIR-DSN, the first DSN protocol to integrate Private Information Retrieval (PIR) for both single and multi-server settings. Our key innovations include a novel secure mapping method that transforms sparse file identifiers into compact integer indexes, enabling both public verifiability of file operations and efficient private retrieval. Furthermore, PIR-DSN guarantees Byzantine-robust private retrieval through file replication across multiple miners. We implement and rigorously evaluate PIR-DSN against three prominent industrial DSN systems. Experimental results demonstrate that PIR-DSN achieves comparable overhead for file upload and deletion. While PIR inherently introduces an additional computational cost leading to higher retrieval latency, PIR-DSN maintains comparable throughput. These findings underscore PIR-DSN's practical viability for privacy-sensitive applications within DSN environments.",
+            "metadata": {
+              "year": "",
+              "authors": [
+                "Jiahao Zhang",
+                "Minghui Xu",
+                "Hechuan Guo",
+                "et al."
+              ],
+              "url": "http://arxiv.org/abs/2512.07189v1"
+            }
+          },
+          {
+            "doc_id": "2512.21039",
+            "facet_id": "F2",
+            "summary": "A relevant paper discussing information retrieval techniques.",
+            "relevance_level": "medium",
+            "reason": "The document covers the facet topic at a general level.",
+            "title": "Agentic Multi-Persona Framework for Evidence-Aware Fake News Detection",
+            "abstract": "The rapid proliferation of online misinformation poses significant risks to public trust, policy, and safety, necessitating reliable automated fake news detection. Existing methods often struggle with multimodal content, domain generalization, and explainability. We propose AMPEND-LS, an agentic multi-persona evidence-grounded framework with LLM-SLM synergy for multimodal fake news detection. AMPEND-LS integrates textual, visual, and contextual signals through a structured reasoning pipeline powered by LLMs, augmented with reverse image search, knowledge graph paths, and persuasion strategy analysis. To improve reliability, we introduce a credibility fusion mechanism combining semantic similarity, domain trustworthiness, and temporal context, and a complementary SLM classifier to mitigate LLM uncertainty and hallucinations. Extensive experiments across three benchmark datasets demonstrate that AMPEND-LS consistently outperformed state-of-the-art baselines in accuracy, F1 score, and robustness. Qualitative case studies further highlight its transparent reasoning and resilience against evolving misinformation. This work advances the development of adaptive, explainable, and evidence-aware systems for safeguarding online information integrity.",
+            "metadata": {
+              "year": "",
+              "authors": [
+                "Roopa Bukke",
+                "Soumya Pandey",
+                "Suraj Kumar",
+                "et al."
+              ],
+              "url": "http://arxiv.org/abs/2512.21039v1"
+            }
+          }
+        ],
+        "gap_analysis_details": {
+          "coverage_score": 1.0,
+          "missing_info": [],
+          "suggested_queries": [],
+          "raw_analysis": {
+            "overall_sufficient": true,
+            "newly_satisfied_facets": [
+              "F1",
+              "F2"
+            ],
+            "remaining_facets": [],
+            "suggested_queries": []
+          }
+        },
+        "llm_judgement": {
+          "overall_score": 0.8,
+          "pass_recommendation": true,
+          "summary": "Mock evaluation verdict.",
+          "strengths": [
+            "Mock strengths"
+          ],
+          "issues": [],
+          "dimensions": [
+            {
+              "name": "query_understanding",
+              "score": 0.0,
+              "reasoning": "Missing from LLM judgement output."
+            },
+            {
+              "name": "evidence_relevance",
+              "score": 0.0,
+              "reasoning": "Missing from LLM judgement output."
+            },
+            {
+              "name": "answer_completeness",
+              "score": 0.0,
+              "reasoning": "Missing from LLM judgement output."
+            },
+            {
+              "name": "answer_faithfulness",
+              "score": 0.0,
+              "reasoning": "Missing from LLM judgement output."
+            },
+            {
+              "name": "answer_clarity",
+              "score": 0.0,
+              "reasoning": "Missing from LLM judgement output."
+            },
+            {
+              "name": "trace_coherence",
+              "score": 0.0,
+              "reasoning": "Missing from LLM judgement output."
+            }
+          ]
+        }
+      },
+      "expected": {
+        "evaluation_mode": "question_only_llm_judge"
+      },
+      "trace": {
+        "case_id": "question_0001",
+        "query": "哪些论文使用了耦合自编码器进行多模态细胞类型分析？",
+        "started_at": "2026-04-08T05:39:09.979914+00:00",
+        "ended_at": "2026-04-08T05:39:10.001283+00:00",
+        "total_duration_ms": 21.284300004481338,
+        "stage_traces": [
+          {
+            "stage": "understand",
+            "iteration": 0,
+            "started_at": "2026-04-08T05:39:09.980913+00:00",
+            "ended_at": "2026-04-08T05:39:09.980913+00:00",
+            "duration_ms": 0.9167000098386779,
+            "input_snapshot": {
+              "user_query": "哪些论文使用了耦合自编码器进行多模态细胞类型分析？",
+              "verified_evidence": [],
+              "rejected_docs": [],
+              "candidate_docs": [],
+              "search_iteration": 0,
+              "satisfied_facets": [],
+              "seen_doc_ids": [],
+              "start_time": 1775626749.9799144
+            },
+            "output_snapshot": {
+              "intent": {
+                "cognitive_state": {
+                  "cognitive_mode": "exploratory",
+                  "logical_dependency": "independent_parallel"
+                },
+                "agent_plan": {
+                  "facets": [
+                    {
+                      "facet_id": "F1",
+                      "description": "Overview and background of the topic",
+                      "dependency": null,
+                      "rubric": {
+                        "tolerance_level": "high",
+                        "quality_preference": [
+                          "survey papers",
+                          "review articles"
+                        ],
+                        "content_requirements": [
+                          "provides general overview"
+                        ]
+                      }
+                    },
+                    {
+                      "facet_id": "F2",
+                      "description": "Key methods and techniques",
+                      "dependency": null,
+                      "rubric": {
+                        "tolerance_level": "medium",
+                        "quality_preference": [
+                          "research papers",
+                          "technical reports"
+                        ],
+                        "content_requirements": [
+                          "describes specific methods or algorithms"
+                        ]
+                      }
+                    }
+                  ],
+                  "criteria": {
+                    "metric_type": "coverage",
+                    "threshold_description": "All facets have at least one high or medium relevance document",
+                    "specific_conditions": [
+                      "F1 has at least one overview document",
+                      "F2 has at least one method-focused document"
+                    ]
+                  }
+                },
+                "expansions": [
+                  {
+                    "facet_id": "F1",
+                    "facet_query": "overview and introduction to the topic for F1",
+                    "sparse_keywords": [
+                      "information retrieval",
+                      "RAG",
+                      "agentic search"
+                    ],
+                    "hypothetical_document": "This paper provides a comprehensive survey of retrieval-augmented generation methods, covering key architectures, datasets, and benchmarks in the field."
+                  },
+                  {
+                    "facet_id": "F2",
+                    "facet_query": "overview and introduction to the topic for F2",
+                    "sparse_keywords": [
+                      "information retrieval",
+                      "RAG",
+                      "agentic search"
+                    ],
+                    "hypothetical_document": "This paper provides a comprehensive survey of retrieval-augmented generation methods, covering key architectures, datasets, and benchmarks in the field."
+                  }
+                ],
+                "constraints": {
+                  "structured_metadata": [],
+                  "unstructured_content_patterns": []
+                }
+              },
+              "search_iteration": 0,
+              "verified_evidence": [],
+              "satisfied_facets": [],
+              "seen_doc_ids": []
+            },
+            "state_after": {
+              "user_query": "哪些论文使用了耦合自编码器进行多模态细胞类型分析？",
+              "verified_evidence": [],
+              "rejected_docs": [],
+              "candidate_docs": [],
+              "search_iteration": 0,
+              "satisfied_facets": [],
+              "seen_doc_ids": [],
+              "start_time": 1775626749.9799144,
+              "intent": {
+                "cognitive_state": {
+                  "cognitive_mode": "exploratory",
+                  "logical_dependency": "independent_parallel"
+                },
+                "agent_plan": {
+                  "facets": [
+                    {
+                      "facet_id": "F1",
+                      "description": "Overview and background of the topic",
+                      "dependency": null,
+                      "rubric": {
+                        "tolerance_level": "high",
+                        "quality_preference": [
+                          "survey papers",
+                          "review articles"
+                        ],
+                        "content_requirements": [
+                          "provides general overview"
+                        ]
+                      }
+                    },
+                    {
+                      "facet_id": "F2",
+                      "description": "Key methods and techniques",
+                      "dependency": null,
+                      "rubric": {
+                        "tolerance_level": "medium",
+                        "quality_preference": [
+                          "research papers",
+                          "technical reports"
+                        ],
+                        "content_requirements": [
+                          "describes specific methods or algorithms"
+                        ]
+                      }
+                    }
+                  ],
+                  "criteria": {
+                    "metric_type": "coverage",
+                    "threshold_description": "All facets have at least one high or medium relevance document",
+                    "specific_conditions": [
+                      "F1 has at least one overview document",
+                      "F2 has at least one method-focused document"
+                    ]
+                  }
+                },
+                "expansions": [
+                  {
+                    "facet_id": "F1",
+                    "facet_query": "overview and introduction to the topic for F1",
+                    "sparse_keywords": [
+                      "information retrieval",
+                      "RAG",
+                      "agentic search"
+                    ],
+                    "hypothetical_document": "This paper provides a comprehensive survey of retrieval-augmented generation methods, covering key architectures, datasets, and benchmarks in the field."
+                  },
+                  {
+                    "facet_id": "F2",
+                    "facet_query": "overview and introduction to the topic for F2",
+                    "sparse_keywords": [
+                      "information retrieval",
+                      "RAG",
+                      "agentic search"
+                    ],
+                    "hypothetical_document": "This paper provides a comprehensive survey of retrieval-augmented generation methods, covering key architectures, datasets, and benchmarks in the field."
+                  }
+                ],
+                "constraints": {
+                  "structured_metadata": [],
+                  "unstructured_content_patterns": []
+                }
+              }
+            },
+            "logs": [
+              {
+                "level": "INFO",
+                "message": "用户查询: 哪些论文使用了耦合自编码器进行多模态细胞类型分析？",
+                "timestamp": 1775626749.9799144,
+                "details": {
+                  "query": "哪些论文使用了耦合自编码器进行多模态细胞类型分析？"
+                }
+              },
+              {
+                "level": "INFO",
+                "message": "Stage 1: 认知分类 + 约束提取（并行）...",
+                "timestamp": 1775626749.9799144,
+                "details": null
+              },
+              {
+                "level": "INFO",
+                "message": "认知模式: exploratory | 逻辑依赖: independent_parallel",
+                "timestamp": 1775626749.9809136,
+                "details": null
+              },
+              {
+                "level": "INFO",
+                "message": "Stage 2: 生成 AgentPlan...",
+                "timestamp": 1775626749.9809136,
+                "details": null
+              },
+              {
+                "level": "INFO",
+                "message": "生成 2 个 InformationFacet",
+                "timestamp": 1775626749.9809136,
+                "details": null
+              },
+              {
+                "level": "INFO",
+                "message": "Stage 3: 检索扩展（并行，每个 Facet 一次）...",
+                "timestamp": 1775626749.9809136,
+                "details": null
+              },
+              {
+                "level": "INFO",
+                "message": "意图理解完成",
+                "timestamp": 1775626749.9809136,
+                "details": null
+              }
+            ],
+            "error": null
+          },
+          {
+            "stage": "retrieve",
+            "iteration": 0,
+            "started_at": "2026-04-08T05:39:09.998760+00:00",
+            "ended_at": "2026-04-08T05:39:09.998760+00:00",
+            "duration_ms": 17.119299998739734,
+            "input_snapshot": {
+              "user_query": "哪些论文使用了耦合自编码器进行多模态细胞类型分析？",
+              "verified_evidence": [],
+              "rejected_docs": [],
+              "candidate_docs": [],
+              "search_iteration": 0,
+              "satisfied_facets": [],
+              "seen_doc_ids": [],
+              "start_time": 1775626749.9799144,
+              "intent": {
+                "cognitive_state": {
+                  "cognitive_mode": "exploratory",
+                  "logical_dependency": "independent_parallel"
+                },
+                "agent_plan": {
+                  "facets": [
+                    {
+                      "facet_id": "F1",
+                      "description": "Overview and background of the topic",
+                      "dependency": null,
+                      "rubric": {
+                        "tolerance_level": "high",
+                        "quality_preference": [
+                          "survey papers",
+                          "review articles"
+                        ],
+                        "content_requirements": [
+                          "provides general overview"
+                        ]
+                      }
+                    },
+                    {
+                      "facet_id": "F2",
+                      "description": "Key methods and techniques",
+                      "dependency": null,
+                      "rubric": {
+                        "tolerance_level": "medium",
+                        "quality_preference": [
+                          "research papers",
+                          "technical reports"
+                        ],
+                        "content_requirements": [
+                          "describes specific methods or algorithms"
+                        ]
+                      }
+                    }
+                  ],
+                  "criteria": {
+                    "metric_type": "coverage",
+                    "threshold_description": "All facets have at least one high or medium relevance document",
+                    "specific_conditions": [
+                      "F1 has at least one overview document",
+                      "F2 has at least one method-focused document"
+                    ]
+                  }
+                },
+                "expansions": [
+                  {
+                    "facet_id": "F1",
+                    "facet_query": "overview and introduction to the topic for F1",
+                    "sparse_keywords": [
+                      "information retrieval",
+                      "RAG",
+                      "agentic search"
+                    ],
+                    "hypothetical_document": "This paper provides a comprehensive survey of retrieval-augmented generation methods, covering key architectures, datasets, and benchmarks in the field."
+                  },
+                  {
+                    "facet_id": "F2",
+                    "facet_query": "overview and introduction to the topic for F2",
+                    "sparse_keywords": [
+                      "information retrieval",
+                      "RAG",
+                      "agentic search"
+                    ],
+                    "hypothetical_document": "This paper provides a comprehensive survey of retrieval-augmented generation methods, covering key architectures, datasets, and benchmarks in the field."
+                  }
+                ],
+                "constraints": {
+                  "structured_metadata": [],
+                  "unstructured_content_patterns": []
+                }
+              }
+            },
+            "output_snapshot": {
+              "candidate_docs": [
+                {
+                  "arxiv_id": "2512.07189",
+                  "title": "PIR-DSN: A Decentralized Storage Network Supporting Private Information Retrieval",
+                  "abstract": "Decentralized Storage Networks (DSNs) are emerging as a foundational infrastructure for Web 3.0, offering global peer-to-peer storage. However, a critical vulnerability persists: user privacy during file retrieval remains largely unaddressed, risking the exposure of sensitive information. To overcome this, we introduce PIR-DSN, the first DSN protocol to integrate Private Information Retrieval (PIR) for both single and multi-server settings. Our key innovations include a novel secure mapping method that transforms sparse file identifiers into compact integer indexes, enabling both public verifiability of file operations and efficient private retrieval. Furthermore, PIR-DSN guarantees Byzantine-robust private retrieval through file replication across multiple miners. We implement and rigorously evaluate PIR-DSN against three prominent industrial DSN systems. Experimental results demonstrate that PIR-DSN achieves comparable overhead for file upload and deletion. While PIR inherently introduces an additional computational cost leading to higher retrieval latency, PIR-DSN maintains comparable throughput. These findings underscore PIR-DSN's practical viability for privacy-sensitive applications within DSN environments.",
+                  "arxiv_url": "http://arxiv.org/abs/2512.07189v1",
+                  "authors": [
+                    "Jiahao Zhang",
+                    "Minghui Xu",
+                    "Hechuan Guo",
+                    "et al."
+                  ],
+                  "date": "2025-12-08",
+                  "facet_id": "F1"
+                },
+                {
+                  "arxiv_id": "2512.23647",
+                  "title": "Nested Browser-Use Learning for Agentic Information Seeking",
+                  "abstract": "Information-seeking (IS) agents have achieved strong performance across a range of wide and deep search tasks, yet their tool use remains largely restricted to API-level snippet retrieval and URL-based page fetching, limiting access to the richer information available through real browsing. While full browser interaction could unlock deeper capabilities, its fine-grained control and verbose page content returns introduce substantial complexity for ReAct-style function-calling agents. To bridge this gap, we propose Nested Browser-Use Learning (NestBrowse), which introduces a minimal and complete browser-action framework that decouples interaction control from page exploration through a nested structure. This design simplifies agentic reasoning while enabling effective deep-web information acquisition. Empirical results on challenging deep IS benchmarks demonstrate that NestBrowse offers clear benefits in practice. Further in-depth analyses underscore its efficiency and flexibility.",
+                  "arxiv_url": "http://arxiv.org/abs/2512.23647v1",
+                  "authors": [
+                    "Baixuan Li",
+                    "Jialong Wu",
+                    "Wenbiao Yin",
+                    "et al."
+                  ],
+                  "date": "2025-12-29",
+                  "facet_id": "F1"
+                },
+                {
+                  "arxiv_id": "2512.07189",
+                  "title": "PIR-DSN: A Decentralized Storage Network Supporting Private Information Retrieval",
+                  "abstract": "Decentralized Storage Networks (DSNs) are emerging as a foundational infrastructure for Web 3.0, offering global peer-to-peer storage. However, a critical vulnerability persists: user privacy during file retrieval remains largely unaddressed, risking the exposure of sensitive information. To overcome this, we introduce PIR-DSN, the first DSN protocol to integrate Private Information Retrieval (PIR) for both single and multi-server settings. Our key innovations include a novel secure mapping method that transforms sparse file identifiers into compact integer indexes, enabling both public verifiability of file operations and efficient private retrieval. Furthermore, PIR-DSN guarantees Byzantine-robust private retrieval through file replication across multiple miners. We implement and rigorously evaluate PIR-DSN against three prominent industrial DSN systems. Experimental results demonstrate that PIR-DSN achieves comparable overhead for file upload and deletion. While PIR inherently introduces an additional computational cost leading to higher retrieval latency, PIR-DSN maintains comparable throughput. These findings underscore PIR-DSN's practical viability for privacy-sensitive applications within DSN environments.",
+                  "arxiv_url": "http://arxiv.org/abs/2512.07189v1",
+                  "authors": [
+                    "Jiahao Zhang",
+                    "Minghui Xu",
+                    "Hechuan Guo",
+                    "et al."
+                  ],
+                  "date": "2025-12-08",
+                  "facet_id": "F2"
+                },
+                {
+                  "arxiv_id": "2512.21039",
+                  "title": "Agentic Multi-Persona Framework for Evidence-Aware Fake News Detection",
+                  "abstract": "The rapid proliferation of online misinformation poses significant risks to public trust, policy, and safety, necessitating reliable automated fake news detection. Existing methods often struggle with multimodal content, domain generalization, and explainability. We propose AMPEND-LS, an agentic multi-persona evidence-grounded framework with LLM-SLM synergy for multimodal fake news detection. AMPEND-LS integrates textual, visual, and contextual signals through a structured reasoning pipeline powered by LLMs, augmented with reverse image search, knowledge graph paths, and persuasion strategy analysis. To improve reliability, we introduce a credibility fusion mechanism combining semantic similarity, domain trustworthiness, and temporal context, and a complementary SLM classifier to mitigate LLM uncertainty and hallucinations. Extensive experiments across three benchmark datasets demonstrate that AMPEND-LS consistently outperformed state-of-the-art baselines in accuracy, F1 score, and robustness. Qualitative case studies further highlight its transparent reasoning and resilience against evolving misinformation. This work advances the development of adaptive, explainable, and evidence-aware systems for safeguarding online information integrity.",
+                  "arxiv_url": "http://arxiv.org/abs/2512.21039v1",
+                  "authors": [
+                    "Roopa Bukke",
+                    "Soumya Pandey",
+                    "Suraj Kumar",
+                    "et al."
+                  ],
+                  "date": "2025-12-24",
+                  "facet_id": "F2"
+                }
+              ]
+            },
+            "state_after": {
+              "user_query": "哪些论文使用了耦合自编码器进行多模态细胞类型分析？",
+              "verified_evidence": [],
+              "rejected_docs": [],
+              "candidate_docs": [
+                {
+                  "arxiv_id": "2512.07189",
+                  "title": "PIR-DSN: A Decentralized Storage Network Supporting Private Information Retrieval",
+                  "abstract": "Decentralized Storage Networks (DSNs) are emerging as a foundational infrastructure for Web 3.0, offering global peer-to-peer storage. However, a critical vulnerability persists: user privacy during file retrieval remains largely unaddressed, risking the exposure of sensitive information. To overcome this, we introduce PIR-DSN, the first DSN protocol to integrate Private Information Retrieval (PIR) for both single and multi-server settings. Our key innovations include a novel secure mapping method that transforms sparse file identifiers into compact integer indexes, enabling both public verifiability of file operations and efficient private retrieval. Furthermore, PIR-DSN guarantees Byzantine-robust private retrieval through file replication across multiple miners. We implement and rigorously evaluate PIR-DSN against three prominent industrial DSN systems. Experimental results demonstrate that PIR-DSN achieves comparable overhead for file upload and deletion. While PIR inherently introduces an additional computational cost leading to higher retrieval latency, PIR-DSN maintains comparable throughput. These findings underscore PIR-DSN's practical viability for privacy-sensitive applications within DSN environments.",
+                  "arxiv_url": "http://arxiv.org/abs/2512.07189v1",
+                  "authors": [
+                    "Jiahao Zhang",
+                    "Minghui Xu",
+                    "Hechuan Guo",
+                    "et al."
+                  ],
+                  "date": "2025-12-08",
+                  "facet_id": "F1"
+                },
+                {
+                  "arxiv_id": "2512.23647",
+                  "title": "Nested Browser-Use Learning for Agentic Information Seeking",
+                  "abstract": "Information-seeking (IS) agents have achieved strong performance across a range of wide and deep search tasks, yet their tool use remains largely restricted to API-level snippet retrieval and URL-based page fetching, limiting access to the richer information available through real browsing. While full browser interaction could unlock deeper capabilities, its fine-grained control and verbose page content returns introduce substantial complexity for ReAct-style function-calling agents. To bridge this gap, we propose Nested Browser-Use Learning (NestBrowse), which introduces a minimal and complete browser-action framework that decouples interaction control from page exploration through a nested structure. This design simplifies agentic reasoning while enabling effective deep-web information acquisition. Empirical results on challenging deep IS benchmarks demonstrate that NestBrowse offers clear benefits in practice. Further in-depth analyses underscore its efficiency and flexibility.",
+                  "arxiv_url": "http://arxiv.org/abs/2512.23647v1",
+                  "authors": [
+                    "Baixuan Li",
+                    "Jialong Wu",
+                    "Wenbiao Yin",
+                    "et al."
+                  ],
+                  "date": "2025-12-29",
+                  "facet_id": "F1"
+                },
+                {
+                  "arxiv_id": "2512.07189",
+                  "title": "PIR-DSN: A Decentralized Storage Network Supporting Private Information Retrieval",
+                  "abstract": "Decentralized Storage Networks (DSNs) are emerging as a foundational infrastructure for Web 3.0, offering global peer-to-peer storage. However, a critical vulnerability persists: user privacy during file retrieval remains largely unaddressed, risking the exposure of sensitive information. To overcome this, we introduce PIR-DSN, the first DSN protocol to integrate Private Information Retrieval (PIR) for both single and multi-server settings. Our key innovations include a novel secure mapping method that transforms sparse file identifiers into compact integer indexes, enabling both public verifiability of file operations and efficient private retrieval. Furthermore, PIR-DSN guarantees Byzantine-robust private retrieval through file replication across multiple miners. We implement and rigorously evaluate PIR-DSN against three prominent industrial DSN systems. Experimental results demonstrate that PIR-DSN achieves comparable overhead for file upload and deletion. While PIR inherently introduces an additional computational cost leading to higher retrieval latency, PIR-DSN maintains comparable throughput. These findings underscore PIR-DSN's practical viability for privacy-sensitive applications within DSN environments.",
+                  "arxiv_url": "http://arxiv.org/abs/2512.07189v1",
+                  "authors": [
+                    "Jiahao Zhang",
+                    "Minghui Xu",
+                    "Hechuan Guo",
+                    "et al."
+                  ],
+                  "date": "2025-12-08",
+                  "facet_id": "F2"
+                },
+                {
+                  "arxiv_id": "2512.21039",
+                  "title": "Agentic Multi-Persona Framework for Evidence-Aware Fake News Detection",
+                  "abstract": "The rapid proliferation of online misinformation poses significant risks to public trust, policy, and safety, necessitating reliable automated fake news detection. Existing methods often struggle with multimodal content, domain generalization, and explainability. We propose AMPEND-LS, an agentic multi-persona evidence-grounded framework with LLM-SLM synergy for multimodal fake news detection. AMPEND-LS integrates textual, visual, and contextual signals through a structured reasoning pipeline powered by LLMs, augmented with reverse image search, knowledge graph paths, and persuasion strategy analysis. To improve reliability, we introduce a credibility fusion mechanism combining semantic similarity, domain trustworthiness, and temporal context, and a complementary SLM classifier to mitigate LLM uncertainty and hallucinations. Extensive experiments across three benchmark datasets demonstrate that AMPEND-LS consistently outperformed state-of-the-art baselines in accuracy, F1 score, and robustness. Qualitative case studies further highlight its transparent reasoning and resilience against evolving misinformation. This work advances the development of adaptive, explainable, and evidence-aware systems for safeguarding online information integrity.",
+                  "arxiv_url": "http://arxiv.org/abs/2512.21039v1",
+                  "authors": [
+                    "Roopa Bukke",
+                    "Soumya Pandey",
+                    "Suraj Kumar",
+                    "et al."
+                  ],
+                  "date": "2025-12-24",
+                  "facet_id": "F2"
+                }
+              ],
+              "search_iteration": 0,
+              "satisfied_facets": [],
+              "seen_doc_ids": [],
+              "start_time": 1775626749.9799144,
+              "intent": {
+                "cognitive_state": {
+                  "cognitive_mode": "exploratory",
+                  "logical_dependency": "independent_parallel"
+                },
+                "agent_plan": {
+                  "facets": [
+                    {
+                      "facet_id": "F1",
+                      "description": "Overview and background of the topic",
+                      "dependency": null,
+                      "rubric": {
+                        "tolerance_level": "high",
+                        "quality_preference": [
+                          "survey papers",
+                          "review articles"
+                        ],
+                        "content_requirements": [
+                          "provides general overview"
+                        ]
+                      }
+                    },
+                    {
+                      "facet_id": "F2",
+                      "description": "Key methods and techniques",
+                      "dependency": null,
+                      "rubric": {
+                        "tolerance_level": "medium",
+                        "quality_preference": [
+                          "research papers",
+                          "technical reports"
+                        ],
+                        "content_requirements": [
+                          "describes specific methods or algorithms"
+                        ]
+                      }
+                    }
+                  ],
+                  "criteria": {
+                    "metric_type": "coverage",
+                    "threshold_description": "All facets have at least one high or medium relevance document",
+                    "specific_conditions": [
+                      "F1 has at least one overview document",
+                      "F2 has at least one method-focused document"
+                    ]
+                  }
+                },
+                "expansions": [
+                  {
+                    "facet_id": "F1",
+                    "facet_query": "overview and introduction to the topic for F1",
+                    "sparse_keywords": [
+                      "information retrieval",
+                      "RAG",
+                      "agentic search"
+                    ],
+                    "hypothetical_document": "This paper provides a comprehensive survey of retrieval-augmented generation methods, covering key architectures, datasets, and benchmarks in the field."
+                  },
+                  {
+                    "facet_id": "F2",
+                    "facet_query": "overview and introduction to the topic for F2",
+                    "sparse_keywords": [
+                      "information retrieval",
+                      "RAG",
+                      "agentic search"
+                    ],
+                    "hypothetical_document": "This paper provides a comprehensive survey of retrieval-augmented generation methods, covering key architectures, datasets, and benchmarks in the field."
+                  }
+                ],
+                "constraints": {
+                  "structured_metadata": [],
+                  "unstructured_content_patterns": []
+                }
+              }
+            },
+            "logs": [
+              {
+                "level": "INFO",
+                "message": "开始 Per-Facet 检索，共 2 个 Facet...",
+                "timestamp": 1775626749.9814143,
+                "details": null
+              },
+              {
+                "level": "INFO",
+                "message": "Facet F1: 召回 2 篇",
+                "timestamp": 1775626749.991022,
+                "details": null
+              },
+              {
+                "level": "INFO",
+                "message": "Facet F2: 召回 2 篇",
+                "timestamp": 1775626749.9982529,
+                "details": null
+              },
+              {
+                "level": "INFO",
+                "message": "候选文档总数: 4（含跨 Facet 重复）",
+                "timestamp": 1775626749.9982529,
+                "details": null
+              }
+            ],
+            "error": null
+          },
+          {
+            "stage": "judge",
+            "iteration": 0,
+            "started_at": "2026-04-08T05:39:09.999258+00:00",
+            "ended_at": "2026-04-08T05:39:09.999258+00:00",
+            "duration_ms": 0.23960000544320792,
+            "input_snapshot": {
+              "user_query": "哪些论文使用了耦合自编码器进行多模态细胞类型分析？",
+              "verified_evidence": [],
+              "rejected_docs": [],
+              "candidate_docs": [
+                {
+                  "arxiv_id": "2512.07189",
+                  "title": "PIR-DSN: A Decentralized Storage Network Supporting Private Information Retrieval",
+                  "abstract": "Decentralized Storage Networks (DSNs) are emerging as a foundational infrastructure for Web 3.0, offering global peer-to-peer storage. However, a critical vulnerability persists: user privacy during file retrieval remains largely unaddressed, risking the exposure of sensitive information. To overcome this, we introduce PIR-DSN, the first DSN protocol to integrate Private Information Retrieval (PIR) for both single and multi-server settings. Our key innovations include a novel secure mapping method that transforms sparse file identifiers into compact integer indexes, enabling both public verifiability of file operations and efficient private retrieval. Furthermore, PIR-DSN guarantees Byzantine-robust private retrieval through file replication across multiple miners. We implement and rigorously evaluate PIR-DSN against three prominent industrial DSN systems. Experimental results demonstrate that PIR-DSN achieves comparable overhead for file upload and deletion. While PIR inherently introduces an additional computational cost leading to higher retrieval latency, PIR-DSN maintains comparable throughput. These findings underscore PIR-DSN's practical viability for privacy-sensitive applications within DSN environments.",
+                  "arxiv_url": "http://arxiv.org/abs/2512.07189v1",
+                  "authors": [
+                    "Jiahao Zhang",
+                    "Minghui Xu",
+                    "Hechuan Guo",
+                    "et al."
+                  ],
+                  "date": "2025-12-08",
+                  "facet_id": "F1"
+                },
+                {
+                  "arxiv_id": "2512.23647",
+                  "title": "Nested Browser-Use Learning for Agentic Information Seeking",
+                  "abstract": "Information-seeking (IS) agents have achieved strong performance across a range of wide and deep search tasks, yet their tool use remains largely restricted to API-level snippet retrieval and URL-based page fetching, limiting access to the richer information available through real browsing. While full browser interaction could unlock deeper capabilities, its fine-grained control and verbose page content returns introduce substantial complexity for ReAct-style function-calling agents. To bridge this gap, we propose Nested Browser-Use Learning (NestBrowse), which introduces a minimal and complete browser-action framework that decouples interaction control from page exploration through a nested structure. This design simplifies agentic reasoning while enabling effective deep-web information acquisition. Empirical results on challenging deep IS benchmarks demonstrate that NestBrowse offers clear benefits in practice. Further in-depth analyses underscore its efficiency and flexibility.",
+                  "arxiv_url": "http://arxiv.org/abs/2512.23647v1",
+                  "authors": [
+                    "Baixuan Li",
+                    "Jialong Wu",
+                    "Wenbiao Yin",
+                    "et al."
+                  ],
+                  "date": "2025-12-29",
+                  "facet_id": "F1"
+                },
+                {
+                  "arxiv_id": "2512.07189",
+                  "title": "PIR-DSN: A Decentralized Storage Network Supporting Private Information Retrieval",
+                  "abstract": "Decentralized Storage Networks (DSNs) are emerging as a foundational infrastructure for Web 3.0, offering global peer-to-peer storage. However, a critical vulnerability persists: user privacy during file retrieval remains largely unaddressed, risking the exposure of sensitive information. To overcome this, we introduce PIR-DSN, the first DSN protocol to integrate Private Information Retrieval (PIR) for both single and multi-server settings. Our key innovations include a novel secure mapping method that transforms sparse file identifiers into compact integer indexes, enabling both public verifiability of file operations and efficient private retrieval. Furthermore, PIR-DSN guarantees Byzantine-robust private retrieval through file replication across multiple miners. We implement and rigorously evaluate PIR-DSN against three prominent industrial DSN systems. Experimental results demonstrate that PIR-DSN achieves comparable overhead for file upload and deletion. While PIR inherently introduces an additional computational cost leading to higher retrieval latency, PIR-DSN maintains comparable throughput. These findings underscore PIR-DSN's practical viability for privacy-sensitive applications within DSN environments.",
+                  "arxiv_url": "http://arxiv.org/abs/2512.07189v1",
+                  "authors": [
+                    "Jiahao Zhang",
+                    "Minghui Xu",
+                    "Hechuan Guo",
+                    "et al."
+                  ],
+                  "date": "2025-12-08",
+                  "facet_id": "F2"
+                },
+                {
+                  "arxiv_id": "2512.21039",
+                  "title": "Agentic Multi-Persona Framework for Evidence-Aware Fake News Detection",
+                  "abstract": "The rapid proliferation of online misinformation poses significant risks to public trust, policy, and safety, necessitating reliable automated fake news detection. Existing methods often struggle with multimodal content, domain generalization, and explainability. We propose AMPEND-LS, an agentic multi-persona evidence-grounded framework with LLM-SLM synergy for multimodal fake news detection. AMPEND-LS integrates textual, visual, and contextual signals through a structured reasoning pipeline powered by LLMs, augmented with reverse image search, knowledge graph paths, and persuasion strategy analysis. To improve reliability, we introduce a credibility fusion mechanism combining semantic similarity, domain trustworthiness, and temporal context, and a complementary SLM classifier to mitigate LLM uncertainty and hallucinations. Extensive experiments across three benchmark datasets demonstrate that AMPEND-LS consistently outperformed state-of-the-art baselines in accuracy, F1 score, and robustness. Qualitative case studies further highlight its transparent reasoning and resilience against evolving misinformation. This work advances the development of adaptive, explainable, and evidence-aware systems for safeguarding online information integrity.",
+                  "arxiv_url": "http://arxiv.org/abs/2512.21039v1",
+                  "authors": [
+                    "Roopa Bukke",
+                    "Soumya Pandey",
+                    "Suraj Kumar",
+                    "et al."
+                  ],
+                  "date": "2025-12-24",
+                  "facet_id": "F2"
+                }
+              ],
+              "search_iteration": 0,
+              "satisfied_facets": [],
+              "seen_doc_ids": [],
+              "start_time": 1775626749.9799144,
+              "intent": {
+                "cognitive_state": {
+                  "cognitive_mode": "exploratory",
+                  "logical_dependency": "independent_parallel"
+                },
+                "agent_plan": {
+                  "facets": [
+                    {
+                      "facet_id": "F1",
+                      "description": "Overview and background of the topic",
+                      "dependency": null,
+                      "rubric": {
+                        "tolerance_level": "high",
+                        "quality_preference": [
+                          "survey papers",
+                          "review articles"
+                        ],
+                        "content_requirements": [
+                          "provides general overview"
+                        ]
+                      }
+                    },
+                    {
+                      "facet_id": "F2",
+                      "description": "Key methods and techniques",
+                      "dependency": null,
+                      "rubric": {
+                        "tolerance_level": "medium",
+                        "quality_preference": [
+                          "research papers",
+                          "technical reports"
+                        ],
+                        "content_requirements": [
+                          "describes specific methods or algorithms"
+                        ]
+                      }
+                    }
+                  ],
+                  "criteria": {
+                    "metric_type": "coverage",
+                    "threshold_description": "All facets have at least one high or medium relevance document",
+                    "specific_conditions": [
+                      "F1 has at least one overview document",
+                      "F2 has at least one method-focused document"
+                    ]
+                  }
+                },
+                "expansions": [
+                  {
+                    "facet_id": "F1",
+                    "facet_query": "overview and introduction to the topic for F1",
+                    "sparse_keywords": [
+                      "information retrieval",
+                      "RAG",
+                      "agentic search"
+                    ],
+                    "hypothetical_document": "This paper provides a comprehensive survey of retrieval-augmented generation methods, covering key architectures, datasets, and benchmarks in the field."
+                  },
+                  {
+                    "facet_id": "F2",
+                    "facet_query": "overview and introduction to the topic for F2",
+                    "sparse_keywords": [
+                      "information retrieval",
+                      "RAG",
+                      "agentic search"
+                    ],
+                    "hypothetical_document": "This paper provides a comprehensive survey of retrieval-augmented generation methods, covering key architectures, datasets, and benchmarks in the field."
+                  }
+                ],
+                "constraints": {
+                  "structured_metadata": [],
+                  "unstructured_content_patterns": []
+                }
+              }
+            },
+            "output_snapshot": {
+              "verified_evidence": [
+                {
+                  "doc_id": "2512.07189",
+                  "facet_id": "F1",
+                  "summary": "A relevant paper discussing information retrieval techniques.",
+                  "relevance_level": "medium",
+                  "reason": "The document covers the facet topic at a general level.",
+                  "title": "PIR-DSN: A Decentralized Storage Network Supporting Private Information Retrieval",
+                  "abstract": "Decentralized Storage Networks (DSNs) are emerging as a foundational infrastructure for Web 3.0, offering global peer-to-peer storage. However, a critical vulnerability persists: user privacy during file retrieval remains largely unaddressed, risking the exposure of sensitive information. To overcome this, we introduce PIR-DSN, the first DSN protocol to integrate Private Information Retrieval (PIR) for both single and multi-server settings. Our key innovations include a novel secure mapping method that transforms sparse file identifiers into compact integer indexes, enabling both public verifiability of file operations and efficient private retrieval. Furthermore, PIR-DSN guarantees Byzantine-robust private retrieval through file replication across multiple miners. We implement and rigorously evaluate PIR-DSN against three prominent industrial DSN systems. Experimental results demonstrate that PIR-DSN achieves comparable overhead for file upload and deletion. While PIR inherently introduces an additional computational cost leading to higher retrieval latency, PIR-DSN maintains comparable throughput. These findings underscore PIR-DSN's practical viability for privacy-sensitive applications within DSN environments.",
+                  "metadata": {
+                    "year": "",
+                    "authors": [
+                      "Jiahao Zhang",
+                      "Minghui Xu",
+                      "Hechuan Guo",
+                      "et al."
+                    ],
+                    "url": "http://arxiv.org/abs/2512.07189v1"
+                  }
+                },
+                {
+                  "doc_id": "2512.23647",
+                  "facet_id": "F1",
+                  "summary": "A relevant paper discussing information retrieval techniques.",
+                  "relevance_level": "medium",
+                  "reason": "The document covers the facet topic at a general level.",
+                  "title": "Nested Browser-Use Learning for Agentic Information Seeking",
+                  "abstract": "Information-seeking (IS) agents have achieved strong performance across a range of wide and deep search tasks, yet their tool use remains largely restricted to API-level snippet retrieval and URL-based page fetching, limiting access to the richer information available through real browsing. While full browser interaction could unlock deeper capabilities, its fine-grained control and verbose page content returns introduce substantial complexity for ReAct-style function-calling agents. To bridge this gap, we propose Nested Browser-Use Learning (NestBrowse), which introduces a minimal and complete browser-action framework that decouples interaction control from page exploration through a nested structure. This design simplifies agentic reasoning while enabling effective deep-web information acquisition. Empirical results on challenging deep IS benchmarks demonstrate that NestBrowse offers clear benefits in practice. Further in-depth analyses underscore its efficiency and flexibility.",
+                  "metadata": {
+                    "year": "",
+                    "authors": [
+                      "Baixuan Li",
+                      "Jialong Wu",
+                      "Wenbiao Yin",
+                      "et al."
+                    ],
+                    "url": "http://arxiv.org/abs/2512.23647v1"
+                  }
+                },
+                {
+                  "doc_id": "2512.07189",
+                  "facet_id": "F2",
+                  "summary": "A relevant paper discussing information retrieval techniques.",
+                  "relevance_level": "medium",
+                  "reason": "The document covers the facet topic at a general level.",
+                  "title": "PIR-DSN: A Decentralized Storage Network Supporting Private Information Retrieval",
+                  "abstract": "Decentralized Storage Networks (DSNs) are emerging as a foundational infrastructure for Web 3.0, offering global peer-to-peer storage. However, a critical vulnerability persists: user privacy during file retrieval remains largely unaddressed, risking the exposure of sensitive information. To overcome this, we introduce PIR-DSN, the first DSN protocol to integrate Private Information Retrieval (PIR) for both single and multi-server settings. Our key innovations include a novel secure mapping method that transforms sparse file identifiers into compact integer indexes, enabling both public verifiability of file operations and efficient private retrieval. Furthermore, PIR-DSN guarantees Byzantine-robust private retrieval through file replication across multiple miners. We implement and rigorously evaluate PIR-DSN against three prominent industrial DSN systems. Experimental results demonstrate that PIR-DSN achieves comparable overhead for file upload and deletion. While PIR inherently introduces an additional computational cost leading to higher retrieval latency, PIR-DSN maintains comparable throughput. These findings underscore PIR-DSN's practical viability for privacy-sensitive applications within DSN environments.",
+                  "metadata": {
+                    "year": "",
+                    "authors": [
+                      "Jiahao Zhang",
+                      "Minghui Xu",
+                      "Hechuan Guo",
+                      "et al."
+                    ],
+                    "url": "http://arxiv.org/abs/2512.07189v1"
+                  }
+                },
+                {
+                  "doc_id": "2512.21039",
+                  "facet_id": "F2",
+                  "summary": "A relevant paper discussing information retrieval techniques.",
+                  "relevance_level": "medium",
+                  "reason": "The document covers the facet topic at a general level.",
+                  "title": "Agentic Multi-Persona Framework for Evidence-Aware Fake News Detection",
+                  "abstract": "The rapid proliferation of online misinformation poses significant risks to public trust, policy, and safety, necessitating reliable automated fake news detection. Existing methods often struggle with multimodal content, domain generalization, and explainability. We propose AMPEND-LS, an agentic multi-persona evidence-grounded framework with LLM-SLM synergy for multimodal fake news detection. AMPEND-LS integrates textual, visual, and contextual signals through a structured reasoning pipeline powered by LLMs, augmented with reverse image search, knowledge graph paths, and persuasion strategy analysis. To improve reliability, we introduce a credibility fusion mechanism combining semantic similarity, domain trustworthiness, and temporal context, and a complementary SLM classifier to mitigate LLM uncertainty and hallucinations. Extensive experiments across three benchmark datasets demonstrate that AMPEND-LS consistently outperformed state-of-the-art baselines in accuracy, F1 score, and robustness. Qualitative case studies further highlight its transparent reasoning and resilience against evolving misinformation. This work advances the development of adaptive, explainable, and evidence-aware systems for safeguarding online information integrity.",
+                  "metadata": {
+                    "year": "",
+                    "authors": [
+                      "Roopa Bukke",
+                      "Soumya Pandey",
+                      "Suraj Kumar",
+                      "et al."
+                    ],
+                    "url": "http://arxiv.org/abs/2512.21039v1"
+                  }
+                }
+              ],
+              "rejected_docs": [],
+              "seen_doc_ids": [
+                "2512.07189",
+                "2512.21039",
+                "2512.23647"
+              ]
+            },
+            "state_after": {
+              "user_query": "哪些论文使用了耦合自编码器进行多模态细胞类型分析？",
+              "verified_evidence": [
+                {
+                  "doc_id": "2512.07189",
+                  "facet_id": "F1",
+                  "summary": "A relevant paper discussing information retrieval techniques.",
+                  "relevance_level": "medium",
+                  "reason": "The document covers the facet topic at a general level.",
+                  "title": "PIR-DSN: A Decentralized Storage Network Supporting Private Information Retrieval",
+                  "abstract": "Decentralized Storage Networks (DSNs) are emerging as a foundational infrastructure for Web 3.0, offering global peer-to-peer storage. However, a critical vulnerability persists: user privacy during file retrieval remains largely unaddressed, risking the exposure of sensitive information. To overcome this, we introduce PIR-DSN, the first DSN protocol to integrate Private Information Retrieval (PIR) for both single and multi-server settings. Our key innovations include a novel secure mapping method that transforms sparse file identifiers into compact integer indexes, enabling both public verifiability of file operations and efficient private retrieval. Furthermore, PIR-DSN guarantees Byzantine-robust private retrieval through file replication across multiple miners. We implement and rigorously evaluate PIR-DSN against three prominent industrial DSN systems. Experimental results demonstrate that PIR-DSN achieves comparable overhead for file upload and deletion. While PIR inherently introduces an additional computational cost leading to higher retrieval latency, PIR-DSN maintains comparable throughput. These findings underscore PIR-DSN's practical viability for privacy-sensitive applications within DSN environments.",
+                  "metadata": {
+                    "year": "",
+                    "authors": [
+                      "Jiahao Zhang",
+                      "Minghui Xu",
+                      "Hechuan Guo",
+                      "et al."
+                    ],
+                    "url": "http://arxiv.org/abs/2512.07189v1"
+                  }
+                },
+                {
+                  "doc_id": "2512.23647",
+                  "facet_id": "F1",
+                  "summary": "A relevant paper discussing information retrieval techniques.",
+                  "relevance_level": "medium",
+                  "reason": "The document covers the facet topic at a general level.",
+                  "title": "Nested Browser-Use Learning for Agentic Information Seeking",
+                  "abstract": "Information-seeking (IS) agents have achieved strong performance across a range of wide and deep search tasks, yet their tool use remains largely restricted to API-level snippet retrieval and URL-based page fetching, limiting access to the richer information available through real browsing. While full browser interaction could unlock deeper capabilities, its fine-grained control and verbose page content returns introduce substantial complexity for ReAct-style function-calling agents. To bridge this gap, we propose Nested Browser-Use Learning (NestBrowse), which introduces a minimal and complete browser-action framework that decouples interaction control from page exploration through a nested structure. This design simplifies agentic reasoning while enabling effective deep-web information acquisition. Empirical results on challenging deep IS benchmarks demonstrate that NestBrowse offers clear benefits in practice. Further in-depth analyses underscore its efficiency and flexibility.",
+                  "metadata": {
+                    "year": "",
+                    "authors": [
+                      "Baixuan Li",
+                      "Jialong Wu",
+                      "Wenbiao Yin",
+                      "et al."
+                    ],
+                    "url": "http://arxiv.org/abs/2512.23647v1"
+                  }
+                },
+                {
+                  "doc_id": "2512.07189",
+                  "facet_id": "F2",
+                  "summary": "A relevant paper discussing information retrieval techniques.",
+                  "relevance_level": "medium",
+                  "reason": "The document covers the facet topic at a general level.",
+                  "title": "PIR-DSN: A Decentralized Storage Network Supporting Private Information Retrieval",
+                  "abstract": "Decentralized Storage Networks (DSNs) are emerging as a foundational infrastructure for Web 3.0, offering global peer-to-peer storage. However, a critical vulnerability persists: user privacy during file retrieval remains largely unaddressed, risking the exposure of sensitive information. To overcome this, we introduce PIR-DSN, the first DSN protocol to integrate Private Information Retrieval (PIR) for both single and multi-server settings. Our key innovations include a novel secure mapping method that transforms sparse file identifiers into compact integer indexes, enabling both public verifiability of file operations and efficient private retrieval. Furthermore, PIR-DSN guarantees Byzantine-robust private retrieval through file replication across multiple miners. We implement and rigorously evaluate PIR-DSN against three prominent industrial DSN systems. Experimental results demonstrate that PIR-DSN achieves comparable overhead for file upload and deletion. While PIR inherently introduces an additional computational cost leading to higher retrieval latency, PIR-DSN maintains comparable throughput. These findings underscore PIR-DSN's practical viability for privacy-sensitive applications within DSN environments.",
+                  "metadata": {
+                    "year": "",
+                    "authors": [
+                      "Jiahao Zhang",
+                      "Minghui Xu",
+                      "Hechuan Guo",
+                      "et al."
+                    ],
+                    "url": "http://arxiv.org/abs/2512.07189v1"
+                  }
+                },
+                {
+                  "doc_id": "2512.21039",
+                  "facet_id": "F2",
+                  "summary": "A relevant paper discussing information retrieval techniques.",
+                  "relevance_level": "medium",
+                  "reason": "The document covers the facet topic at a general level.",
+                  "title": "Agentic Multi-Persona Framework for Evidence-Aware Fake News Detection",
+                  "abstract": "The rapid proliferation of online misinformation poses significant risks to public trust, policy, and safety, necessitating reliable automated fake news detection. Existing methods often struggle with multimodal content, domain generalization, and explainability. We propose AMPEND-LS, an agentic multi-persona evidence-grounded framework with LLM-SLM synergy for multimodal fake news detection. AMPEND-LS integrates textual, visual, and contextual signals through a structured reasoning pipeline powered by LLMs, augmented with reverse image search, knowledge graph paths, and persuasion strategy analysis. To improve reliability, we introduce a credibility fusion mechanism combining semantic similarity, domain trustworthiness, and temporal context, and a complementary SLM classifier to mitigate LLM uncertainty and hallucinations. Extensive experiments across three benchmark datasets demonstrate that AMPEND-LS consistently outperformed state-of-the-art baselines in accuracy, F1 score, and robustness. Qualitative case studies further highlight its transparent reasoning and resilience against evolving misinformation. This work advances the development of adaptive, explainable, and evidence-aware systems for safeguarding online information integrity.",
+                  "metadata": {
+                    "year": "",
+                    "authors": [
+                      "Roopa Bukke",
+                      "Soumya Pandey",
+                      "Suraj Kumar",
+                      "et al."
+                    ],
+                    "url": "http://arxiv.org/abs/2512.21039v1"
+                  }
+                }
+              ],
+              "rejected_docs": [],
+              "candidate_docs": [
+                {
+                  "arxiv_id": "2512.07189",
+                  "title": "PIR-DSN: A Decentralized Storage Network Supporting Private Information Retrieval",
+                  "abstract": "Decentralized Storage Networks (DSNs) are emerging as a foundational infrastructure for Web 3.0, offering global peer-to-peer storage. However, a critical vulnerability persists: user privacy during file retrieval remains largely unaddressed, risking the exposure of sensitive information. To overcome this, we introduce PIR-DSN, the first DSN protocol to integrate Private Information Retrieval (PIR) for both single and multi-server settings. Our key innovations include a novel secure mapping method that transforms sparse file identifiers into compact integer indexes, enabling both public verifiability of file operations and efficient private retrieval. Furthermore, PIR-DSN guarantees Byzantine-robust private retrieval through file replication across multiple miners. We implement and rigorously evaluate PIR-DSN against three prominent industrial DSN systems. Experimental results demonstrate that PIR-DSN achieves comparable overhead for file upload and deletion. While PIR inherently introduces an additional computational cost leading to higher retrieval latency, PIR-DSN maintains comparable throughput. These findings underscore PIR-DSN's practical viability for privacy-sensitive applications within DSN environments.",
+                  "arxiv_url": "http://arxiv.org/abs/2512.07189v1",
+                  "authors": [
+                    "Jiahao Zhang",
+                    "Minghui Xu",
+                    "Hechuan Guo",
+                    "et al."
+                  ],
+                  "date": "2025-12-08",
+                  "facet_id": "F1"
+                },
+                {
+                  "arxiv_id": "2512.23647",
+                  "title": "Nested Browser-Use Learning for Agentic Information Seeking",
+                  "abstract": "Information-seeking (IS) agents have achieved strong performance across a range of wide and deep search tasks, yet their tool use remains largely restricted to API-level snippet retrieval and URL-based page fetching, limiting access to the richer information available through real browsing. While full browser interaction could unlock deeper capabilities, its fine-grained control and verbose page content returns introduce substantial complexity for ReAct-style function-calling agents. To bridge this gap, we propose Nested Browser-Use Learning (NestBrowse), which introduces a minimal and complete browser-action framework that decouples interaction control from page exploration through a nested structure. This design simplifies agentic reasoning while enabling effective deep-web information acquisition. Empirical results on challenging deep IS benchmarks demonstrate that NestBrowse offers clear benefits in practice. Further in-depth analyses underscore its efficiency and flexibility.",
+                  "arxiv_url": "http://arxiv.org/abs/2512.23647v1",
+                  "authors": [
+                    "Baixuan Li",
+                    "Jialong Wu",
+                    "Wenbiao Yin",
+                    "et al."
+                  ],
+                  "date": "2025-12-29",
+                  "facet_id": "F1"
+                },
+                {
+                  "arxiv_id": "2512.07189",
+                  "title": "PIR-DSN: A Decentralized Storage Network Supporting Private Information Retrieval",
+                  "abstract": "Decentralized Storage Networks (DSNs) are emerging as a foundational infrastructure for Web 3.0, offering global peer-to-peer storage. However, a critical vulnerability persists: user privacy during file retrieval remains largely unaddressed, risking the exposure of sensitive information. To overcome this, we introduce PIR-DSN, the first DSN protocol to integrate Private Information Retrieval (PIR) for both single and multi-server settings. Our key innovations include a novel secure mapping method that transforms sparse file identifiers into compact integer indexes, enabling both public verifiability of file operations and efficient private retrieval. Furthermore, PIR-DSN guarantees Byzantine-robust private retrieval through file replication across multiple miners. We implement and rigorously evaluate PIR-DSN against three prominent industrial DSN systems. Experimental results demonstrate that PIR-DSN achieves comparable overhead for file upload and deletion. While PIR inherently introduces an additional computational cost leading to higher retrieval latency, PIR-DSN maintains comparable throughput. These findings underscore PIR-DSN's practical viability for privacy-sensitive applications within DSN environments.",
+                  "arxiv_url": "http://arxiv.org/abs/2512.07189v1",
+                  "authors": [
+                    "Jiahao Zhang",
+                    "Minghui Xu",
+                    "Hechuan Guo",
+                    "et al."
+                  ],
+                  "date": "2025-12-08",
+                  "facet_id": "F2"
+                },
+                {
+                  "arxiv_id": "2512.21039",
+                  "title": "Agentic Multi-Persona Framework for Evidence-Aware Fake News Detection",
+                  "abstract": "The rapid proliferation of online misinformation poses significant risks to public trust, policy, and safety, necessitating reliable automated fake news detection. Existing methods often struggle with multimodal content, domain generalization, and explainability. We propose AMPEND-LS, an agentic multi-persona evidence-grounded framework with LLM-SLM synergy for multimodal fake news detection. AMPEND-LS integrates textual, visual, and contextual signals through a structured reasoning pipeline powered by LLMs, augmented with reverse image search, knowledge graph paths, and persuasion strategy analysis. To improve reliability, we introduce a credibility fusion mechanism combining semantic similarity, domain trustworthiness, and temporal context, and a complementary SLM classifier to mitigate LLM uncertainty and hallucinations. Extensive experiments across three benchmark datasets demonstrate that AMPEND-LS consistently outperformed state-of-the-art baselines in accuracy, F1 score, and robustness. Qualitative case studies further highlight its transparent reasoning and resilience against evolving misinformation. This work advances the development of adaptive, explainable, and evidence-aware systems for safeguarding online information integrity.",
+                  "arxiv_url": "http://arxiv.org/abs/2512.21039v1",
+                  "authors": [
+                    "Roopa Bukke",
+                    "Soumya Pandey",
+                    "Suraj Kumar",
+                    "et al."
+                  ],
+                  "date": "2025-12-24",
+                  "facet_id": "F2"
+                }
+              ],
+              "search_iteration": 0,
+              "satisfied_facets": [],
+              "seen_doc_ids": [
+                "2512.07189",
+                "2512.21039",
+                "2512.23647"
+              ],
+              "start_time": 1775626749.9799144,
+              "intent": {
+                "cognitive_state": {
+                  "cognitive_mode": "exploratory",
+                  "logical_dependency": "independent_parallel"
+                },
+                "agent_plan": {
+                  "facets": [
+                    {
+                      "facet_id": "F1",
+                      "description": "Overview and background of the topic",
+                      "dependency": null,
+                      "rubric": {
+                        "tolerance_level": "high",
+                        "quality_preference": [
+                          "survey papers",
+                          "review articles"
+                        ],
+                        "content_requirements": [
+                          "provides general overview"
+                        ]
+                      }
+                    },
+                    {
+                      "facet_id": "F2",
+                      "description": "Key methods and techniques",
+                      "dependency": null,
+                      "rubric": {
+                        "tolerance_level": "medium",
+                        "quality_preference": [
+                          "research papers",
+                          "technical reports"
+                        ],
+                        "content_requirements": [
+                          "describes specific methods or algorithms"
+                        ]
+                      }
+                    }
+                  ],
+                  "criteria": {
+                    "metric_type": "coverage",
+                    "threshold_description": "All facets have at least one high or medium relevance document",
+                    "specific_conditions": [
+                      "F1 has at least one overview document",
+                      "F2 has at least one method-focused document"
+                    ]
+                  }
+                },
+                "expansions": [
+                  {
+                    "facet_id": "F1",
+                    "facet_query": "overview and introduction to the topic for F1",
+                    "sparse_keywords": [
+                      "information retrieval",
+                      "RAG",
+                      "agentic search"
+                    ],
+                    "hypothetical_document": "This paper provides a comprehensive survey of retrieval-augmented generation methods, covering key architectures, datasets, and benchmarks in the field."
+                  },
+                  {
+                    "facet_id": "F2",
+                    "facet_query": "overview and introduction to the topic for F2",
+                    "sparse_keywords": [
+                      "information retrieval",
+                      "RAG",
+                      "agentic search"
+                    ],
+                    "hypothetical_document": "This paper provides a comprehensive survey of retrieval-augmented generation methods, covering key architectures, datasets, and benchmarks in the field."
+                  }
+                ],
+                "constraints": {
+                  "structured_metadata": [],
+                  "unstructured_content_patterns": []
+                }
+              }
+            },
+            "logs": [
+              {
+                "level": "INFO",
+                "message": "共 2 个 Facet，4 篇候选文档",
+                "timestamp": 1775626749.9987602,
+                "details": null
+              },
+              {
+                "level": "INFO",
+                "message": "研判完成: 采纳 4 篇，拒绝 0 篇",
+                "timestamp": 1775626749.9992585,
+                "details": null
+              }
+            ],
+            "error": null
+          },
+          {
+            "stage": "analyze",
+            "iteration": 0,
+            "started_at": "2026-04-08T05:39:10.000258+00:00",
+            "ended_at": "2026-04-08T05:39:10.000258+00:00",
+            "duration_ms": 0.1841999910539016,
+            "input_snapshot": {
+              "user_query": "哪些论文使用了耦合自编码器进行多模态细胞类型分析？",
+              "verified_evidence": [
+                {
+                  "doc_id": "2512.07189",
+                  "facet_id": "F1",
+                  "summary": "A relevant paper discussing information retrieval techniques.",
+                  "relevance_level": "medium",
+                  "reason": "The document covers the facet topic at a general level.",
+                  "title": "PIR-DSN: A Decentralized Storage Network Supporting Private Information Retrieval",
+                  "abstract": "Decentralized Storage Networks (DSNs) are emerging as a foundational infrastructure for Web 3.0, offering global peer-to-peer storage. However, a critical vulnerability persists: user privacy during file retrieval remains largely unaddressed, risking the exposure of sensitive information. To overcome this, we introduce PIR-DSN, the first DSN protocol to integrate Private Information Retrieval (PIR) for both single and multi-server settings. Our key innovations include a novel secure mapping method that transforms sparse file identifiers into compact integer indexes, enabling both public verifiability of file operations and efficient private retrieval. Furthermore, PIR-DSN guarantees Byzantine-robust private retrieval through file replication across multiple miners. We implement and rigorously evaluate PIR-DSN against three prominent industrial DSN systems. Experimental results demonstrate that PIR-DSN achieves comparable overhead for file upload and deletion. While PIR inherently introduces an additional computational cost leading to higher retrieval latency, PIR-DSN maintains comparable throughput. These findings underscore PIR-DSN's practical viability for privacy-sensitive applications within DSN environments.",
+                  "metadata": {
+                    "year": "",
+                    "authors": [
+                      "Jiahao Zhang",
+                      "Minghui Xu",
+                      "Hechuan Guo",
+                      "et al."
+                    ],
+                    "url": "http://arxiv.org/abs/2512.07189v1"
+                  }
+                },
+                {
+                  "doc_id": "2512.23647",
+                  "facet_id": "F1",
+                  "summary": "A relevant paper discussing information retrieval techniques.",
+                  "relevance_level": "medium",
+                  "reason": "The document covers the facet topic at a general level.",
+                  "title": "Nested Browser-Use Learning for Agentic Information Seeking",
+                  "abstract": "Information-seeking (IS) agents have achieved strong performance across a range of wide and deep search tasks, yet their tool use remains largely restricted to API-level snippet retrieval and URL-based page fetching, limiting access to the richer information available through real browsing. While full browser interaction could unlock deeper capabilities, its fine-grained control and verbose page content returns introduce substantial complexity for ReAct-style function-calling agents. To bridge this gap, we propose Nested Browser-Use Learning (NestBrowse), which introduces a minimal and complete browser-action framework that decouples interaction control from page exploration through a nested structure. This design simplifies agentic reasoning while enabling effective deep-web information acquisition. Empirical results on challenging deep IS benchmarks demonstrate that NestBrowse offers clear benefits in practice. Further in-depth analyses underscore its efficiency and flexibility.",
+                  "metadata": {
+                    "year": "",
+                    "authors": [
+                      "Baixuan Li",
+                      "Jialong Wu",
+                      "Wenbiao Yin",
+                      "et al."
+                    ],
+                    "url": "http://arxiv.org/abs/2512.23647v1"
+                  }
+                },
+                {
+                  "doc_id": "2512.07189",
+                  "facet_id": "F2",
+                  "summary": "A relevant paper discussing information retrieval techniques.",
+                  "relevance_level": "medium",
+                  "reason": "The document covers the facet topic at a general level.",
+                  "title": "PIR-DSN: A Decentralized Storage Network Supporting Private Information Retrieval",
+                  "abstract": "Decentralized Storage Networks (DSNs) are emerging as a foundational infrastructure for Web 3.0, offering global peer-to-peer storage. However, a critical vulnerability persists: user privacy during file retrieval remains largely unaddressed, risking the exposure of sensitive information. To overcome this, we introduce PIR-DSN, the first DSN protocol to integrate Private Information Retrieval (PIR) for both single and multi-server settings. Our key innovations include a novel secure mapping method that transforms sparse file identifiers into compact integer indexes, enabling both public verifiability of file operations and efficient private retrieval. Furthermore, PIR-DSN guarantees Byzantine-robust private retrieval through file replication across multiple miners. We implement and rigorously evaluate PIR-DSN against three prominent industrial DSN systems. Experimental results demonstrate that PIR-DSN achieves comparable overhead for file upload and deletion. While PIR inherently introduces an additional computational cost leading to higher retrieval latency, PIR-DSN maintains comparable throughput. These findings underscore PIR-DSN's practical viability for privacy-sensitive applications within DSN environments.",
+                  "metadata": {
+                    "year": "",
+                    "authors": [
+                      "Jiahao Zhang",
+                      "Minghui Xu",
+                      "Hechuan Guo",
+                      "et al."
+                    ],
+                    "url": "http://arxiv.org/abs/2512.07189v1"
+                  }
+                },
+                {
+                  "doc_id": "2512.21039",
+                  "facet_id": "F2",
+                  "summary": "A relevant paper discussing information retrieval techniques.",
+                  "relevance_level": "medium",
+                  "reason": "The document covers the facet topic at a general level.",
+                  "title": "Agentic Multi-Persona Framework for Evidence-Aware Fake News Detection",
+                  "abstract": "The rapid proliferation of online misinformation poses significant risks to public trust, policy, and safety, necessitating reliable automated fake news detection. Existing methods often struggle with multimodal content, domain generalization, and explainability. We propose AMPEND-LS, an agentic multi-persona evidence-grounded framework with LLM-SLM synergy for multimodal fake news detection. AMPEND-LS integrates textual, visual, and contextual signals through a structured reasoning pipeline powered by LLMs, augmented with reverse image search, knowledge graph paths, and persuasion strategy analysis. To improve reliability, we introduce a credibility fusion mechanism combining semantic similarity, domain trustworthiness, and temporal context, and a complementary SLM classifier to mitigate LLM uncertainty and hallucinations. Extensive experiments across three benchmark datasets demonstrate that AMPEND-LS consistently outperformed state-of-the-art baselines in accuracy, F1 score, and robustness. Qualitative case studies further highlight its transparent reasoning and resilience against evolving misinformation. This work advances the development of adaptive, explainable, and evidence-aware systems for safeguarding online information integrity.",
+                  "metadata": {
+                    "year": "",
+                    "authors": [
+                      "Roopa Bukke",
+                      "Soumya Pandey",
+                      "Suraj Kumar",
+                      "et al."
+                    ],
+                    "url": "http://arxiv.org/abs/2512.21039v1"
+                  }
+                }
+              ],
+              "rejected_docs": [],
+              "candidate_docs": [
+                {
+                  "arxiv_id": "2512.07189",
+                  "title": "PIR-DSN: A Decentralized Storage Network Supporting Private Information Retrieval",
+                  "abstract": "Decentralized Storage Networks (DSNs) are emerging as a foundational infrastructure for Web 3.0, offering global peer-to-peer storage. However, a critical vulnerability persists: user privacy during file retrieval remains largely unaddressed, risking the exposure of sensitive information. To overcome this, we introduce PIR-DSN, the first DSN protocol to integrate Private Information Retrieval (PIR) for both single and multi-server settings. Our key innovations include a novel secure mapping method that transforms sparse file identifiers into compact integer indexes, enabling both public verifiability of file operations and efficient private retrieval. Furthermore, PIR-DSN guarantees Byzantine-robust private retrieval through file replication across multiple miners. We implement and rigorously evaluate PIR-DSN against three prominent industrial DSN systems. Experimental results demonstrate that PIR-DSN achieves comparable overhead for file upload and deletion. While PIR inherently introduces an additional computational cost leading to higher retrieval latency, PIR-DSN maintains comparable throughput. These findings underscore PIR-DSN's practical viability for privacy-sensitive applications within DSN environments.",
+                  "arxiv_url": "http://arxiv.org/abs/2512.07189v1",
+                  "authors": [
+                    "Jiahao Zhang",
+                    "Minghui Xu",
+                    "Hechuan Guo",
+                    "et al."
+                  ],
+                  "date": "2025-12-08",
+                  "facet_id": "F1"
+                },
+                {
+                  "arxiv_id": "2512.23647",
+                  "title": "Nested Browser-Use Learning for Agentic Information Seeking",
+                  "abstract": "Information-seeking (IS) agents have achieved strong performance across a range of wide and deep search tasks, yet their tool use remains largely restricted to API-level snippet retrieval and URL-based page fetching, limiting access to the richer information available through real browsing. While full browser interaction could unlock deeper capabilities, its fine-grained control and verbose page content returns introduce substantial complexity for ReAct-style function-calling agents. To bridge this gap, we propose Nested Browser-Use Learning (NestBrowse), which introduces a minimal and complete browser-action framework that decouples interaction control from page exploration through a nested structure. This design simplifies agentic reasoning while enabling effective deep-web information acquisition. Empirical results on challenging deep IS benchmarks demonstrate that NestBrowse offers clear benefits in practice. Further in-depth analyses underscore its efficiency and flexibility.",
+                  "arxiv_url": "http://arxiv.org/abs/2512.23647v1",
+                  "authors": [
+                    "Baixuan Li",
+                    "Jialong Wu",
+                    "Wenbiao Yin",
+                    "et al."
+                  ],
+                  "date": "2025-12-29",
+                  "facet_id": "F1"
+                },
+                {
+                  "arxiv_id": "2512.07189",
+                  "title": "PIR-DSN: A Decentralized Storage Network Supporting Private Information Retrieval",
+                  "abstract": "Decentralized Storage Networks (DSNs) are emerging as a foundational infrastructure for Web 3.0, offering global peer-to-peer storage. However, a critical vulnerability persists: user privacy during file retrieval remains largely unaddressed, risking the exposure of sensitive information. To overcome this, we introduce PIR-DSN, the first DSN protocol to integrate Private Information Retrieval (PIR) for both single and multi-server settings. Our key innovations include a novel secure mapping method that transforms sparse file identifiers into compact integer indexes, enabling both public verifiability of file operations and efficient private retrieval. Furthermore, PIR-DSN guarantees Byzantine-robust private retrieval through file replication across multiple miners. We implement and rigorously evaluate PIR-DSN against three prominent industrial DSN systems. Experimental results demonstrate that PIR-DSN achieves comparable overhead for file upload and deletion. While PIR inherently introduces an additional computational cost leading to higher retrieval latency, PIR-DSN maintains comparable throughput. These findings underscore PIR-DSN's practical viability for privacy-sensitive applications within DSN environments.",
+                  "arxiv_url": "http://arxiv.org/abs/2512.07189v1",
+                  "authors": [
+                    "Jiahao Zhang",
+                    "Minghui Xu",
+                    "Hechuan Guo",
+                    "et al."
+                  ],
+                  "date": "2025-12-08",
+                  "facet_id": "F2"
+                },
+                {
+                  "arxiv_id": "2512.21039",
+                  "title": "Agentic Multi-Persona Framework for Evidence-Aware Fake News Detection",
+                  "abstract": "The rapid proliferation of online misinformation poses significant risks to public trust, policy, and safety, necessitating reliable automated fake news detection. Existing methods often struggle with multimodal content, domain generalization, and explainability. We propose AMPEND-LS, an agentic multi-persona evidence-grounded framework with LLM-SLM synergy for multimodal fake news detection. AMPEND-LS integrates textual, visual, and contextual signals through a structured reasoning pipeline powered by LLMs, augmented with reverse image search, knowledge graph paths, and persuasion strategy analysis. To improve reliability, we introduce a credibility fusion mechanism combining semantic similarity, domain trustworthiness, and temporal context, and a complementary SLM classifier to mitigate LLM uncertainty and hallucinations. Extensive experiments across three benchmark datasets demonstrate that AMPEND-LS consistently outperformed state-of-the-art baselines in accuracy, F1 score, and robustness. Qualitative case studies further highlight its transparent reasoning and resilience against evolving misinformation. This work advances the development of adaptive, explainable, and evidence-aware systems for safeguarding online information integrity.",
+                  "arxiv_url": "http://arxiv.org/abs/2512.21039v1",
+                  "authors": [
+                    "Roopa Bukke",
+                    "Soumya Pandey",
+                    "Suraj Kumar",
+                    "et al."
+                  ],
+                  "date": "2025-12-24",
+                  "facet_id": "F2"
+                }
+              ],
+              "search_iteration": 0,
+              "satisfied_facets": [],
+              "seen_doc_ids": [
+                "2512.07189",
+                "2512.21039",
+                "2512.23647"
+              ],
+              "start_time": 1775626749.9799144,
+              "intent": {
+                "cognitive_state": {
+                  "cognitive_mode": "exploratory",
+                  "logical_dependency": "independent_parallel"
+                },
+                "agent_plan": {
+                  "facets": [
+                    {
+                      "facet_id": "F1",
+                      "description": "Overview and background of the topic",
+                      "dependency": null,
+                      "rubric": {
+                        "tolerance_level": "high",
+                        "quality_preference": [
+                          "survey papers",
+                          "review articles"
+                        ],
+                        "content_requirements": [
+                          "provides general overview"
+                        ]
+                      }
+                    },
+                    {
+                      "facet_id": "F2",
+                      "description": "Key methods and techniques",
+                      "dependency": null,
+                      "rubric": {
+                        "tolerance_level": "medium",
+                        "quality_preference": [
+                          "research papers",
+                          "technical reports"
+                        ],
+                        "content_requirements": [
+                          "describes specific methods or algorithms"
+                        ]
+                      }
+                    }
+                  ],
+                  "criteria": {
+                    "metric_type": "coverage",
+                    "threshold_description": "All facets have at least one high or medium relevance document",
+                    "specific_conditions": [
+                      "F1 has at least one overview document",
+                      "F2 has at least one method-focused document"
+                    ]
+                  }
+                },
+                "expansions": [
+                  {
+                    "facet_id": "F1",
+                    "facet_query": "overview and introduction to the topic for F1",
+                    "sparse_keywords": [
+                      "information retrieval",
+                      "RAG",
+                      "agentic search"
+                    ],
+                    "hypothetical_document": "This paper provides a comprehensive survey of retrieval-augmented generation methods, covering key architectures, datasets, and benchmarks in the field."
+                  },
+                  {
+                    "facet_id": "F2",
+                    "facet_query": "overview and introduction to the topic for F2",
+                    "sparse_keywords": [
+                      "information retrieval",
+                      "RAG",
+                      "agentic search"
+                    ],
+                    "hypothetical_document": "This paper provides a comprehensive survey of retrieval-augmented generation methods, covering key architectures, datasets, and benchmarks in the field."
+                  }
+                ],
+                "constraints": {
+                  "structured_metadata": [],
+                  "unstructured_content_patterns": []
+                }
+              }
+            },
+            "output_snapshot": {
+              "gap_analysis_result": "sufficient",
+              "search_iteration": 1,
+              "satisfied_facets": [
+                "F1",
+                "F2"
+              ],
+              "gap_analysis_details": {
+                "coverage_score": 1.0,
+                "missing_info": [],
+                "suggested_queries": [],
+                "raw_analysis": {
+                  "overall_sufficient": true,
+                  "newly_satisfied_facets": [
+                    "F1",
+                    "F2"
+                  ],
+                  "remaining_facets": [],
+                  "suggested_queries": []
+                }
+              }
+            },
+            "state_after": {
+              "user_query": "哪些论文使用了耦合自编码器进行多模态细胞类型分析？",
+              "verified_evidence": [
+                {
+                  "doc_id": "2512.07189",
+                  "facet_id": "F1",
+                  "summary": "A relevant paper discussing information retrieval techniques.",
+                  "relevance_level": "medium",
+                  "reason": "The document covers the facet topic at a general level.",
+                  "title": "PIR-DSN: A Decentralized Storage Network Supporting Private Information Retrieval",
+                  "abstract": "Decentralized Storage Networks (DSNs) are emerging as a foundational infrastructure for Web 3.0, offering global peer-to-peer storage. However, a critical vulnerability persists: user privacy during file retrieval remains largely unaddressed, risking the exposure of sensitive information. To overcome this, we introduce PIR-DSN, the first DSN protocol to integrate Private Information Retrieval (PIR) for both single and multi-server settings. Our key innovations include a novel secure mapping method that transforms sparse file identifiers into compact integer indexes, enabling both public verifiability of file operations and efficient private retrieval. Furthermore, PIR-DSN guarantees Byzantine-robust private retrieval through file replication across multiple miners. We implement and rigorously evaluate PIR-DSN against three prominent industrial DSN systems. Experimental results demonstrate that PIR-DSN achieves comparable overhead for file upload and deletion. While PIR inherently introduces an additional computational cost leading to higher retrieval latency, PIR-DSN maintains comparable throughput. These findings underscore PIR-DSN's practical viability for privacy-sensitive applications within DSN environments.",
+                  "metadata": {
+                    "year": "",
+                    "authors": [
+                      "Jiahao Zhang",
+                      "Minghui Xu",
+                      "Hechuan Guo",
+                      "et al."
+                    ],
+                    "url": "http://arxiv.org/abs/2512.07189v1"
+                  }
+                },
+                {
+                  "doc_id": "2512.23647",
+                  "facet_id": "F1",
+                  "summary": "A relevant paper discussing information retrieval techniques.",
+                  "relevance_level": "medium",
+                  "reason": "The document covers the facet topic at a general level.",
+                  "title": "Nested Browser-Use Learning for Agentic Information Seeking",
+                  "abstract": "Information-seeking (IS) agents have achieved strong performance across a range of wide and deep search tasks, yet their tool use remains largely restricted to API-level snippet retrieval and URL-based page fetching, limiting access to the richer information available through real browsing. While full browser interaction could unlock deeper capabilities, its fine-grained control and verbose page content returns introduce substantial complexity for ReAct-style function-calling agents. To bridge this gap, we propose Nested Browser-Use Learning (NestBrowse), which introduces a minimal and complete browser-action framework that decouples interaction control from page exploration through a nested structure. This design simplifies agentic reasoning while enabling effective deep-web information acquisition. Empirical results on challenging deep IS benchmarks demonstrate that NestBrowse offers clear benefits in practice. Further in-depth analyses underscore its efficiency and flexibility.",
+                  "metadata": {
+                    "year": "",
+                    "authors": [
+                      "Baixuan Li",
+                      "Jialong Wu",
+                      "Wenbiao Yin",
+                      "et al."
+                    ],
+                    "url": "http://arxiv.org/abs/2512.23647v1"
+                  }
+                },
+                {
+                  "doc_id": "2512.07189",
+                  "facet_id": "F2",
+                  "summary": "A relevant paper discussing information retrieval techniques.",
+                  "relevance_level": "medium",
+                  "reason": "The document covers the facet topic at a general level.",
+                  "title": "PIR-DSN: A Decentralized Storage Network Supporting Private Information Retrieval",
+                  "abstract": "Decentralized Storage Networks (DSNs) are emerging as a foundational infrastructure for Web 3.0, offering global peer-to-peer storage. However, a critical vulnerability persists: user privacy during file retrieval remains largely unaddressed, risking the exposure of sensitive information. To overcome this, we introduce PIR-DSN, the first DSN protocol to integrate Private Information Retrieval (PIR) for both single and multi-server settings. Our key innovations include a novel secure mapping method that transforms sparse file identifiers into compact integer indexes, enabling both public verifiability of file operations and efficient private retrieval. Furthermore, PIR-DSN guarantees Byzantine-robust private retrieval through file replication across multiple miners. We implement and rigorously evaluate PIR-DSN against three prominent industrial DSN systems. Experimental results demonstrate that PIR-DSN achieves comparable overhead for file upload and deletion. While PIR inherently introduces an additional computational cost leading to higher retrieval latency, PIR-DSN maintains comparable throughput. These findings underscore PIR-DSN's practical viability for privacy-sensitive applications within DSN environments.",
+                  "metadata": {
+                    "year": "",
+                    "authors": [
+                      "Jiahao Zhang",
+                      "Minghui Xu",
+                      "Hechuan Guo",
+                      "et al."
+                    ],
+                    "url": "http://arxiv.org/abs/2512.07189v1"
+                  }
+                },
+                {
+                  "doc_id": "2512.21039",
+                  "facet_id": "F2",
+                  "summary": "A relevant paper discussing information retrieval techniques.",
+                  "relevance_level": "medium",
+                  "reason": "The document covers the facet topic at a general level.",
+                  "title": "Agentic Multi-Persona Framework for Evidence-Aware Fake News Detection",
+                  "abstract": "The rapid proliferation of online misinformation poses significant risks to public trust, policy, and safety, necessitating reliable automated fake news detection. Existing methods often struggle with multimodal content, domain generalization, and explainability. We propose AMPEND-LS, an agentic multi-persona evidence-grounded framework with LLM-SLM synergy for multimodal fake news detection. AMPEND-LS integrates textual, visual, and contextual signals through a structured reasoning pipeline powered by LLMs, augmented with reverse image search, knowledge graph paths, and persuasion strategy analysis. To improve reliability, we introduce a credibility fusion mechanism combining semantic similarity, domain trustworthiness, and temporal context, and a complementary SLM classifier to mitigate LLM uncertainty and hallucinations. Extensive experiments across three benchmark datasets demonstrate that AMPEND-LS consistently outperformed state-of-the-art baselines in accuracy, F1 score, and robustness. Qualitative case studies further highlight its transparent reasoning and resilience against evolving misinformation. This work advances the development of adaptive, explainable, and evidence-aware systems for safeguarding online information integrity.",
+                  "metadata": {
+                    "year": "",
+                    "authors": [
+                      "Roopa Bukke",
+                      "Soumya Pandey",
+                      "Suraj Kumar",
+                      "et al."
+                    ],
+                    "url": "http://arxiv.org/abs/2512.21039v1"
+                  }
+                }
+              ],
+              "rejected_docs": [],
+              "candidate_docs": [
+                {
+                  "arxiv_id": "2512.07189",
+                  "title": "PIR-DSN: A Decentralized Storage Network Supporting Private Information Retrieval",
+                  "abstract": "Decentralized Storage Networks (DSNs) are emerging as a foundational infrastructure for Web 3.0, offering global peer-to-peer storage. However, a critical vulnerability persists: user privacy during file retrieval remains largely unaddressed, risking the exposure of sensitive information. To overcome this, we introduce PIR-DSN, the first DSN protocol to integrate Private Information Retrieval (PIR) for both single and multi-server settings. Our key innovations include a novel secure mapping method that transforms sparse file identifiers into compact integer indexes, enabling both public verifiability of file operations and efficient private retrieval. Furthermore, PIR-DSN guarantees Byzantine-robust private retrieval through file replication across multiple miners. We implement and rigorously evaluate PIR-DSN against three prominent industrial DSN systems. Experimental results demonstrate that PIR-DSN achieves comparable overhead for file upload and deletion. While PIR inherently introduces an additional computational cost leading to higher retrieval latency, PIR-DSN maintains comparable throughput. These findings underscore PIR-DSN's practical viability for privacy-sensitive applications within DSN environments.",
+                  "arxiv_url": "http://arxiv.org/abs/2512.07189v1",
+                  "authors": [
+                    "Jiahao Zhang",
+                    "Minghui Xu",
+                    "Hechuan Guo",
+                    "et al."
+                  ],
+                  "date": "2025-12-08",
+                  "facet_id": "F1"
+                },
+                {
+                  "arxiv_id": "2512.23647",
+                  "title": "Nested Browser-Use Learning for Agentic Information Seeking",
+                  "abstract": "Information-seeking (IS) agents have achieved strong performance across a range of wide and deep search tasks, yet their tool use remains largely restricted to API-level snippet retrieval and URL-based page fetching, limiting access to the richer information available through real browsing. While full browser interaction could unlock deeper capabilities, its fine-grained control and verbose page content returns introduce substantial complexity for ReAct-style function-calling agents. To bridge this gap, we propose Nested Browser-Use Learning (NestBrowse), which introduces a minimal and complete browser-action framework that decouples interaction control from page exploration through a nested structure. This design simplifies agentic reasoning while enabling effective deep-web information acquisition. Empirical results on challenging deep IS benchmarks demonstrate that NestBrowse offers clear benefits in practice. Further in-depth analyses underscore its efficiency and flexibility.",
+                  "arxiv_url": "http://arxiv.org/abs/2512.23647v1",
+                  "authors": [
+                    "Baixuan Li",
+                    "Jialong Wu",
+                    "Wenbiao Yin",
+                    "et al."
+                  ],
+                  "date": "2025-12-29",
+                  "facet_id": "F1"
+                },
+                {
+                  "arxiv_id": "2512.07189",
+                  "title": "PIR-DSN: A Decentralized Storage Network Supporting Private Information Retrieval",
+                  "abstract": "Decentralized Storage Networks (DSNs) are emerging as a foundational infrastructure for Web 3.0, offering global peer-to-peer storage. However, a critical vulnerability persists: user privacy during file retrieval remains largely unaddressed, risking the exposure of sensitive information. To overcome this, we introduce PIR-DSN, the first DSN protocol to integrate Private Information Retrieval (PIR) for both single and multi-server settings. Our key innovations include a novel secure mapping method that transforms sparse file identifiers into compact integer indexes, enabling both public verifiability of file operations and efficient private retrieval. Furthermore, PIR-DSN guarantees Byzantine-robust private retrieval through file replication across multiple miners. We implement and rigorously evaluate PIR-DSN against three prominent industrial DSN systems. Experimental results demonstrate that PIR-DSN achieves comparable overhead for file upload and deletion. While PIR inherently introduces an additional computational cost leading to higher retrieval latency, PIR-DSN maintains comparable throughput. These findings underscore PIR-DSN's practical viability for privacy-sensitive applications within DSN environments.",
+                  "arxiv_url": "http://arxiv.org/abs/2512.07189v1",
+                  "authors": [
+                    "Jiahao Zhang",
+                    "Minghui Xu",
+                    "Hechuan Guo",
+                    "et al."
+                  ],
+                  "date": "2025-12-08",
+                  "facet_id": "F2"
+                },
+                {
+                  "arxiv_id": "2512.21039",
+                  "title": "Agentic Multi-Persona Framework for Evidence-Aware Fake News Detection",
+                  "abstract": "The rapid proliferation of online misinformation poses significant risks to public trust, policy, and safety, necessitating reliable automated fake news detection. Existing methods often struggle with multimodal content, domain generalization, and explainability. We propose AMPEND-LS, an agentic multi-persona evidence-grounded framework with LLM-SLM synergy for multimodal fake news detection. AMPEND-LS integrates textual, visual, and contextual signals through a structured reasoning pipeline powered by LLMs, augmented with reverse image search, knowledge graph paths, and persuasion strategy analysis. To improve reliability, we introduce a credibility fusion mechanism combining semantic similarity, domain trustworthiness, and temporal context, and a complementary SLM classifier to mitigate LLM uncertainty and hallucinations. Extensive experiments across three benchmark datasets demonstrate that AMPEND-LS consistently outperformed state-of-the-art baselines in accuracy, F1 score, and robustness. Qualitative case studies further highlight its transparent reasoning and resilience against evolving misinformation. This work advances the development of adaptive, explainable, and evidence-aware systems for safeguarding online information integrity.",
+                  "arxiv_url": "http://arxiv.org/abs/2512.21039v1",
+                  "authors": [
+                    "Roopa Bukke",
+                    "Soumya Pandey",
+                    "Suraj Kumar",
+                    "et al."
+                  ],
+                  "date": "2025-12-24",
+                  "facet_id": "F2"
+                }
+              ],
+              "search_iteration": 1,
+              "satisfied_facets": [
+                "F1",
+                "F2"
+              ],
+              "seen_doc_ids": [
+                "2512.07189",
+                "2512.21039",
+                "2512.23647"
+              ],
+              "start_time": 1775626749.9799144,
+              "intent": {
+                "cognitive_state": {
+                  "cognitive_mode": "exploratory",
+                  "logical_dependency": "independent_parallel"
+                },
+                "agent_plan": {
+                  "facets": [
+                    {
+                      "facet_id": "F1",
+                      "description": "Overview and background of the topic",
+                      "dependency": null,
+                      "rubric": {
+                        "tolerance_level": "high",
+                        "quality_preference": [
+                          "survey papers",
+                          "review articles"
+                        ],
+                        "content_requirements": [
+                          "provides general overview"
+                        ]
+                      }
+                    },
+                    {
+                      "facet_id": "F2",
+                      "description": "Key methods and techniques",
+                      "dependency": null,
+                      "rubric": {
+                        "tolerance_level": "medium",
+                        "quality_preference": [
+                          "research papers",
+                          "technical reports"
+                        ],
+                        "content_requirements": [
+                          "describes specific methods or algorithms"
+                        ]
+                      }
+                    }
+                  ],
+                  "criteria": {
+                    "metric_type": "coverage",
+                    "threshold_description": "All facets have at least one high or medium relevance document",
+                    "specific_conditions": [
+                      "F1 has at least one overview document",
+                      "F2 has at least one method-focused document"
+                    ]
+                  }
+                },
+                "expansions": [
+                  {
+                    "facet_id": "F1",
+                    "facet_query": "overview and introduction to the topic for F1",
+                    "sparse_keywords": [
+                      "information retrieval",
+                      "RAG",
+                      "agentic search"
+                    ],
+                    "hypothetical_document": "This paper provides a comprehensive survey of retrieval-augmented generation methods, covering key architectures, datasets, and benchmarks in the field."
+                  },
+                  {
+                    "facet_id": "F2",
+                    "facet_query": "overview and introduction to the topic for F2",
+                    "sparse_keywords": [
+                      "information retrieval",
+                      "RAG",
+                      "agentic search"
+                    ],
+                    "hypothetical_document": "This paper provides a comprehensive survey of retrieval-augmented generation methods, covering key architectures, datasets, and benchmarks in the field."
+                  }
+                ],
+                "constraints": {
+                  "structured_metadata": [],
+                  "unstructured_content_patterns": []
+                }
+              },
+              "gap_analysis_result": "sufficient",
+              "gap_analysis_details": {
+                "coverage_score": 1.0,
+                "missing_info": [],
+                "suggested_queries": [],
+                "raw_analysis": {
+                  "overall_sufficient": true,
+                  "newly_satisfied_facets": [
+                    "F1",
+                    "F2"
+                  ],
+                  "remaining_facets": [],
+                  "suggested_queries": []
+                }
+              }
+            },
+            "logs": [
+              {
+                "level": "INFO",
+                "message": "迭代 1/1，已满足 Facet: []",
+                "timestamp": 1775626749.9997947,
+                "details": null
+              },
+              {
+                "level": "INFO",
+                "message": "待评估 Facet: ['F1', 'F2']",
+                "timestamp": 1775626749.9997947,
+                "details": null
+              },
+              {
+                "level": "INFO",
+                "message": "调用 LLM 进行 Per-Facet 充分性评估...",
+                "timestamp": 1775626749.9997947,
+                "details": null
+              },
+              {
+                "level": "INFO",
+                "message": "[OK] Facet F1: Sufficient evidence collected for this facet.",
+                "timestamp": 1775626749.9997947,
+                "details": null
+              },
+              {
+                "level": "INFO",
+                "message": "[OK] Facet F2: Sufficient evidence collected for this facet.",
+                "timestamp": 1775626749.9997947,
+                "details": null
+              },
+              {
+                "level": "INFO",
+                "message": "所有 Facet 充足，进入报告生成",
+                "timestamp": 1775626749.9997947,
+                "details": null
+              }
+            ],
+            "error": null
+          },
+          {
+            "stage": "report",
+            "iteration": 0,
+            "started_at": "2026-04-08T05:39:10.000760+00:00",
+            "ended_at": "2026-04-08T05:39:10.000760+00:00",
+            "duration_ms": 0.08930001058615744,
+            "input_snapshot": {
+              "user_query": "哪些论文使用了耦合自编码器进行多模态细胞类型分析？",
+              "verified_evidence": [
+                {
+                  "doc_id": "2512.07189",
+                  "facet_id": "F1",
+                  "summary": "A relevant paper discussing information retrieval techniques.",
+                  "relevance_level": "medium",
+                  "reason": "The document covers the facet topic at a general level.",
+                  "title": "PIR-DSN: A Decentralized Storage Network Supporting Private Information Retrieval",
+                  "abstract": "Decentralized Storage Networks (DSNs) are emerging as a foundational infrastructure for Web 3.0, offering global peer-to-peer storage. However, a critical vulnerability persists: user privacy during file retrieval remains largely unaddressed, risking the exposure of sensitive information. To overcome this, we introduce PIR-DSN, the first DSN protocol to integrate Private Information Retrieval (PIR) for both single and multi-server settings. Our key innovations include a novel secure mapping method that transforms sparse file identifiers into compact integer indexes, enabling both public verifiability of file operations and efficient private retrieval. Furthermore, PIR-DSN guarantees Byzantine-robust private retrieval through file replication across multiple miners. We implement and rigorously evaluate PIR-DSN against three prominent industrial DSN systems. Experimental results demonstrate that PIR-DSN achieves comparable overhead for file upload and deletion. While PIR inherently introduces an additional computational cost leading to higher retrieval latency, PIR-DSN maintains comparable throughput. These findings underscore PIR-DSN's practical viability for privacy-sensitive applications within DSN environments.",
+                  "metadata": {
+                    "year": "",
+                    "authors": [
+                      "Jiahao Zhang",
+                      "Minghui Xu",
+                      "Hechuan Guo",
+                      "et al."
+                    ],
+                    "url": "http://arxiv.org/abs/2512.07189v1"
+                  }
+                },
+                {
+                  "doc_id": "2512.23647",
+                  "facet_id": "F1",
+                  "summary": "A relevant paper discussing information retrieval techniques.",
+                  "relevance_level": "medium",
+                  "reason": "The document covers the facet topic at a general level.",
+                  "title": "Nested Browser-Use Learning for Agentic Information Seeking",
+                  "abstract": "Information-seeking (IS) agents have achieved strong performance across a range of wide and deep search tasks, yet their tool use remains largely restricted to API-level snippet retrieval and URL-based page fetching, limiting access to the richer information available through real browsing. While full browser interaction could unlock deeper capabilities, its fine-grained control and verbose page content returns introduce substantial complexity for ReAct-style function-calling agents. To bridge this gap, we propose Nested Browser-Use Learning (NestBrowse), which introduces a minimal and complete browser-action framework that decouples interaction control from page exploration through a nested structure. This design simplifies agentic reasoning while enabling effective deep-web information acquisition. Empirical results on challenging deep IS benchmarks demonstrate that NestBrowse offers clear benefits in practice. Further in-depth analyses underscore its efficiency and flexibility.",
+                  "metadata": {
+                    "year": "",
+                    "authors": [
+                      "Baixuan Li",
+                      "Jialong Wu",
+                      "Wenbiao Yin",
+                      "et al."
+                    ],
+                    "url": "http://arxiv.org/abs/2512.23647v1"
+                  }
+                },
+                {
+                  "doc_id": "2512.07189",
+                  "facet_id": "F2",
+                  "summary": "A relevant paper discussing information retrieval techniques.",
+                  "relevance_level": "medium",
+                  "reason": "The document covers the facet topic at a general level.",
+                  "title": "PIR-DSN: A Decentralized Storage Network Supporting Private Information Retrieval",
+                  "abstract": "Decentralized Storage Networks (DSNs) are emerging as a foundational infrastructure for Web 3.0, offering global peer-to-peer storage. However, a critical vulnerability persists: user privacy during file retrieval remains largely unaddressed, risking the exposure of sensitive information. To overcome this, we introduce PIR-DSN, the first DSN protocol to integrate Private Information Retrieval (PIR) for both single and multi-server settings. Our key innovations include a novel secure mapping method that transforms sparse file identifiers into compact integer indexes, enabling both public verifiability of file operations and efficient private retrieval. Furthermore, PIR-DSN guarantees Byzantine-robust private retrieval through file replication across multiple miners. We implement and rigorously evaluate PIR-DSN against three prominent industrial DSN systems. Experimental results demonstrate that PIR-DSN achieves comparable overhead for file upload and deletion. While PIR inherently introduces an additional computational cost leading to higher retrieval latency, PIR-DSN maintains comparable throughput. These findings underscore PIR-DSN's practical viability for privacy-sensitive applications within DSN environments.",
+                  "metadata": {
+                    "year": "",
+                    "authors": [
+                      "Jiahao Zhang",
+                      "Minghui Xu",
+                      "Hechuan Guo",
+                      "et al."
+                    ],
+                    "url": "http://arxiv.org/abs/2512.07189v1"
+                  }
+                },
+                {
+                  "doc_id": "2512.21039",
+                  "facet_id": "F2",
+                  "summary": "A relevant paper discussing information retrieval techniques.",
+                  "relevance_level": "medium",
+                  "reason": "The document covers the facet topic at a general level.",
+                  "title": "Agentic Multi-Persona Framework for Evidence-Aware Fake News Detection",
+                  "abstract": "The rapid proliferation of online misinformation poses significant risks to public trust, policy, and safety, necessitating reliable automated fake news detection. Existing methods often struggle with multimodal content, domain generalization, and explainability. We propose AMPEND-LS, an agentic multi-persona evidence-grounded framework with LLM-SLM synergy for multimodal fake news detection. AMPEND-LS integrates textual, visual, and contextual signals through a structured reasoning pipeline powered by LLMs, augmented with reverse image search, knowledge graph paths, and persuasion strategy analysis. To improve reliability, we introduce a credibility fusion mechanism combining semantic similarity, domain trustworthiness, and temporal context, and a complementary SLM classifier to mitigate LLM uncertainty and hallucinations. Extensive experiments across three benchmark datasets demonstrate that AMPEND-LS consistently outperformed state-of-the-art baselines in accuracy, F1 score, and robustness. Qualitative case studies further highlight its transparent reasoning and resilience against evolving misinformation. This work advances the development of adaptive, explainable, and evidence-aware systems for safeguarding online information integrity.",
+                  "metadata": {
+                    "year": "",
+                    "authors": [
+                      "Roopa Bukke",
+                      "Soumya Pandey",
+                      "Suraj Kumar",
+                      "et al."
+                    ],
+                    "url": "http://arxiv.org/abs/2512.21039v1"
+                  }
+                }
+              ],
+              "rejected_docs": [],
+              "candidate_docs": [
+                {
+                  "arxiv_id": "2512.07189",
+                  "title": "PIR-DSN: A Decentralized Storage Network Supporting Private Information Retrieval",
+                  "abstract": "Decentralized Storage Networks (DSNs) are emerging as a foundational infrastructure for Web 3.0, offering global peer-to-peer storage. However, a critical vulnerability persists: user privacy during file retrieval remains largely unaddressed, risking the exposure of sensitive information. To overcome this, we introduce PIR-DSN, the first DSN protocol to integrate Private Information Retrieval (PIR) for both single and multi-server settings. Our key innovations include a novel secure mapping method that transforms sparse file identifiers into compact integer indexes, enabling both public verifiability of file operations and efficient private retrieval. Furthermore, PIR-DSN guarantees Byzantine-robust private retrieval through file replication across multiple miners. We implement and rigorously evaluate PIR-DSN against three prominent industrial DSN systems. Experimental results demonstrate that PIR-DSN achieves comparable overhead for file upload and deletion. While PIR inherently introduces an additional computational cost leading to higher retrieval latency, PIR-DSN maintains comparable throughput. These findings underscore PIR-DSN's practical viability for privacy-sensitive applications within DSN environments.",
+                  "arxiv_url": "http://arxiv.org/abs/2512.07189v1",
+                  "authors": [
+                    "Jiahao Zhang",
+                    "Minghui Xu",
+                    "Hechuan Guo",
+                    "et al."
+                  ],
+                  "date": "2025-12-08",
+                  "facet_id": "F1"
+                },
+                {
+                  "arxiv_id": "2512.23647",
+                  "title": "Nested Browser-Use Learning for Agentic Information Seeking",
+                  "abstract": "Information-seeking (IS) agents have achieved strong performance across a range of wide and deep search tasks, yet their tool use remains largely restricted to API-level snippet retrieval and URL-based page fetching, limiting access to the richer information available through real browsing. While full browser interaction could unlock deeper capabilities, its fine-grained control and verbose page content returns introduce substantial complexity for ReAct-style function-calling agents. To bridge this gap, we propose Nested Browser-Use Learning (NestBrowse), which introduces a minimal and complete browser-action framework that decouples interaction control from page exploration through a nested structure. This design simplifies agentic reasoning while enabling effective deep-web information acquisition. Empirical results on challenging deep IS benchmarks demonstrate that NestBrowse offers clear benefits in practice. Further in-depth analyses underscore its efficiency and flexibility.",
+                  "arxiv_url": "http://arxiv.org/abs/2512.23647v1",
+                  "authors": [
+                    "Baixuan Li",
+                    "Jialong Wu",
+                    "Wenbiao Yin",
+                    "et al."
+                  ],
+                  "date": "2025-12-29",
+                  "facet_id": "F1"
+                },
+                {
+                  "arxiv_id": "2512.07189",
+                  "title": "PIR-DSN: A Decentralized Storage Network Supporting Private Information Retrieval",
+                  "abstract": "Decentralized Storage Networks (DSNs) are emerging as a foundational infrastructure for Web 3.0, offering global peer-to-peer storage. However, a critical vulnerability persists: user privacy during file retrieval remains largely unaddressed, risking the exposure of sensitive information. To overcome this, we introduce PIR-DSN, the first DSN protocol to integrate Private Information Retrieval (PIR) for both single and multi-server settings. Our key innovations include a novel secure mapping method that transforms sparse file identifiers into compact integer indexes, enabling both public verifiability of file operations and efficient private retrieval. Furthermore, PIR-DSN guarantees Byzantine-robust private retrieval through file replication across multiple miners. We implement and rigorously evaluate PIR-DSN against three prominent industrial DSN systems. Experimental results demonstrate that PIR-DSN achieves comparable overhead for file upload and deletion. While PIR inherently introduces an additional computational cost leading to higher retrieval latency, PIR-DSN maintains comparable throughput. These findings underscore PIR-DSN's practical viability for privacy-sensitive applications within DSN environments.",
+                  "arxiv_url": "http://arxiv.org/abs/2512.07189v1",
+                  "authors": [
+                    "Jiahao Zhang",
+                    "Minghui Xu",
+                    "Hechuan Guo",
+                    "et al."
+                  ],
+                  "date": "2025-12-08",
+                  "facet_id": "F2"
+                },
+                {
+                  "arxiv_id": "2512.21039",
+                  "title": "Agentic Multi-Persona Framework for Evidence-Aware Fake News Detection",
+                  "abstract": "The rapid proliferation of online misinformation poses significant risks to public trust, policy, and safety, necessitating reliable automated fake news detection. Existing methods often struggle with multimodal content, domain generalization, and explainability. We propose AMPEND-LS, an agentic multi-persona evidence-grounded framework with LLM-SLM synergy for multimodal fake news detection. AMPEND-LS integrates textual, visual, and contextual signals through a structured reasoning pipeline powered by LLMs, augmented with reverse image search, knowledge graph paths, and persuasion strategy analysis. To improve reliability, we introduce a credibility fusion mechanism combining semantic similarity, domain trustworthiness, and temporal context, and a complementary SLM classifier to mitigate LLM uncertainty and hallucinations. Extensive experiments across three benchmark datasets demonstrate that AMPEND-LS consistently outperformed state-of-the-art baselines in accuracy, F1 score, and robustness. Qualitative case studies further highlight its transparent reasoning and resilience against evolving misinformation. This work advances the development of adaptive, explainable, and evidence-aware systems for safeguarding online information integrity.",
+                  "arxiv_url": "http://arxiv.org/abs/2512.21039v1",
+                  "authors": [
+                    "Roopa Bukke",
+                    "Soumya Pandey",
+                    "Suraj Kumar",
+                    "et al."
+                  ],
+                  "date": "2025-12-24",
+                  "facet_id": "F2"
+                }
+              ],
+              "search_iteration": 1,
+              "satisfied_facets": [
+                "F1",
+                "F2"
+              ],
+              "seen_doc_ids": [
+                "2512.07189",
+                "2512.21039",
+                "2512.23647"
+              ],
+              "start_time": 1775626749.9799144,
+              "intent": {
+                "cognitive_state": {
+                  "cognitive_mode": "exploratory",
+                  "logical_dependency": "independent_parallel"
+                },
+                "agent_plan": {
+                  "facets": [
+                    {
+                      "facet_id": "F1",
+                      "description": "Overview and background of the topic",
+                      "dependency": null,
+                      "rubric": {
+                        "tolerance_level": "high",
+                        "quality_preference": [
+                          "survey papers",
+                          "review articles"
+                        ],
+                        "content_requirements": [
+                          "provides general overview"
+                        ]
+                      }
+                    },
+                    {
+                      "facet_id": "F2",
+                      "description": "Key methods and techniques",
+                      "dependency": null,
+                      "rubric": {
+                        "tolerance_level": "medium",
+                        "quality_preference": [
+                          "research papers",
+                          "technical reports"
+                        ],
+                        "content_requirements": [
+                          "describes specific methods or algorithms"
+                        ]
+                      }
+                    }
+                  ],
+                  "criteria": {
+                    "metric_type": "coverage",
+                    "threshold_description": "All facets have at least one high or medium relevance document",
+                    "specific_conditions": [
+                      "F1 has at least one overview document",
+                      "F2 has at least one method-focused document"
+                    ]
+                  }
+                },
+                "expansions": [
+                  {
+                    "facet_id": "F1",
+                    "facet_query": "overview and introduction to the topic for F1",
+                    "sparse_keywords": [
+                      "information retrieval",
+                      "RAG",
+                      "agentic search"
+                    ],
+                    "hypothetical_document": "This paper provides a comprehensive survey of retrieval-augmented generation methods, covering key architectures, datasets, and benchmarks in the field."
+                  },
+                  {
+                    "facet_id": "F2",
+                    "facet_query": "overview and introduction to the topic for F2",
+                    "sparse_keywords": [
+                      "information retrieval",
+                      "RAG",
+                      "agentic search"
+                    ],
+                    "hypothetical_document": "This paper provides a comprehensive survey of retrieval-augmented generation methods, covering key architectures, datasets, and benchmarks in the field."
+                  }
+                ],
+                "constraints": {
+                  "structured_metadata": [],
+                  "unstructured_content_patterns": []
+                }
+              },
+              "gap_analysis_result": "sufficient",
+              "gap_analysis_details": {
+                "coverage_score": 1.0,
+                "missing_info": [],
+                "suggested_queries": [],
+                "raw_analysis": {
+                  "overall_sufficient": true,
+                  "newly_satisfied_facets": [
+                    "F1",
+                    "F2"
+                  ],
+                  "remaining_facets": [],
+                  "suggested_queries": []
+                }
+              }
+            },
+            "output_snapshot": {
+              "final_report": "============================================================\n[REPORT] Crux AgenticRAG Analysis Report\n============================================================\n\n[Query]      哪些论文使用了耦合自编码器进行多模态细胞类型分析？\n[Iterations] 1\n[Evidence]   4 docs\n[Facets]     F1, F2\n\n\n--------------------------------------------------\n[Facet: F1] (2 docs)\n--------------------------------------------------\n\n  doc_id : 2512.07189\n  level  : medium\n  summary: A relevant paper discussing information retrieval techniques.\n  reason : The document covers the facet topic at a general level.\n  title  : PIR-DSN: A Decentralized Storage Network Supporting Private Information Retrieval\n\n  doc_id : 2512.23647\n  level  : medium\n  summary: A relevant paper discussing information retrieval techniques.\n  reason : The document covers the facet topic at a general level.\n  title  : Nested Browser-Use Learning for Agentic Information Seeking\n\n--------------------------------------------------\n[Facet: F2] (2 docs)\n--------------------------------------------------\n\n  doc_id : 2512.07189\n  level  : medium\n  summary: A relevant paper discussing information retrieval techniques.\n  reason : The document covers the facet topic at a general level.\n  title  : PIR-DSN: A Decentralized Storage Network Supporting Private Information Retrieval\n\n  doc_id : 2512.21039\n  level  : medium\n  summary: A relevant paper discussing information retrieval techniques.\n  reason : The document covers the facet topic at a general level.\n  title  : Agentic Multi-Persona Framework for Evidence-Aware Fake News Detection\n\n============================================================\nGenerated: 2026-04-08 13:39:10\n============================================================"
+            },
+            "state_after": {
+              "user_query": "哪些论文使用了耦合自编码器进行多模态细胞类型分析？",
+              "verified_evidence": [
+                {
+                  "doc_id": "2512.07189",
+                  "facet_id": "F1",
+                  "summary": "A relevant paper discussing information retrieval techniques.",
+                  "relevance_level": "medium",
+                  "reason": "The document covers the facet topic at a general level.",
+                  "title": "PIR-DSN: A Decentralized Storage Network Supporting Private Information Retrieval",
+                  "abstract": "Decentralized Storage Networks (DSNs) are emerging as a foundational infrastructure for Web 3.0, offering global peer-to-peer storage. However, a critical vulnerability persists: user privacy during file retrieval remains largely unaddressed, risking the exposure of sensitive information. To overcome this, we introduce PIR-DSN, the first DSN protocol to integrate Private Information Retrieval (PIR) for both single and multi-server settings. Our key innovations include a novel secure mapping method that transforms sparse file identifiers into compact integer indexes, enabling both public verifiability of file operations and efficient private retrieval. Furthermore, PIR-DSN guarantees Byzantine-robust private retrieval through file replication across multiple miners. We implement and rigorously evaluate PIR-DSN against three prominent industrial DSN systems. Experimental results demonstrate that PIR-DSN achieves comparable overhead for file upload and deletion. While PIR inherently introduces an additional computational cost leading to higher retrieval latency, PIR-DSN maintains comparable throughput. These findings underscore PIR-DSN's practical viability for privacy-sensitive applications within DSN environments.",
+                  "metadata": {
+                    "year": "",
+                    "authors": [
+                      "Jiahao Zhang",
+                      "Minghui Xu",
+                      "Hechuan Guo",
+                      "et al."
+                    ],
+                    "url": "http://arxiv.org/abs/2512.07189v1"
+                  }
+                },
+                {
+                  "doc_id": "2512.23647",
+                  "facet_id": "F1",
+                  "summary": "A relevant paper discussing information retrieval techniques.",
+                  "relevance_level": "medium",
+                  "reason": "The document covers the facet topic at a general level.",
+                  "title": "Nested Browser-Use Learning for Agentic Information Seeking",
+                  "abstract": "Information-seeking (IS) agents have achieved strong performance across a range of wide and deep search tasks, yet their tool use remains largely restricted to API-level snippet retrieval and URL-based page fetching, limiting access to the richer information available through real browsing. While full browser interaction could unlock deeper capabilities, its fine-grained control and verbose page content returns introduce substantial complexity for ReAct-style function-calling agents. To bridge this gap, we propose Nested Browser-Use Learning (NestBrowse), which introduces a minimal and complete browser-action framework that decouples interaction control from page exploration through a nested structure. This design simplifies agentic reasoning while enabling effective deep-web information acquisition. Empirical results on challenging deep IS benchmarks demonstrate that NestBrowse offers clear benefits in practice. Further in-depth analyses underscore its efficiency and flexibility.",
+                  "metadata": {
+                    "year": "",
+                    "authors": [
+                      "Baixuan Li",
+                      "Jialong Wu",
+                      "Wenbiao Yin",
+                      "et al."
+                    ],
+                    "url": "http://arxiv.org/abs/2512.23647v1"
+                  }
+                },
+                {
+                  "doc_id": "2512.07189",
+                  "facet_id": "F2",
+                  "summary": "A relevant paper discussing information retrieval techniques.",
+                  "relevance_level": "medium",
+                  "reason": "The document covers the facet topic at a general level.",
+                  "title": "PIR-DSN: A Decentralized Storage Network Supporting Private Information Retrieval",
+                  "abstract": "Decentralized Storage Networks (DSNs) are emerging as a foundational infrastructure for Web 3.0, offering global peer-to-peer storage. However, a critical vulnerability persists: user privacy during file retrieval remains largely unaddressed, risking the exposure of sensitive information. To overcome this, we introduce PIR-DSN, the first DSN protocol to integrate Private Information Retrieval (PIR) for both single and multi-server settings. Our key innovations include a novel secure mapping method that transforms sparse file identifiers into compact integer indexes, enabling both public verifiability of file operations and efficient private retrieval. Furthermore, PIR-DSN guarantees Byzantine-robust private retrieval through file replication across multiple miners. We implement and rigorously evaluate PIR-DSN against three prominent industrial DSN systems. Experimental results demonstrate that PIR-DSN achieves comparable overhead for file upload and deletion. While PIR inherently introduces an additional computational cost leading to higher retrieval latency, PIR-DSN maintains comparable throughput. These findings underscore PIR-DSN's practical viability for privacy-sensitive applications within DSN environments.",
+                  "metadata": {
+                    "year": "",
+                    "authors": [
+                      "Jiahao Zhang",
+                      "Minghui Xu",
+                      "Hechuan Guo",
+                      "et al."
+                    ],
+                    "url": "http://arxiv.org/abs/2512.07189v1"
+                  }
+                },
+                {
+                  "doc_id": "2512.21039",
+                  "facet_id": "F2",
+                  "summary": "A relevant paper discussing information retrieval techniques.",
+                  "relevance_level": "medium",
+                  "reason": "The document covers the facet topic at a general level.",
+                  "title": "Agentic Multi-Persona Framework for Evidence-Aware Fake News Detection",
+                  "abstract": "The rapid proliferation of online misinformation poses significant risks to public trust, policy, and safety, necessitating reliable automated fake news detection. Existing methods often struggle with multimodal content, domain generalization, and explainability. We propose AMPEND-LS, an agentic multi-persona evidence-grounded framework with LLM-SLM synergy for multimodal fake news detection. AMPEND-LS integrates textual, visual, and contextual signals through a structured reasoning pipeline powered by LLMs, augmented with reverse image search, knowledge graph paths, and persuasion strategy analysis. To improve reliability, we introduce a credibility fusion mechanism combining semantic similarity, domain trustworthiness, and temporal context, and a complementary SLM classifier to mitigate LLM uncertainty and hallucinations. Extensive experiments across three benchmark datasets demonstrate that AMPEND-LS consistently outperformed state-of-the-art baselines in accuracy, F1 score, and robustness. Qualitative case studies further highlight its transparent reasoning and resilience against evolving misinformation. This work advances the development of adaptive, explainable, and evidence-aware systems for safeguarding online information integrity.",
+                  "metadata": {
+                    "year": "",
+                    "authors": [
+                      "Roopa Bukke",
+                      "Soumya Pandey",
+                      "Suraj Kumar",
+                      "et al."
+                    ],
+                    "url": "http://arxiv.org/abs/2512.21039v1"
+                  }
+                }
+              ],
+              "rejected_docs": [],
+              "candidate_docs": [
+                {
+                  "arxiv_id": "2512.07189",
+                  "title": "PIR-DSN: A Decentralized Storage Network Supporting Private Information Retrieval",
+                  "abstract": "Decentralized Storage Networks (DSNs) are emerging as a foundational infrastructure for Web 3.0, offering global peer-to-peer storage. However, a critical vulnerability persists: user privacy during file retrieval remains largely unaddressed, risking the exposure of sensitive information. To overcome this, we introduce PIR-DSN, the first DSN protocol to integrate Private Information Retrieval (PIR) for both single and multi-server settings. Our key innovations include a novel secure mapping method that transforms sparse file identifiers into compact integer indexes, enabling both public verifiability of file operations and efficient private retrieval. Furthermore, PIR-DSN guarantees Byzantine-robust private retrieval through file replication across multiple miners. We implement and rigorously evaluate PIR-DSN against three prominent industrial DSN systems. Experimental results demonstrate that PIR-DSN achieves comparable overhead for file upload and deletion. While PIR inherently introduces an additional computational cost leading to higher retrieval latency, PIR-DSN maintains comparable throughput. These findings underscore PIR-DSN's practical viability for privacy-sensitive applications within DSN environments.",
+                  "arxiv_url": "http://arxiv.org/abs/2512.07189v1",
+                  "authors": [
+                    "Jiahao Zhang",
+                    "Minghui Xu",
+                    "Hechuan Guo",
+                    "et al."
+                  ],
+                  "date": "2025-12-08",
+                  "facet_id": "F1"
+                },
+                {
+                  "arxiv_id": "2512.23647",
+                  "title": "Nested Browser-Use Learning for Agentic Information Seeking",
+                  "abstract": "Information-seeking (IS) agents have achieved strong performance across a range of wide and deep search tasks, yet their tool use remains largely restricted to API-level snippet retrieval and URL-based page fetching, limiting access to the richer information available through real browsing. While full browser interaction could unlock deeper capabilities, its fine-grained control and verbose page content returns introduce substantial complexity for ReAct-style function-calling agents. To bridge this gap, we propose Nested Browser-Use Learning (NestBrowse), which introduces a minimal and complete browser-action framework that decouples interaction control from page exploration through a nested structure. This design simplifies agentic reasoning while enabling effective deep-web information acquisition. Empirical results on challenging deep IS benchmarks demonstrate that NestBrowse offers clear benefits in practice. Further in-depth analyses underscore its efficiency and flexibility.",
+                  "arxiv_url": "http://arxiv.org/abs/2512.23647v1",
+                  "authors": [
+                    "Baixuan Li",
+                    "Jialong Wu",
+                    "Wenbiao Yin",
+                    "et al."
+                  ],
+                  "date": "2025-12-29",
+                  "facet_id": "F1"
+                },
+                {
+                  "arxiv_id": "2512.07189",
+                  "title": "PIR-DSN: A Decentralized Storage Network Supporting Private Information Retrieval",
+                  "abstract": "Decentralized Storage Networks (DSNs) are emerging as a foundational infrastructure for Web 3.0, offering global peer-to-peer storage. However, a critical vulnerability persists: user privacy during file retrieval remains largely unaddressed, risking the exposure of sensitive information. To overcome this, we introduce PIR-DSN, the first DSN protocol to integrate Private Information Retrieval (PIR) for both single and multi-server settings. Our key innovations include a novel secure mapping method that transforms sparse file identifiers into compact integer indexes, enabling both public verifiability of file operations and efficient private retrieval. Furthermore, PIR-DSN guarantees Byzantine-robust private retrieval through file replication across multiple miners. We implement and rigorously evaluate PIR-DSN against three prominent industrial DSN systems. Experimental results demonstrate that PIR-DSN achieves comparable overhead for file upload and deletion. While PIR inherently introduces an additional computational cost leading to higher retrieval latency, PIR-DSN maintains comparable throughput. These findings underscore PIR-DSN's practical viability for privacy-sensitive applications within DSN environments.",
+                  "arxiv_url": "http://arxiv.org/abs/2512.07189v1",
+                  "authors": [
+                    "Jiahao Zhang",
+                    "Minghui Xu",
+                    "Hechuan Guo",
+                    "et al."
+                  ],
+                  "date": "2025-12-08",
+                  "facet_id": "F2"
+                },
+                {
+                  "arxiv_id": "2512.21039",
+                  "title": "Agentic Multi-Persona Framework for Evidence-Aware Fake News Detection",
+                  "abstract": "The rapid proliferation of online misinformation poses significant risks to public trust, policy, and safety, necessitating reliable automated fake news detection. Existing methods often struggle with multimodal content, domain generalization, and explainability. We propose AMPEND-LS, an agentic multi-persona evidence-grounded framework with LLM-SLM synergy for multimodal fake news detection. AMPEND-LS integrates textual, visual, and contextual signals through a structured reasoning pipeline powered by LLMs, augmented with reverse image search, knowledge graph paths, and persuasion strategy analysis. To improve reliability, we introduce a credibility fusion mechanism combining semantic similarity, domain trustworthiness, and temporal context, and a complementary SLM classifier to mitigate LLM uncertainty and hallucinations. Extensive experiments across three benchmark datasets demonstrate that AMPEND-LS consistently outperformed state-of-the-art baselines in accuracy, F1 score, and robustness. Qualitative case studies further highlight its transparent reasoning and resilience against evolving misinformation. This work advances the development of adaptive, explainable, and evidence-aware systems for safeguarding online information integrity.",
+                  "arxiv_url": "http://arxiv.org/abs/2512.21039v1",
+                  "authors": [
+                    "Roopa Bukke",
+                    "Soumya Pandey",
+                    "Suraj Kumar",
+                    "et al."
+                  ],
+                  "date": "2025-12-24",
+                  "facet_id": "F2"
+                }
+              ],
+              "search_iteration": 1,
+              "satisfied_facets": [
+                "F1",
+                "F2"
+              ],
+              "seen_doc_ids": [
+                "2512.07189",
+                "2512.21039",
+                "2512.23647"
+              ],
+              "start_time": 1775626749.9799144,
+              "intent": {
+                "cognitive_state": {
+                  "cognitive_mode": "exploratory",
+                  "logical_dependency": "independent_parallel"
+                },
+                "agent_plan": {
+                  "facets": [
+                    {
+                      "facet_id": "F1",
+                      "description": "Overview and background of the topic",
+                      "dependency": null,
+                      "rubric": {
+                        "tolerance_level": "high",
+                        "quality_preference": [
+                          "survey papers",
+                          "review articles"
+                        ],
+                        "content_requirements": [
+                          "provides general overview"
+                        ]
+                      }
+                    },
+                    {
+                      "facet_id": "F2",
+                      "description": "Key methods and techniques",
+                      "dependency": null,
+                      "rubric": {
+                        "tolerance_level": "medium",
+                        "quality_preference": [
+                          "research papers",
+                          "technical reports"
+                        ],
+                        "content_requirements": [
+                          "describes specific methods or algorithms"
+                        ]
+                      }
+                    }
+                  ],
+                  "criteria": {
+                    "metric_type": "coverage",
+                    "threshold_description": "All facets have at least one high or medium relevance document",
+                    "specific_conditions": [
+                      "F1 has at least one overview document",
+                      "F2 has at least one method-focused document"
+                    ]
+                  }
+                },
+                "expansions": [
+                  {
+                    "facet_id": "F1",
+                    "facet_query": "overview and introduction to the topic for F1",
+                    "sparse_keywords": [
+                      "information retrieval",
+                      "RAG",
+                      "agentic search"
+                    ],
+                    "hypothetical_document": "This paper provides a comprehensive survey of retrieval-augmented generation methods, covering key architectures, datasets, and benchmarks in the field."
+                  },
+                  {
+                    "facet_id": "F2",
+                    "facet_query": "overview and introduction to the topic for F2",
+                    "sparse_keywords": [
+                      "information retrieval",
+                      "RAG",
+                      "agentic search"
+                    ],
+                    "hypothetical_document": "This paper provides a comprehensive survey of retrieval-augmented generation methods, covering key architectures, datasets, and benchmarks in the field."
+                  }
+                ],
+                "constraints": {
+                  "structured_metadata": [],
+                  "unstructured_content_patterns": []
+                }
+              },
+              "gap_analysis_result": "sufficient",
+              "gap_analysis_details": {
+                "coverage_score": 1.0,
+                "missing_info": [],
+                "suggested_queries": [],
+                "raw_analysis": {
+                  "overall_sufficient": true,
+                  "newly_satisfied_facets": [
+                    "F1",
+                    "F2"
+                  ],
+                  "remaining_facets": [],
+                  "suggested_queries": []
+                }
+              },
+              "final_report": "============================================================\n[REPORT] Crux AgenticRAG Analysis Report\n============================================================\n\n[Query]      哪些论文使用了耦合自编码器进行多模态细胞类型分析？\n[Iterations] 1\n[Evidence]   4 docs\n[Facets]     F1, F2\n\n\n--------------------------------------------------\n[Facet: F1] (2 docs)\n--------------------------------------------------\n\n  doc_id : 2512.07189\n  level  : medium\n  summary: A relevant paper discussing information retrieval techniques.\n  reason : The document covers the facet topic at a general level.\n  title  : PIR-DSN: A Decentralized Storage Network Supporting Private Information Retrieval\n\n  doc_id : 2512.23647\n  level  : medium\n  summary: A relevant paper discussing information retrieval techniques.\n  reason : The document covers the facet topic at a general level.\n  title  : Nested Browser-Use Learning for Agentic Information Seeking\n\n--------------------------------------------------\n[Facet: F2] (2 docs)\n--------------------------------------------------\n\n  doc_id : 2512.07189\n  level  : medium\n  summary: A relevant paper discussing information retrieval techniques.\n  reason : The document covers the facet topic at a general level.\n  title  : PIR-DSN: A Decentralized Storage Network Supporting Private Information Retrieval\n\n  doc_id : 2512.21039\n  level  : medium\n  summary: A relevant paper discussing information retrieval techniques.\n  reason : The document covers the facet topic at a general level.\n  title  : Agentic Multi-Persona Framework for Evidence-Aware Fake News Detection\n\n============================================================\nGenerated: 2026-04-08 13:39:10\n============================================================"
+            },
+            "logs": [
+              {
+                "level": "INFO",
+                "message": "原始查询: 哪些论文使用了耦合自编码器进行多模态细胞类型分析？",
+                "timestamp": 1775626750.00076,
+                "details": null
+              },
+              {
+                "level": "INFO",
+                "message": "总迭代次数: 1，满足 Facet: ['F1', 'F2']",
+                "timestamp": 1775626750.00076,
+                "details": null
+              },
+              {
+                "level": "INFO",
+                "message": "可用证据: 4 条",
+                "timestamp": 1775626750.00076,
+                "details": null
+              },
+              {
+                "level": "INFO",
+                "message": "报告生成完成 (耗时: 0ms)",
+                "timestamp": 1775626750.00076,
+                "details": null
+              },
+              {
+                "level": "INFO",
+                "message": "报告置信度: 77.0%",
+                "timestamp": 1775626750.00076,
+                "details": null
+              }
+            ],
+            "error": null
+          }
+        ],
+        "final_state": {
+          "user_query": "哪些论文使用了耦合自编码器进行多模态细胞类型分析？",
+          "verified_evidence": [
+            {
+              "doc_id": "2512.07189",
+              "facet_id": "F1",
+              "summary": "A relevant paper discussing information retrieval techniques.",
+              "relevance_level": "medium",
+              "reason": "The document covers the facet topic at a general level.",
+              "title": "PIR-DSN: A Decentralized Storage Network Supporting Private Information Retrieval",
+              "abstract": "Decentralized Storage Networks (DSNs) are emerging as a foundational infrastructure for Web 3.0, offering global peer-to-peer storage. However, a critical vulnerability persists: user privacy during file retrieval remains largely unaddressed, risking the exposure of sensitive information. To overcome this, we introduce PIR-DSN, the first DSN protocol to integrate Private Information Retrieval (PIR) for both single and multi-server settings. Our key innovations include a novel secure mapping method that transforms sparse file identifiers into compact integer indexes, enabling both public verifiability of file operations and efficient private retrieval. Furthermore, PIR-DSN guarantees Byzantine-robust private retrieval through file replication across multiple miners. We implement and rigorously evaluate PIR-DSN against three prominent industrial DSN systems. Experimental results demonstrate that PIR-DSN achieves comparable overhead for file upload and deletion. While PIR inherently introduces an additional computational cost leading to higher retrieval latency, PIR-DSN maintains comparable throughput. These findings underscore PIR-DSN's practical viability for privacy-sensitive applications within DSN environments.",
+              "metadata": {
+                "year": "",
+                "authors": [
+                  "Jiahao Zhang",
+                  "Minghui Xu",
+                  "Hechuan Guo",
+                  "et al."
+                ],
+                "url": "http://arxiv.org/abs/2512.07189v1"
+              }
+            },
+            {
+              "doc_id": "2512.23647",
+              "facet_id": "F1",
+              "summary": "A relevant paper discussing information retrieval techniques.",
+              "relevance_level": "medium",
+              "reason": "The document covers the facet topic at a general level.",
+              "title": "Nested Browser-Use Learning for Agentic Information Seeking",
+              "abstract": "Information-seeking (IS) agents have achieved strong performance across a range of wide and deep search tasks, yet their tool use remains largely restricted to API-level snippet retrieval and URL-based page fetching, limiting access to the richer information available through real browsing. While full browser interaction could unlock deeper capabilities, its fine-grained control and verbose page content returns introduce substantial complexity for ReAct-style function-calling agents. To bridge this gap, we propose Nested Browser-Use Learning (NestBrowse), which introduces a minimal and complete browser-action framework that decouples interaction control from page exploration through a nested structure. This design simplifies agentic reasoning while enabling effective deep-web information acquisition. Empirical results on challenging deep IS benchmarks demonstrate that NestBrowse offers clear benefits in practice. Further in-depth analyses underscore its efficiency and flexibility.",
+              "metadata": {
+                "year": "",
+                "authors": [
+                  "Baixuan Li",
+                  "Jialong Wu",
+                  "Wenbiao Yin",
+                  "et al."
+                ],
+                "url": "http://arxiv.org/abs/2512.23647v1"
+              }
+            },
+            {
+              "doc_id": "2512.07189",
+              "facet_id": "F2",
+              "summary": "A relevant paper discussing information retrieval techniques.",
+              "relevance_level": "medium",
+              "reason": "The document covers the facet topic at a general level.",
+              "title": "PIR-DSN: A Decentralized Storage Network Supporting Private Information Retrieval",
+              "abstract": "Decentralized Storage Networks (DSNs) are emerging as a foundational infrastructure for Web 3.0, offering global peer-to-peer storage. However, a critical vulnerability persists: user privacy during file retrieval remains largely unaddressed, risking the exposure of sensitive information. To overcome this, we introduce PIR-DSN, the first DSN protocol to integrate Private Information Retrieval (PIR) for both single and multi-server settings. Our key innovations include a novel secure mapping method that transforms sparse file identifiers into compact integer indexes, enabling both public verifiability of file operations and efficient private retrieval. Furthermore, PIR-DSN guarantees Byzantine-robust private retrieval through file replication across multiple miners. We implement and rigorously evaluate PIR-DSN against three prominent industrial DSN systems. Experimental results demonstrate that PIR-DSN achieves comparable overhead for file upload and deletion. While PIR inherently introduces an additional computational cost leading to higher retrieval latency, PIR-DSN maintains comparable throughput. These findings underscore PIR-DSN's practical viability for privacy-sensitive applications within DSN environments.",
+              "metadata": {
+                "year": "",
+                "authors": [
+                  "Jiahao Zhang",
+                  "Minghui Xu",
+                  "Hechuan Guo",
+                  "et al."
+                ],
+                "url": "http://arxiv.org/abs/2512.07189v1"
+              }
+            },
+            {
+              "doc_id": "2512.21039",
+              "facet_id": "F2",
+              "summary": "A relevant paper discussing information retrieval techniques.",
+              "relevance_level": "medium",
+              "reason": "The document covers the facet topic at a general level.",
+              "title": "Agentic Multi-Persona Framework for Evidence-Aware Fake News Detection",
+              "abstract": "The rapid proliferation of online misinformation poses significant risks to public trust, policy, and safety, necessitating reliable automated fake news detection. Existing methods often struggle with multimodal content, domain generalization, and explainability. We propose AMPEND-LS, an agentic multi-persona evidence-grounded framework with LLM-SLM synergy for multimodal fake news detection. AMPEND-LS integrates textual, visual, and contextual signals through a structured reasoning pipeline powered by LLMs, augmented with reverse image search, knowledge graph paths, and persuasion strategy analysis. To improve reliability, we introduce a credibility fusion mechanism combining semantic similarity, domain trustworthiness, and temporal context, and a complementary SLM classifier to mitigate LLM uncertainty and hallucinations. Extensive experiments across three benchmark datasets demonstrate that AMPEND-LS consistently outperformed state-of-the-art baselines in accuracy, F1 score, and robustness. Qualitative case studies further highlight its transparent reasoning and resilience against evolving misinformation. This work advances the development of adaptive, explainable, and evidence-aware systems for safeguarding online information integrity.",
+              "metadata": {
+                "year": "",
+                "authors": [
+                  "Roopa Bukke",
+                  "Soumya Pandey",
+                  "Suraj Kumar",
+                  "et al."
+                ],
+                "url": "http://arxiv.org/abs/2512.21039v1"
+              }
+            }
+          ],
+          "rejected_docs": [],
+          "candidate_docs": [
+            {
+              "arxiv_id": "2512.07189",
+              "title": "PIR-DSN: A Decentralized Storage Network Supporting Private Information Retrieval",
+              "abstract": "Decentralized Storage Networks (DSNs) are emerging as a foundational infrastructure for Web 3.0, offering global peer-to-peer storage. However, a critical vulnerability persists: user privacy during file retrieval remains largely unaddressed, risking the exposure of sensitive information. To overcome this, we introduce PIR-DSN, the first DSN protocol to integrate Private Information Retrieval (PIR) for both single and multi-server settings. Our key innovations include a novel secure mapping method that transforms sparse file identifiers into compact integer indexes, enabling both public verifiability of file operations and efficient private retrieval. Furthermore, PIR-DSN guarantees Byzantine-robust private retrieval through file replication across multiple miners. We implement and rigorously evaluate PIR-DSN against three prominent industrial DSN systems. Experimental results demonstrate that PIR-DSN achieves comparable overhead for file upload and deletion. While PIR inherently introduces an additional computational cost leading to higher retrieval latency, PIR-DSN maintains comparable throughput. These findings underscore PIR-DSN's practical viability for privacy-sensitive applications within DSN environments.",
+              "arxiv_url": "http://arxiv.org/abs/2512.07189v1",
+              "authors": [
+                "Jiahao Zhang",
+                "Minghui Xu",
+                "Hechuan Guo",
+                "et al."
+              ],
+              "date": "2025-12-08",
+              "facet_id": "F1"
+            },
+            {
+              "arxiv_id": "2512.23647",
+              "title": "Nested Browser-Use Learning for Agentic Information Seeking",
+              "abstract": "Information-seeking (IS) agents have achieved strong performance across a range of wide and deep search tasks, yet their tool use remains largely restricted to API-level snippet retrieval and URL-based page fetching, limiting access to the richer information available through real browsing. While full browser interaction could unlock deeper capabilities, its fine-grained control and verbose page content returns introduce substantial complexity for ReAct-style function-calling agents. To bridge this gap, we propose Nested Browser-Use Learning (NestBrowse), which introduces a minimal and complete browser-action framework that decouples interaction control from page exploration through a nested structure. This design simplifies agentic reasoning while enabling effective deep-web information acquisition. Empirical results on challenging deep IS benchmarks demonstrate that NestBrowse offers clear benefits in practice. Further in-depth analyses underscore its efficiency and flexibility.",
+              "arxiv_url": "http://arxiv.org/abs/2512.23647v1",
+              "authors": [
+                "Baixuan Li",
+                "Jialong Wu",
+                "Wenbiao Yin",
+                "et al."
+              ],
+              "date": "2025-12-29",
+              "facet_id": "F1"
+            },
+            {
+              "arxiv_id": "2512.07189",
+              "title": "PIR-DSN: A Decentralized Storage Network Supporting Private Information Retrieval",
+              "abstract": "Decentralized Storage Networks (DSNs) are emerging as a foundational infrastructure for Web 3.0, offering global peer-to-peer storage. However, a critical vulnerability persists: user privacy during file retrieval remains largely unaddressed, risking the exposure of sensitive information. To overcome this, we introduce PIR-DSN, the first DSN protocol to integrate Private Information Retrieval (PIR) for both single and multi-server settings. Our key innovations include a novel secure mapping method that transforms sparse file identifiers into compact integer indexes, enabling both public verifiability of file operations and efficient private retrieval. Furthermore, PIR-DSN guarantees Byzantine-robust private retrieval through file replication across multiple miners. We implement and rigorously evaluate PIR-DSN against three prominent industrial DSN systems. Experimental results demonstrate that PIR-DSN achieves comparable overhead for file upload and deletion. While PIR inherently introduces an additional computational cost leading to higher retrieval latency, PIR-DSN maintains comparable throughput. These findings underscore PIR-DSN's practical viability for privacy-sensitive applications within DSN environments.",
+              "arxiv_url": "http://arxiv.org/abs/2512.07189v1",
+              "authors": [
+                "Jiahao Zhang",
+                "Minghui Xu",
+                "Hechuan Guo",
+                "et al."
+              ],
+              "date": "2025-12-08",
+              "facet_id": "F2"
+            },
+            {
+              "arxiv_id": "2512.21039",
+              "title": "Agentic Multi-Persona Framework for Evidence-Aware Fake News Detection",
+              "abstract": "The rapid proliferation of online misinformation poses significant risks to public trust, policy, and safety, necessitating reliable automated fake news detection. Existing methods often struggle with multimodal content, domain generalization, and explainability. We propose AMPEND-LS, an agentic multi-persona evidence-grounded framework with LLM-SLM synergy for multimodal fake news detection. AMPEND-LS integrates textual, visual, and contextual signals through a structured reasoning pipeline powered by LLMs, augmented with reverse image search, knowledge graph paths, and persuasion strategy analysis. To improve reliability, we introduce a credibility fusion mechanism combining semantic similarity, domain trustworthiness, and temporal context, and a complementary SLM classifier to mitigate LLM uncertainty and hallucinations. Extensive experiments across three benchmark datasets demonstrate that AMPEND-LS consistently outperformed state-of-the-art baselines in accuracy, F1 score, and robustness. Qualitative case studies further highlight its transparent reasoning and resilience against evolving misinformation. This work advances the development of adaptive, explainable, and evidence-aware systems for safeguarding online information integrity.",
+              "arxiv_url": "http://arxiv.org/abs/2512.21039v1",
+              "authors": [
+                "Roopa Bukke",
+                "Soumya Pandey",
+                "Suraj Kumar",
+                "et al."
+              ],
+              "date": "2025-12-24",
+              "facet_id": "F2"
+            }
+          ],
+          "search_iteration": 1,
+          "satisfied_facets": [
+            "F1",
+            "F2"
+          ],
+          "seen_doc_ids": [
+            "2512.07189",
+            "2512.21039",
+            "2512.23647"
+          ],
+          "start_time": 1775626749.9799144,
+          "intent": {
+            "cognitive_state": {
+              "cognitive_mode": "exploratory",
+              "logical_dependency": "independent_parallel"
+            },
+            "agent_plan": {
+              "facets": [
+                {
+                  "facet_id": "F1",
+                  "description": "Overview and background of the topic",
+                  "dependency": null,
+                  "rubric": {
+                    "tolerance_level": "high",
+                    "quality_preference": [
+                      "survey papers",
+                      "review articles"
+                    ],
+                    "content_requirements": [
+                      "provides general overview"
+                    ]
+                  }
+                },
+                {
+                  "facet_id": "F2",
+                  "description": "Key methods and techniques",
+                  "dependency": null,
+                  "rubric": {
+                    "tolerance_level": "medium",
+                    "quality_preference": [
+                      "research papers",
+                      "technical reports"
+                    ],
+                    "content_requirements": [
+                      "describes specific methods or algorithms"
+                    ]
+                  }
+                }
+              ],
+              "criteria": {
+                "metric_type": "coverage",
+                "threshold_description": "All facets have at least one high or medium relevance document",
+                "specific_conditions": [
+                  "F1 has at least one overview document",
+                  "F2 has at least one method-focused document"
+                ]
+              }
+            },
+            "expansions": [
+              {
+                "facet_id": "F1",
+                "facet_query": "overview and introduction to the topic for F1",
+                "sparse_keywords": [
+                  "information retrieval",
+                  "RAG",
+                  "agentic search"
+                ],
+                "hypothetical_document": "This paper provides a comprehensive survey of retrieval-augmented generation methods, covering key architectures, datasets, and benchmarks in the field."
+              },
+              {
+                "facet_id": "F2",
+                "facet_query": "overview and introduction to the topic for F2",
+                "sparse_keywords": [
+                  "information retrieval",
+                  "RAG",
+                  "agentic search"
+                ],
+                "hypothetical_document": "This paper provides a comprehensive survey of retrieval-augmented generation methods, covering key architectures, datasets, and benchmarks in the field."
+              }
+            ],
+            "constraints": {
+              "structured_metadata": [],
+              "unstructured_content_patterns": []
+            }
+          },
+          "gap_analysis_result": "sufficient",
+          "gap_analysis_details": {
+            "coverage_score": 1.0,
+            "missing_info": [],
+            "suggested_queries": [],
+            "raw_analysis": {
+              "overall_sufficient": true,
+              "newly_satisfied_facets": [
+                "F1",
+                "F2"
+              ],
+              "remaining_facets": [],
+              "suggested_queries": []
+            }
+          },
+          "final_report": "============================================================\n[REPORT] Crux AgenticRAG Analysis Report\n============================================================\n\n[Query]      哪些论文使用了耦合自编码器进行多模态细胞类型分析？\n[Iterations] 1\n[Evidence]   4 docs\n[Facets]     F1, F2\n\n\n--------------------------------------------------\n[Facet: F1] (2 docs)\n--------------------------------------------------\n\n  doc_id : 2512.07189\n  level  : medium\n  summary: A relevant paper discussing information retrieval techniques.\n  reason : The document covers the facet topic at a general level.\n  title  : PIR-DSN: A Decentralized Storage Network Supporting Private Information Retrieval\n\n  doc_id : 2512.23647\n  level  : medium\n  summary: A relevant paper discussing information retrieval techniques.\n  reason : The document covers the facet topic at a general level.\n  title  : Nested Browser-Use Learning for Agentic Information Seeking\n\n--------------------------------------------------\n[Facet: F2] (2 docs)\n--------------------------------------------------\n\n  doc_id : 2512.07189\n  level  : medium\n  summary: A relevant paper discussing information retrieval techniques.\n  reason : The document covers the facet topic at a general level.\n  title  : PIR-DSN: A Decentralized Storage Network Supporting Private Information Retrieval\n\n  doc_id : 2512.21039\n  level  : medium\n  summary: A relevant paper discussing information retrieval techniques.\n  reason : The document covers the facet topic at a general level.\n  title  : Agentic Multi-Persona Framework for Evidence-Aware Fake News Detection\n\n============================================================\nGenerated: 2026-04-08 13:39:10\n============================================================"
+        }
+      },
+      "errors": [],
+      "notes": [
+        "Mock evaluation verdict."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,28 @@
+judge_model:
+  name: judge-qwen
+  llm:
+    model: Qwen/Qwen3-32B
+    base_url: ${OPENAI_BASE_URL}
+    api_key_env: OPENAI_API_KEY
+    temperature: 0.0
+
+models:
+  - name: qwen32b
+    llm:
+      model: Qwen/Qwen3-32B
+      base_url: ${OPENAI_BASE_URL}
+      api_key_env: OPENAI_API_KEY
+    config:
+      search:
+        max_iterations: 3
+        top_k: 10
+
+  - name: deepseek
+    llm:
+      model: deepseek-chat
+      base_url: ${DEEPSEEK_BASE_URL}
+      api_key_env: DEEPSEEK_API_KEY
+    config:
+      search:
+        max_iterations: 3
+        top_k: 10
