@@ -230,7 +230,7 @@ class PipelineService:
         """构建阶段输出"""
         
         if stage == "understand":
-            intent = state.get("intent_object", state.get("intent", {}))
+            intent = state.get("intent", {})
             return {
                 "user_goal": intent.get("cognitive_strategy", {}).get("user_goal", "FACTUAL"),
                 "cognitive_strategy": intent.get("cognitive_strategy"),

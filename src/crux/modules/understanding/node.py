@@ -1,34 +1,39 @@
 """
 意图理解节点 (Understanding Node)
 
-负责人: [待分配]
+四阶段流程：
+  Stage 1a (并行): query → CognitiveState
+  Stage 1b (并行): query → Constraints
+  Stage 2:         query + CognitiveState → AgentPlan
+  Stage 3 (并行):  每个 InformationFacet → FacetExpansion
 
-功能:
-- 解析用户自然语言查询
-- 生成结构化 IntentObject
-- 识别认知策略、约束条件、信息面
+最终合并为 IntentObject 存入 AgentState.intent。
 """
 
 import datetime
-import json
+from concurrent.futures import ThreadPoolExecutor
 from typing import Dict, Any
 
 from src.crux.context.builder import ContextBuilder
-from src.crux.state import IntentObject
+from src.crux.state.cognitive import CognitiveState
+from src.crux.state.constraints import Constraints
+from src.crux.state.plan import AgentPlan
+from src.crux.state.expansion import FacetExpansion
+from src.crux.state.intent import IntentObject
 from src.crux.utils.base import BaseNode
 from src.crux.utils.llm_client import LLMClient
 
 
 class UnderstandingNode(BaseNode):
     """
-    Schema 感知的意图理解节点
-    
+    意图理解节点
+
     将用户自然语言查询转化为机器可执行的结构化 IntentObject。
     """
 
     name = "understand"
     name_cn = "意图理解"
-    description = "解析用户意图，生成结构化查询对象"
+    description = "解析用户意图，生成结构化 IntentObject"
 
     def __init__(self, config=None):
         super().__init__(config)
@@ -36,76 +41,62 @@ class UnderstandingNode(BaseNode):
         self.context_builder = ContextBuilder(config)
 
     def process(self, state: Dict[str, Any]) -> Dict[str, Any]:
-        """
-        处理用户查询，生成意图对象
-        
-        Args:
-            state: 包含 user_query 的状态
-            
-        Returns:
-            包含 intent, search_iteration, verified_evidence 的更新
-        """
         self.reset_logger()
-        
-        query = state["user_query"]
-        current_time = datetime.datetime.now().strftime("%Y-%m-%d")
 
-        self.log("正在解析用户意图...")
+        query = state["user_query"]
+        current_date = datetime.datetime.now().strftime("%Y-%m-%d")
+
         self.log(f"用户查询: {query}", details={"query": query})
 
-        # 使用 ContextBuilder 构建 prompt (schema 从 config 加载)
-        self.log("构建意图解析 Prompt...")
-        prompt = self.context_builder.build_intent_prompt(
-            query=query,
-            current_date=current_time
+        # ── Stage 1: 并行分类 ───────────────────────────────────────
+        self.log("Stage 1: 认知分类 + 约束提取（并行）...")
+        p_cognitive = self.context_builder.build_cognitive_state_prompt(query)
+        p_constraints = self.context_builder.build_constraints_prompt(query, current_date)
+
+        with ThreadPoolExecutor(max_workers=2) as executor:
+            f_cog = executor.submit(self.llm_client.call_object, p_cognitive, CognitiveState)
+            f_con = executor.submit(self.llm_client.call_object, p_constraints, Constraints)
+            cognitive_state: CognitiveState = f_cog.result()
+            constraints: Constraints = f_con.result()
+
+        self.log(
+            f"认知模式: {cognitive_state.cognitive_mode.value} | "
+            f"逻辑依赖: {cognitive_state.logical_dependency.value}"
         )
 
-        # 调用 LLM 生成结构化意图
-        self.log("调用 LLM 进行意图解析...", details={"model": self.config.llm.model})
-        intent_obj = self.llm_client.call_json_with_object(prompt, response_object=IntentObject)
+        # ── Stage 2: 生成 AgentPlan ─────────────────────────────────
+        self.log("Stage 2: 生成 AgentPlan...")
+        p_plan = self.context_builder.build_agent_plan_prompt(query, cognitive_state)
+        agent_plan: AgentPlan = self.llm_client.call_object(p_plan, AgentPlan)
 
-        # 使用 Pydantic 校验和转换
-        try:
-            # 记录解析结果
-            cognitive = intent_obj.cognitive_strategy
-            self.log(f"识别用户目标: {cognitive.user_goal}")
-            self.log(f"推理拓扑: {cognitive.reasoning_topology}")
-            
-            # 记录约束条件
-            constraints = intent_obj.constraints
-            structured_count = constraints.structured_metadata
-            pattern_count = constraints.unstructured_content_patterns
-            self.log(f"提取约束条件: {len(structured_count)} 个结构化约束, {len(pattern_count)} 个内容模式")
-            
-            # 记录信息面
-            facets = intent_obj.information_facets
-            if facets:
-                self.log(f"识别信息面: {len(facets)} 个", details={
-                    "facets": [f.facet_id for f in facets]
-                })
-            
-            # 记录检索策略
-            retrieval = intent_obj.retrieval_execution
-            sparse_count = len(retrieval.sparse_keywords)
-            dense_count = len(retrieval.dense_queries)
-            self.log(f"生成检索策略: {sparse_count} 个关键词, {dense_count} 个语义查询")
-            
-            self.log("意图解析完成", level="INFO")
-            
-            return self.build_result({
-                "intent": intent_obj.model_dump(),
-                "intent_object": intent_obj.model_dump(),  # 兼容前端
-                "search_iteration": 0,
-                "verified_evidence": []  # 初始化证据列表
-            })
-            
-        except Exception as e:
-            self.log(f"解析失败，使用默认意图: {e}", level="WARN")
-            # 返回一个默认的意图结构
-            default_intent = IntentObject()
-            return self.build_result({
-                "intent": default_intent.model_dump(),
-                "intent_object": default_intent.model_dump(),
-                "search_iteration": 0,
-                "verified_evidence": []
-            })
+        self.log(f"生成 {len(agent_plan.facets)} 个 InformationFacet")
+
+        # ── Stage 3: 并行生成 FacetExpansion ────────────────────────
+        self.log("Stage 3: 检索扩展（并行，每个 Facet 一次）...")
+        expansion_prompts = [
+            self.context_builder.build_facet_expansion_prompt(
+                query, facet.facet_id, facet.description
+            )
+            for facet in agent_plan.facets
+        ]
+        expansions = self.llm_client.batch_call_object(
+            expansion_prompts, FacetExpansion
+        )
+
+        # ── 合并 IntentObject ────────────────────────────────────────
+        intent_obj = IntentObject(
+            cognitive_state=cognitive_state,
+            agent_plan=agent_plan,
+            expansions=expansions,
+            constraints=constraints,
+        )
+
+        self.log("意图理解完成", level="INFO")
+
+        return self.build_result({
+            "intent": intent_obj.model_dump(),
+            "search_iteration": 0,
+            "verified_evidence": [],
+            "satisfied_facets": set(),
+            "seen_doc_ids": set(),
+        })

@@ -115,7 +115,7 @@ async def process_pipeline_stream(request: QueryRequest) -> AsyncGenerator[str, 
                 # 解析事件类型和数据
                 for node_name, state in event.items():
                     if node_name == "understand":
-                        yield f"data: {json.dumps({'type': 'stage_complete', 'stage': 'understand', 'output': state.get('intent_object', {})})}\n\n"
+                        yield f"data: {json.dumps({'type': 'stage_complete', 'stage': 'understand', 'output': state.get('intent', {})})}\n\n"
                     elif node_name == "retrieve":
                         candidates = state.get("candidates", [])
                         yield f"data: {json.dumps({'type': 'stage_complete', 'stage': 'retrieve', 'output': {'candidates': candidates, 'total_retrieved': len(candidates), 'retrieval_methods': ['BM25', 'Vector', 'Field Filter']}})}\n\n"
