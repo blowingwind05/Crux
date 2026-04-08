@@ -22,14 +22,14 @@ def get_all_nodes():
     from src.crux.modules import (
         UnderstandingNode,
         RetrievalNode,
-        AdjudicationNode,
+        JudgeNode,
         GapAnalysisNode,
         ReportNode,
     )
     return {
         "UnderstandingNode": UnderstandingNode,
         "RetrievalNode": RetrievalNode,
-        "AdjudicationNode": AdjudicationNode,
+        "JudgeNode": JudgeNode,
         "GapAnalysisNode": GapAnalysisNode,
         "ReportNode": ReportNode,
     }

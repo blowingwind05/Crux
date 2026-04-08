@@ -61,8 +61,10 @@ def merge_state(state: Dict[str, Any], updates: Dict[str, Any]) -> Dict[str, Any
     merged = copy.deepcopy(state)
 
     for key, value in updates.items():
-        if key == "verified_evidence":
+        if key in {"verified_evidence", "rejected_docs"}:
             merged[key] = list(merged.get(key, [])) + list(value)
+        elif key in {"satisfied_facets", "seen_doc_ids"}:
+            merged[key] = set(merged.get(key, set())) | set(value)
         elif key.startswith("_"):
             continue
         else:

@@ -51,7 +51,7 @@ class LLMClient:
             )
         return self._client
     
-    def call_json(self, prompt: str) -> Dict[str, Any]:
+    def call_json(self, prompt: str, model: Optional[str] = None) -> Dict[str, Any]:
         """
         调用 LLM，返回原始 dict（json_object 模式）。
 
@@ -62,14 +62,11 @@ class LLMClient:
             json.loads 解析后的 dict
         """
         if self.config.mock_llm:
-            mock_response = self._mock_response(prompt)
-            if response_object is not None and isinstance(mock_response, dict):
-                return response_object.model_validate(mock_response)
-            return mock_response
+            return self._mock_response(prompt)
         
         try:
             response = self.client.chat.completions.create(
-                model=self.config.llm.model,
+                model=model or self.config.llm.model,
                 messages=[{"role": "user", "content": prompt}],
                 temperature=self.config.llm.temperature,
                 max_tokens=self.config.llm.max_tokens,
@@ -78,12 +75,9 @@ class LLMClient:
             return json.loads(response.choices[0].message.content)
         except Exception as e:
             logging.info(f"[LLM] 调用失败: {e}")
-            mock_response = self._mock_response(prompt)
-            if response_object is not None and isinstance(mock_response, dict):
-                return response_object.model_validate(mock_response)
-            return mock_response
+            return self._mock_response(prompt)
 
-    def call_response(self, prompt: str) -> str:
+    def call_response(self, prompt: str, model: Optional[str] = None) -> str:
         """
         调用 LLM，返回纯文本 content（无格式约束）。
 
@@ -98,7 +92,7 @@ class LLMClient:
 
         try:
             response = self.client.chat.completions.create(
-                model=self.config.llm.model,
+                model=model or self.config.llm.model,
                 messages=[{"role": "user", "content": prompt}],
                 temperature=self.config.llm.temperature,
                 max_tokens=self.config.llm.max_tokens,
@@ -239,7 +233,26 @@ class LLMClient:
             return response.choices[0].message.parsed
         except Exception as e:
             logging.info(f"[LLM] call_object 失败: {e}")
-            return response_object.model_validate(self._mock_response(prompt, response_object))
+            try:
+                payload = self.call_json(
+                    self._build_json_fallback_prompt(prompt, response_object)
+                )
+                return response_object.model_validate(payload)
+            except Exception as fallback_exc:
+                logging.info(f"[LLM] call_object fallback 失败: {fallback_exc}")
+                return response_object.model_validate(self._mock_response(prompt, response_object))
+
+    def call_json_with_object(
+        self,
+        prompt: str,
+        model: Optional[str] = None,
+        response_object: Optional[Type[BaseModel]] = None,
+    ):
+        """Validate a JSON-mode response against a Pydantic schema."""
+        payload = self.call_json(prompt, model=model)
+        if response_object is None:
+            return payload
+        return response_object.model_validate(payload)
 
     def batch_call_object(
         self,
@@ -293,6 +306,19 @@ class LLMClient:
             retry_count += 1
 
         return [r[0] if r else None for r in results_with_status]
+
+    def _build_json_fallback_prompt(
+        self,
+        prompt: str,
+        response_object: Type[BaseModel],
+    ) -> str:
+        """Append a JSON schema when structured output parsing is unavailable."""
+        schema = json.dumps(response_object.model_json_schema(), ensure_ascii=False, indent=2)
+        return (
+            f"{prompt}\n\n"
+            "Return valid JSON only. The JSON must satisfy this schema:\n"
+            f"{schema}"
+        )
 
     def _mock_response(self, prompt: str, response_object: Optional[Type[BaseModel]] = None) -> Dict[str, Any]:
         """

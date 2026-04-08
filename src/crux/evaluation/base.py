@@ -14,6 +14,19 @@ def utc_now_iso() -> str:
     return datetime.now(timezone.utc).isoformat()
 
 
+def json_safe(value: Any) -> Any:
+    """Recursively convert values into JSON-serializable structures."""
+    if hasattr(value, "model_dump"):
+        return json_safe(value.model_dump())
+    if isinstance(value, dict):
+        return {str(key): json_safe(item) for key, item in value.items()}
+    if isinstance(value, (list, tuple)):
+        return [json_safe(item) for item in value]
+    if isinstance(value, set):
+        return [json_safe(item) for item in sorted(value, key=lambda item: str(item))]
+    return value
+
+
 @dataclass
 class EvaluationCase:
     """A single evaluation case loaded from JSON fixtures."""
@@ -49,13 +62,13 @@ class EvaluationResult:
             "module": self.module,
             "name": self.name,
             "passed": self.passed,
-            "metrics": self.metrics,
+            "metrics": json_safe(self.metrics),
             "duration_ms": self.duration_ms,
-            "actual": self.actual,
-            "expected": self.expected,
-            "trace": self.trace,
-            "errors": self.errors,
-            "notes": self.notes,
+            "actual": json_safe(self.actual),
+            "expected": json_safe(self.expected),
+            "trace": json_safe(self.trace),
+            "errors": json_safe(self.errors),
+            "notes": json_safe(self.notes),
         }
 
 
@@ -80,7 +93,7 @@ class EvaluationSummary:
             "passed_cases": self.passed_cases,
             "failed_cases": self.failed_cases,
             "average_duration_ms": self.average_duration_ms,
-            "aggregate_metrics": self.aggregate_metrics,
+            "aggregate_metrics": json_safe(self.aggregate_metrics),
             "case_results": [result.to_dict() for result in self.case_results],
         }
 
